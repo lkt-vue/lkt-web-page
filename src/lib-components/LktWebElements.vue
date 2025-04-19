@@ -34,8 +34,9 @@ const items = ref(props.modelValue);
 const appendingItems = ref(false);
 const tableRef = ref(null);
 
+console.log('items: ', items.value);
+
 watch(items, (v) => {
-    console.log('updated items: ', items);
     emit('update:modelValue', v);
 }, {deep: true})
 </script>

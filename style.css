@@ -89,11 +89,11 @@
     width: 100%;
 }
 
-.lkt-field-element-config-modal, .lkt-file-browser {
+.lkt-web-element-config-modal, .lkt-file-browser {
     --lkt-modal-max-width-default: 100%;
     --lkt-modal-width-default: 100%;
 }
-.lkt-field-element-config-modal .lkt-modal-inner,
+.lkt-web-element-config-modal .lkt-modal-inner,
 .lkt-file-browser .lkt-modal-inner {
     height: 100%;
     margin: 0;
@@ -101,7 +101,7 @@
     display: flex;
     flex-direction: column;
 }
-.lkt-field-element-config-modal .lkt-modal-header,
+.lkt-web-element-config-modal .lkt-modal-header,
 .lkt-file-browser .lkt-modal-header {
     max-height: 50px;
 }

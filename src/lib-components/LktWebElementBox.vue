@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import {
-    ButtonConfig,
-    ButtonType,
-    FileBrowserConfig, ItemCrudConfig,
-    WebElement,
-    WebElementLayoutType,
-    WebElementType,
-} from 'lkt-vue-kernel';
+import {ButtonConfig, ButtonType, FileBrowserConfig, ItemCrudConfig, WebElement, WebElementType,} from 'lkt-vue-kernel';
 import {getCurrentLanguage} from 'lkt-i18n';
-import {Component, ref, watch} from 'vue';
+import {Component, computed, ref, watch} from 'vue';
 import LktText from "@/lib-components/LktText.vue";
 import LktWebElements from "@/lib-components/LktWebElements.vue";
+import {getLayoutCss} from "@/functions/layout-functions";
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -33,6 +27,8 @@ const emit = defineEmits(['update:modelValue']);
 
     const webElement = ref(props.modelValue);
 
+    console.log('webElement: ', webElement.value);
+
     watch(() => props.modelValue, (newValue, oldValue) => {
         webElement.value = newValue;
     })
@@ -51,50 +47,39 @@ const emit = defineEmits(['update:modelValue']);
         }
     }
 
-    const getLayoutSelector = (element: WebElement) => {
-        if (!element.layout || props.isPreview) return '';
-        let r = [];
-
-        if (element.layout.type === WebElementLayoutType.FlexRow && (!element.layout.amountOfItems || element.layout.amountOfItems.length === 0)) {
-            r.push('lkt-flex-row');
-
-        } else if (element.layout.type === WebElementLayoutType.FlexRows && (!element.layout.amountOfItems || element.layout.amountOfItems.length === 0)) {
-            r.push('lkt-flex-rows');
-
-        } else if (element.layout.type === WebElementLayoutType.FlexColumn) {
-            r.push('lkt-flex-column');
-        }
-
-        if (element.layout.amountOfItems && element.layout.amountOfItems.length > 0) {
-            if (element.layout.type === WebElementLayoutType.FlexRow) {
-                r.push(element.layout.amountOfItems.map(z => `lkt-flex-row-${z}`).join(' '));
-
-            } else if (element.layout.type === WebElementLayoutType.FlexRows) {
-                r.push(element.layout.amountOfItems.map(z => `lkt-flex-rows-${z}`).join(' '));
-
-            } else {
-                r.push(element.layout.amountOfItems.map(z => `lkt-grid-${z}`).join(' '));
-            }
-            // r.push(element.layout.amountOfItems.join(' '));
-        }
-        if (element.layout.alignItems && element.layout.alignItems.length > 0) r.push(element.layout.alignItems.join(' '));
-        if (element.layout.justifyContent && element.layout.justifyContent.length > 0) r.push(element.layout.justifyContent.join(' '));
-
-        if (r.length > 0) r.push('layout-mode');
-
-        let response = r.join(' ');
-
-        if (element.layout.type === WebElementLayoutType.FlexRows) {
-            response = response.replace('flex-row-', 'flex-rows-');
-        }
-        return response;
-    }
-
     const currentLang = props.lang ?? getCurrentLanguage();
 
-    // watch(() => props.element, (newValue, oldValue) => {
-    //     newValue.updateKeyMoment();
-    // }, {deep: true})
+const computedIsTypeOne = computed(() => {
+    return [
+        WebElementType.LktLayoutBox,
+        WebElementType.LktTextBox,
+        WebElementType.LktLayoutAccordion,
+        WebElementType.LktTextAccordion,
+    ].includes(webElement.value.type);
+})
+const computedIsLayoutContainer = computed(() => {
+    return [
+        WebElementType.LktLayoutBox,
+        WebElementType.LktLayoutAccordion,
+        WebElementType.LktLayout,
+    ].includes(webElement.value.type);
+})
+
+const computedComponent = computed(() => {
+    if ([
+        WebElementType.LktLayoutBox,
+        WebElementType.LktTextBox,
+    ].includes(webElement.value.type)) {
+        return 'lkt-box';
+    }
+
+    if ([
+        WebElementType.LktLayoutAccordion,
+        WebElementType.LktTextAccordion,
+    ].includes(webElement.value.type)) {
+        return 'lkt-accordion';
+    }
+})
 </script>
 
 <template>
@@ -106,8 +91,9 @@ const emit = defineEmits(['update:modelValue']);
                 @input="handleInputText($event)"
             />
 
-            <lkt-box
-                v-else-if="webElement.type === WebElementType.LktLayoutBox"
+            <component
+                v-else-if="computedIsTypeOne"
+                :is="computedComponent"
                 :icon="webElement.config.hasHeader && webElement.config.hasIcon ? webElement.props.icon : ''"
                 :class="webElement.props.class"
             >
@@ -118,71 +104,22 @@ const emit = defineEmits(['update:modelValue']);
                     />
                 </template>
                 <lkt-web-elements
+                    v-if="computedIsLayoutContainer"
                     v-model="webElement.children"
-                    :layout-selector="getLayoutSelector(webElement)"
+                    :layout-selector="getLayoutCss(webElement)"
                     is-child
                     :lang="currentLang"
                     :is-preview="isPreview"
                     :parent="webElement"
                     :modal-crud-config="modalCrudConfig"
+                    :file-browser-config="fileBrowserConfig"
                 />
-            </lkt-box>
-
-            <lkt-box
-                v-else-if="webElement.type === WebElementType.LktTextBox"
-                :icon="webElement.config.hasHeader && webElement.config.hasIcon ? webElement.props.icon : ''"
-                :class="webElement.props.class"
-            >
-                <template #header v-if="webElement.config?.hasHeader">
-                    <lkt-text
-                        v-model="webElement.props.header[currentLang]"
-                        @input="handleInputText($event, 'header')"
-                    />
-                </template>
                 <lkt-text
+                    v-else
                     v-model="webElement.props.text[currentLang]"
                     @input="handleInputText($event, 'text')"
                 />
-            </lkt-box>
-
-            <lkt-accordion
-                v-else-if="webElement.type === WebElementType.LktLayoutAccordion"
-                :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-                :class="webElement.props.class"
-            >
-                <template #header v-if="webElement.config?.hasHeader">
-                    <lkt-text
-                        v-model="webElement.props.header[currentLang]"
-                        @input="handleInputText($event, 'header')"
-                    />
-                </template>
-                <lkt-web-elements
-                    v-model="webElement.children"
-                    :layout-selector="getLayoutSelector(webElement)"
-                    is-child
-                    :lang="currentLang"
-                    :is-preview="isPreview"
-                    :parent="webElement"
-                    :modal-crud-config="modalCrudConfig"
-                />
-            </lkt-accordion>
-
-            <lkt-accordion
-                v-else-if="webElement.type === WebElementType.LktTextAccordion"
-                :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-                :class="webElement.props.class"
-            >
-                <template #header v-if="webElement.config?.hasHeader">
-                    <lkt-text
-                        v-model="webElement.props.header[currentLang]"
-                        @input="handleInputText($event, 'header')"
-                    />
-                </template>
-                <lkt-text
-                    v-model="webElement.props.text[currentLang]"
-                    @input="handleInputText($event, 'text')"
-                />
-            </lkt-accordion>
+            </component>
 
             <lkt-image
                 v-else-if="webElement.type === WebElementType.LktImage"
@@ -282,7 +219,7 @@ const emit = defineEmits(['update:modelValue']);
             <lkt-web-elements
                 v-else-if="webElement.type === WebElementType.LktLayout"
                 v-model="webElement.children"
-                :layout-selector="getLayoutSelector(webElement)"
+                :layout-selector="getLayoutCss(webElement)"
                 is-child
                 :lang="currentLang"
                 :is-preview="isPreview"
@@ -304,7 +241,7 @@ const emit = defineEmits(['update:modelValue']);
                     text: webElement.type,
                     icon: 'lkt-icn-settings-cogs',
                     modal: 'lkt-web-element-config',
-                    modalKey: `${index}--${webElement.type}--${webElement.id}`,
+                    modalKey: webElement.id,
                     modalData: {
                         modalCrudConfig,
                         element: webElement,

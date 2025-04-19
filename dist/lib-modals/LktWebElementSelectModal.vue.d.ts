@@ -1,5 +1,5 @@
 import { Component } from 'vue';
-import { FileBrowserConfig, WebElement } from 'lkt-vue-kernel';
+import { FileBrowserConfig, ItemCrudConfig, WebElement } from 'lkt-vue-kernel';
 type __VLS_Props = {
     modalName: string;
     modalKey: string;
@@ -11,6 +11,7 @@ type __VLS_Props = {
     index: number;
     addingChildren?: boolean;
     fileBrowserConfig: FileBrowserConfig;
+    modalCrudConfig: ItemCrudConfig;
     parentLayoutComponent?: Component;
 };
 declare const _default: import("vue").DefineComponent<__VLS_Props, {}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<__VLS_Props> & Readonly<{}>, {

@@ -384,11 +384,17 @@ const props = withDefaults(defineProps<{
             readData: {
                 id,
             },
-            ...modalCrudConfig
+            ...modalCrudConfig,
+            updateButton: {
+                ...modalCrudConfig.updateButton,
+                resourceData: {
+                    ...modalCrudConfig.updateButton?.resourceData,
+                    ...webElement,
+                }
+            },
         }"
     >
         <template #item="{item}">
-            <div>A ver si es este</div>
             <div class="lkt-flex-row">
                 <div class="lkt-flex-col-9 lkt-grid-1">
                     <lkt-web-element-box
@@ -409,7 +415,15 @@ const props = withDefaults(defineProps<{
                                 title: lang
                             }"
                         >
-                            <lkt-web-element-box v-model="webElement" :lang="lang" is-preview :parent-children="parentChildren" :index="indexInParentChildren" :can-render-actions="false"/>
+                            <lkt-web-element-box
+                                v-model="webElement"
+                                :lang="lang"
+                                is-preview
+                                :parent-children="parentChildren"
+                                :index="indexInParentChildren"
+                                :can-render-actions="false"
+                                :modal-crud-config="modalCrudConfig"
+                            />
                         </lkt-accordion>
                     </template>
                 </div>
