@@ -1,0 +1,93 @@
+.lkt-banner {
+    --lkt-banner--align-items: center;
+    --lkt-banner--background: transparent;
+    --lkt-banner--border-radius: 0px;
+    --lkt-banner--border-width: 0px;
+    --lkt-banner--border-style: solid;
+    --lkt-banner--border-color: #ddd;
+    --lkt-banner--box-shadow: none;
+    --lkt-banner--color: #000000;
+    --lkt-banner--flex-direction: row;
+    --lkt-banner--font-family: system-ui, Helvetica;
+    --lkt-banner--font-size: 17px;
+    --lkt-banner--font-weight: 400;
+    --lkt-banner--gap: 15px;
+    --lkt-banner--height: 380px;
+    --lkt-banner--justify-content: center;
+    --lkt-banner--line-height: 1;
+    --lkt-banner--min-width: 150px;
+    --lkt-banner--min-height: 380px;
+    --lkt-banner--padding: 15px;
+    --lkt-banner--transition: all linear 100ms;
+    --lkt-banner--text-align: left;
+    --lkt-banner--width: 100%;
+
+    /** Element: Art */
+    --lkt-banner--art--align-items: center;
+    --lkt-banner--art--background: transparent;
+    --lkt-banner--art--color: #ddd;
+    --lkt-banner--art--border-width: 0px;
+    --lkt-banner--art--border-style: solid;
+    --lkt-banner--art--border-color: #ddd;
+    --lkt-banner--art--justify-content: center;
+    --lkt-banner--art--flex-direction: column;
+    --lkt-banner--art--height: 100%;
+    --lkt-banner--art--width: 100%;
+
+    /** Element: Content */
+    --lkt-banner--content--align-items: center;
+    --lkt-banner--content--flex-direction: column;
+    --lkt-banner--content--gap: 15px;
+    --lkt-banner--content--justify-content: center;
+    --lkt-banner--content--padding: 15px;
+    --lkt-banner--content--width: 100%;
+
+    /** Element: Content Main */
+    --lkt-banner--content-main--align-items: center;
+    --lkt-banner--content-main--flex-direction: column;
+    --lkt-banner--content-main--gap: 15px;
+    --lkt-banner--content-main--justify-content: center;
+    --lkt-banner--content-main--padding: 15px;
+    --lkt-banner--content-main--width: 100%;
+
+    /** Element: Header Container */
+    --lkt-banner--header--container--align-items: center;
+    --lkt-banner--header--container--flex-direction: column;
+    --lkt-banner--header--container--justify-content: center;
+    --lkt-banner--header--container--width: 100%;
+
+    /** Element: Header */
+    --lkt-banner--header---font-family: system-ui, Helvetica;
+    --lkt-banner--header---font-size: 17px;
+    --lkt-banner--header---font-weight: 400;
+    --lkt-banner--header---line-height: 1;
+    --lkt-banner--header---margin: 0;
+    --lkt-banner--header---text-align: left;
+
+    /** Element: Sub Header Container */
+    --lkt-banner--sub-header--container--align-items: center;
+    --lkt-banner--sub-header--container--flex-direction: column;
+    --lkt-banner--sub-header--container--justify-content: center;
+    --lkt-banner--sub-header--container--width: 100%;
+
+    /** Element: Sub Header */
+    --lkt-banner--sub-header---font-family: system-ui, Helvetica;
+    --lkt-banner--sub-header---font-size: 17px;
+    --lkt-banner--sub-header---font-weight: 400;
+    --lkt-banner--sub-header---line-height: 1;
+    --lkt-banner--sub-header---margin: 0;
+    --lkt-banner--sub-header---text-align: left;
+
+    /** Element: Extra */
+    --lkt-banner--extra---font-family: system-ui, Helvetica;
+    --lkt-banner--extra---font-size: 17px;
+    --lkt-banner--extra---font-weight: 400;
+    --lkt-banner--extra---line-height: 1;
+    --lkt-banner--extra---margin: 0;
+    --lkt-banner--extra---text-align: left;
+
+    /** Element: Opacity */
+    --lkt-banner--opacity--background: #ffffff;
+    --lkt-banner--opacity--height: 100%;
+    --lkt-banner--opacity--width: 100%;
+}
