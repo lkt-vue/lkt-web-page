@@ -1,116 +1,48 @@
 <script setup lang="ts">
-    import { Component, nextTick, ref } from 'vue';
-    import {
-        AccordionConfig,
-        AccordionType,
-        ButtonConfig,
-        FileBrowserConfig,
-        getDefaultLktAnchorWebElement,
-        getDefaultLktButtonWebElement,
-        getDefaultLktHeaderWebElement,
-        getDefaultLktIconWebElement,
-        getDefaultLktImageWebElement,
-        getDefaultLktLayoutAccordionWebElement,
-        getDefaultLktLayoutBoxWebElement,
-        getDefaultLktLayoutWebElement,
-        getDefaultLktTextAccordionWebElement,
-        getDefaultLktTextBannerWebElement,
-        getDefaultLktTextBoxWebElement,
-        getDefaultLktTextWebElement, ItemCrudConfig,
-        ModalConfig,
-        WebElement,
-        WebElementType,
-    } from 'lkt-vue-kernel';
-    import { closeModal, openModal } from 'lkt-modal';
+import {ref} from 'vue';
+import {
+    AccordionConfig,
+    AccordionType,
+    ButtonConfig,
+    FileBrowserConfig,
+    ItemCrudConfig,
+    ModalConfig,
+    WebElement,
+    WebElementType,
+    WebPage,
+    WebParentType,
+} from 'lkt-vue-kernel';
+import {closeModal, openModal} from 'lkt-modal';
 
-    const props = withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
         modalName: string
         modalKey: string
         zIndex: number
-        items: WebElement[]
-        element: WebElement
-        onUpdate: Function
-        onAppend: Function
-        index: number
-        addingChildren?: boolean
+        parent: WebElement|WebPage
+        parentType?: WebParentType
         fileBrowserConfig: FileBrowserConfig
         modalCrudConfig: ItemCrudConfig
-        parentLayoutComponent?: Component
     }>(), {
         modalName: '',
         modalKey: '_',
         zIndex: 500,
+        parentType: WebParentType.Element
     });
 
-    const editableConfig = ref(props.element);
-    const editableItems = ref(props.items);
-    const appendIndex = ref(props.index + 1);
-
-    const doRealAddElement = (element: WebElement) => {
-        console.log('doRealAddElement');
-        if (props.addingChildren) {
-            console.log('esto va por aquí');
-            props.element.addChild(element).updateKeyMoment();
-
-        } else {
-            console.log('esto va por acá: ', element, props.items, appendIndex.value);
-            // editableItems.value.splice(appendIndex.value, 0, element);
-            props.items.push(element);
-        }
-        ++appendIndex.value;
-        if (typeof props.onAppend === 'function') props.onAppend();
-        let index = editableItems.value.length;
-        nextTick(() => {
-            openModal('lkt-web-element-config', `${index}--${element.type}--${element.id}`, {
-                element: element,
-                parent: editableConfig.value,
-                parentChildren: editableItems.value,
-                indexInParentChildren: index,
-                fileBrowserConfig: props.fileBrowserConfig,
-                parentLayoutComponent: props.parentLayoutComponent,
-            })
-            closeModal(props.modalName, props.modalKey);
-        })
-    }
+    const webParent = ref(props.parent);
 
     const doAddElement = (type: WebElementType) => {
-        switch (type) {
-            case WebElementType.LktLayoutBox:
-                return doRealAddElement(getDefaultLktLayoutBoxWebElement());
+        openModal('lkt-web-element-config', '_', {
+            element: WebElement.createByType(type),
+            parent: webParent.value,
+            parentType: props.parentType,
+            fileBrowserConfig: props.fileBrowserConfig,
+            modalCrudConfig: props.modalCrudConfig,
+        })
 
-            case WebElementType.LktTextBox:
-                return doRealAddElement(getDefaultLktTextBoxWebElement());
-
-            case WebElementType.LktLayoutAccordion:
-                return doRealAddElement(getDefaultLktLayoutAccordionWebElement());
-
-            case WebElementType.LktTextAccordion:
-                return doRealAddElement(getDefaultLktTextAccordionWebElement());
-
-            case WebElementType.LktIcon:
-                return doRealAddElement(getDefaultLktIconWebElement());
-
-            case WebElementType.LktImage:
-                return doRealAddElement(getDefaultLktImageWebElement());
-
-            case WebElementType.LktAnchor:
-                return doRealAddElement(getDefaultLktAnchorWebElement());
-
-            case WebElementType.LktButton:
-                return doRealAddElement(getDefaultLktButtonWebElement());
-
-            case WebElementType.LktLayout:
-                return doRealAddElement(getDefaultLktLayoutWebElement());
-
-            case WebElementType.LktHeader:
-                return doRealAddElement(getDefaultLktHeaderWebElement());
-
-            case WebElementType.LktText:
-                return doRealAddElement(getDefaultLktTextWebElement());
-
-            case WebElementType.LktTextBanner:
-                return doRealAddElement(getDefaultLktTextBannerWebElement());
-        }
+        setTimeout(() => {
+            closeModal(props.modalName, props.modalKey);
+        }, 200);
     };
 </script>
 

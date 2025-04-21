@@ -1,5 +1,4 @@
-import { Component } from 'vue';
-import { FileBrowserConfig, ItemCrudConfig, WebElement } from 'lkt-vue-kernel';
+import { FileBrowserConfig, ItemCrudConfig, WebElement, WebPage, WebParentType } from 'lkt-vue-kernel';
 type __VLS_Props = {
     modalName: string;
     modalKey: string;
@@ -7,11 +6,11 @@ type __VLS_Props = {
     fileBrowserConfig: FileBrowserConfig;
     modalCrudConfig: ItemCrudConfig;
     element: WebElement;
-    parent?: WebElement;
-    parentChildren: WebElement[];
-    indexInParentChildren: number;
-    onUpdate: Function;
-    parentLayoutComponent?: Component;
+    parent: WebElement | WebPage;
+    parentType: WebParentType;
+    afterElement?: number;
+    beforeElement?: number;
+    onUpdate?: Function;
 };
 declare const _default: import("vue").DefineComponent<__VLS_Props, {}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<__VLS_Props> & Readonly<{}>, {
     zIndex: number;

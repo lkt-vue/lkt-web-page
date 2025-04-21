@@ -131,3 +131,21 @@
     background: #fff;
     border-radius: 4px;
 }
+
+.lkt-web-element-text-editor-buttons {
+    --lkt-grid--gap: 10px;
+}
+
+.lkt-web-element-text-editor-buttons .lkt-button {
+    --lkt-button--width: auto;
+    --lkt-button--min-width: 100%;
+    --lkt-button--padding: 0;
+    --lkt-button--justify-content: center;
+    --lkt-button--align-items: center;
+    --lkt-button--display: flex;
+}
+
+.lkt-web-element-config-scroller {
+    height: 85vh;
+    overflow-y: scroll;
+}

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {Component, computed, nextTick, ref, watch} from 'vue';
+import {computed, nextTick, onMounted, ref, watch} from 'vue';
 import {
     AccordionConfig,
     AccordionToggleMode,
-    AccordionType,
+    AccordionType, applyTextAlignment, applyTextFormat,
     ButtonConfig,
     ButtonType,
     ensureFieldConfig,
@@ -20,19 +20,20 @@ import {
     OptionConfig,
     WebElement,
     WebElementLayoutType,
-    WebElementType,
+    WebElementType, WebPage, WebParentType,
 } from 'lkt-vue-kernel';
 import {kebabCaseToCamelCase, ucfirst} from 'lkt-string-tools';
 import {getAvailableLanguages, getCurrentLanguage} from 'lkt-i18n';
-import {closeModal} from 'lkt-modal';
-import {cloneObject} from 'lkt-object-tools';
-import LktWebElementBox from "@/lib-components/LktWebElementBox.vue";
+import {closeModal, openModal} from 'lkt-modal';
+import LktWebElementBox from "../lib-components/LktWebElementBox.vue";
 import {
     getAccordionTypeOptions,
     getBannerTypeOptions,
     getLayoutAmountOfItemsOptions,
     getLayoutTypeOptions
-} from "@/functions/config-options-functions";
+} from "../functions/config-options-functions";
+import {LKT_ICON_PACK_ICONS} from "../constants/lkt-icon-pack";
+import {httpCall, HTTPResponse} from "lkt-http-client";
 
 const props = withDefaults(defineProps<{
         modalName: string
@@ -40,29 +41,28 @@ const props = withDefaults(defineProps<{
         zIndex: number
         fileBrowserConfig: FileBrowserConfig
         modalCrudConfig: ItemCrudConfig
-
-
         element: WebElement
-        parent?: WebElement
-        parentChildren: WebElement[]
-        indexInParentChildren: number
-        onUpdate: Function
-        parentLayoutComponent?: Component
+        parent: WebElement|WebPage
+        parentType: WebParentType
+        afterElement?: number
+        beforeElement?: number
+        onUpdate?: Function
     }>(), {
         modalName: '',
         modalKey: '_',
         zIndex: 500,
     });
 
+    console.log('webParent: ', props.parent, props.parentType);
+
     const id = parseInt(props.modalKey);
-    const webElement = ref(new WebElement());
-
-    console.log('tableRef: ', props.parentLayoutComponent);
-
+    const webElement = ref(new WebElement(props.element));
+    const itemCrudRef = ref(null);
     const editableConfig = ref(props.element);
+    const isLoading = ref(false);
 
     const doRemoveElement = () => {
-        props.parentChildren.splice(props.indexInParentChildren, 1);
+        // props.parentChildren.splice(props.indexInParentChildren, 1);
         closeModal(props.modalName, props.modalKey);
     }
 
@@ -72,17 +72,28 @@ const props = withDefaults(defineProps<{
         return clone;
     }
 
-    const getClone = () => {
-        return resetCloneId(<WebElement>cloneObject(props.element));
-    }
-
     const doDuplicateBefore = () => {
-        props.parentChildren.splice(props.indexInParentChildren - 1, 0, getClone());
-        props.indexInParentChildren += 1;
+        let clone = webElement.value.getClone();
+        openModal('lkt-web-element-config', '_', {
+            element: clone,
+            parent: props.parent,
+            parentType: props.parentType,
+            fileBrowserConfig: props.fileBrowserConfig,
+            modalCrudConfig: props.modalCrudConfig,
+            beforeElement: webElement.value.id,
+        })
     }
 
     const doDuplicateAfter = () => {
-        props.parentChildren.splice(props.indexInParentChildren + 1, 0, getClone());
+        let clone = webElement.value.getClone();
+        openModal('lkt-web-element-config', '_', {
+            element: clone,
+            parent: props.parent,
+            parentType: props.parentType,
+            fileBrowserConfig: props.fileBrowserConfig,
+            modalCrudConfig: props.modalCrudConfig,
+            afterElement: webElement.value.id,
+        })
     }
 
     const languages = getAvailableLanguages(),
@@ -92,6 +103,7 @@ const props = withDefaults(defineProps<{
         calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
         calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
         calculatedIsBanner = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
+        calculatedIsText = [WebElementType.LktText].includes(editableConfig.value.type),
         calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
         calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(editableConfig.value.type),
         calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout].includes(editableConfig.value.type),
@@ -325,33 +337,6 @@ const props = withDefaults(defineProps<{
             updatingModelValue.value = false;
         })
     })
-    let updateTimeout:ReturnType<typeof setTimeout>|undefined = undefined;
-
-    // @todo esto no va
-    watch([
-        () => editableConfig.value.props,
-        () => editableConfig.value.config,
-        () => editableConfig.value.layout,
-    ], (newValue, oldValue) => {
-        if (updatingModelValue.value) return;
-
-        console.log('clear timeout porque ya hay uno');
-        clearTimeout(updateTimeout);
-        console.log('crear nuevo timeout');
-        updateTimeout = setTimeout(() => {
-            console.log('ejecutar el timeout');
-            props.element.feed({
-                props: newValue[0],
-                config: newValue[1],
-                layout: newValue[2],
-            });
-            props.element.updateKeyMoment();
-            if (props.parent) {
-                props.parent.updateKeyMoment();
-            }
-            clearTimeout(updateTimeout);
-        }, 1000);
-    }, {deep: true})
 
     watch(() => editableConfig.value.config.amountOfCallToActions, (v) => {
         console.log('updated amount of cta: ', v);
@@ -362,14 +347,50 @@ const props = withDefaults(defineProps<{
             editableConfig.value.config.callToActions.splice(v, 1);
         }
     })
+
+onMounted(() => {
+    console.log('mounted');
+    console.log(editableConfig.value);
+    if (!webElement.value.id && webElement.value.type === WebElementType.LktLayout) {
+        isLoading.value = true;
+        nextTick(() => {
+            httpCall(props.modalCrudConfig.createButton.resource, {
+                ...props.modalCrudConfig.createButton?.resourceData,
+                ...webElement.value,
+                parent: props.parent.id,
+                parentType: props.parentType,
+                afterElement: props.afterElement,
+                beforeElement: props.beforeElement,
+            }).then((res: HTTPResponse) => {
+                console.log('created layout', res);
+                webElement.value.id = res.data.id;
+                console.log('newid:', webElement.value.id);
+                closeModal(props.modalName, props.modalKey);
+
+                setTimeout(() => {
+                    openModal(props.modalName, res.data.id, {
+                        element: webElement.value,
+                        parent: props.parent,
+                        parentType: props.parentType,
+                        fileBrowserConfig: props.fileBrowserConfig,
+                        modalCrudConfig: props.modalCrudConfig,
+                        onUpdate: props.onUpdate
+                    })
+                }, 200)
+            });
+        })
+    }
+
+})
 </script>
 
 <template>
     <lkt-item-crud
+        ref="itemCrudRef"
         class="lkt-web-element-config-modal"
         v-model="webElement"
         v-bind="<ItemCrudConfig>{
-            mode: ItemCrudMode.Update,
+            mode: id > 0 ? ItemCrudMode.Update : ItemCrudMode.Create,
             view: ItemCrudView.Modal,
             editing: true,
             perms: ['update'],
@@ -380,30 +401,47 @@ const props = withDefaults(defineProps<{
                 zIndex,
                 title: computedTitle
             },
-            updateButton: false,
             readData: {
                 id,
             },
             ...modalCrudConfig,
+            createButton: isLoading ? false : {
+                ...modalCrudConfig.createButton,
+                resourceData: {
+                    ...modalCrudConfig.createButton?.resourceData,
+                    ...webElement,
+                    parent: parent.id,
+                    parentType,
+                    afterElement,
+                    beforeElement,
+                },
+                events: {
+                    click: props.onUpdate
+                }
+            },
             updateButton: {
                 ...modalCrudConfig.updateButton,
                 resourceData: {
                     ...modalCrudConfig.updateButton?.resourceData,
                     ...webElement,
+                },
+                events: {
+                    click: props.onUpdate
                 }
             },
         }"
     >
         <template #item="{item}">
-            <div class="lkt-flex-row">
+
+            <lkt-loader v-if="isLoading"/>
+            <div v-else class="lkt-flex-row">
                 <div class="lkt-flex-col-9 lkt-grid-1">
                     <lkt-web-element-box
                         v-model="webElement"
                         is-preview
-                        :parent-children="parentChildren"
-                        :index="indexInParentChildren"
                         :can-render-actions="false"
                         :modal-crud-config="modalCrudConfig"
+                        :parent="webElement"
                     />
 
                     <template
@@ -419,326 +457,404 @@ const props = withDefaults(defineProps<{
                                 v-model="webElement"
                                 :lang="lang"
                                 is-preview
-                                :parent-children="parentChildren"
-                                :index="indexInParentChildren"
                                 :can-render-actions="false"
                                 :modal-crud-config="modalCrudConfig"
+                                :parent="webElement"
                             />
                         </lkt-accordion>
                     </template>
                 </div>
                 <div class="lkt-flex-col-3 lkt-grid-1">
 
-                    <lkt-button
-                        v-if="calculatedHasChildren"
-                        v-bind="<ButtonConfig>{
-                            text: 'Add children',
-                            icon: 'lkt-icn-more',
-                            modal: 'lkt-web-element-select',
-                            modalData: {
-                                items: item.children,
-                                index: item.children?.length,
-                                element: item,
-                                addingChildren: true,
-                                fileBrowserConfig,
-                                parentLayoutComponent,
-                            }
-                        }"
-                    />
-                    <lkt-accordion
-                        v-bind="<AccordionConfig>{
-                            type: AccordionType.Auto,
-                            title: 'Config',
-                            modelValue: true,
-                            toggleMode: AccordionToggleMode.Display
-                        }"
-                    >
-                        <div class="lkt-grid-1">
+                    <div class="lkt-web-element-config-scroller">
 
-                            <lkt-field
-                                v-if="computedCustomClassField"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    ...computedCustomClassField,
-                                    canClear: true
-                                }"
-                                v-model="item.props.class"
-                            />
-
-                            <lkt-field
-                                v-if="calculatedHasHeader"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Switch,
-                                    label: 'Has header',
-                                }"
-                                v-model="item.config.hasHeader"
-                            />
-
-                            <lkt-field
-                                v-if="calculatedHasSubHeader"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Switch,
-                                    label: 'Has sub-header',
-                                }"
-                                v-model="item.config.hasSubHeader"
-                            />
-                            <lkt-field
-                                v-if="calculatedHasIcon"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Switch,
-                                    label: 'Has icon',
-                                }"
-                                v-model="item.config.hasIcon"
-                            />
-                            <lkt-field
-                                v-if="calculatedHasIcon"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Text,
-                                    label: 'Icon',
-                                }"
-                                v-model="item.props.icon"
-                                :disabled="!item.config.hasIcon"
-                            />
-
-
-                            <lkt-field
-                                v-if="calculatedIsBanner"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Image,
-                                    label: 'Media content',
-                                    fileBrowserConfig: fileBrowserConfig,
-                                }"
-                                v-model="item.props.media.src"
-                                @picked-files="onPickedFiles"
-                            />
-
-                            <lkt-field
-                                v-if="calculatedIsBanner"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: 'Type',
-                                    options: bannerTypeOptions,
-                                }"
-                                v-model="item.props.type"
-                            />
-
-                            <lkt-field
-                                v-if="calculatedHasBackgroundMultimedia"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Image,
-                                    label: 'Background Image',
-                                    fileBrowserConfig: fileBrowserConfig,
-                                }"
-                                v-model="item.props.art.src"
-                                @picked-files="onPickedFiles"
-                            />
-
-                            <div>
-                                <lkt-field
-                                    v-if="calculatedHasOpacityLayer"
-                                    v-bind="<FieldConfig>{
-                                        type: FieldType.Number,
-                                        label: 'Background opacity',
-                                        min: 0,
-                                        max: 1,
-                                        step: .1,
-                                        canStep: true,
+                        <lkt-button
+                            v-if="calculatedHasChildren"
+                            v-bind="<ButtonConfig>{
+                                text: 'Add children',
+                                icon: 'lkt-icn-more',
+                                modal: 'lkt-web-element-select',
+                                modalData: {
+                                    fileBrowserConfig,
+                                    modalCrudConfig,
+                                    parent: webElement,
+                                    parentType: WebParentType.Element,
+                                }
+                            }"
+                        />
+                        <lkt-accordion
+                            v-bind="<AccordionConfig>{
+                                type: AccordionType.Always,
+                                title: 'Text editor'
+                            }"
+                        >
+                            <div class="lkt-grid-1 lkt-grid-3--from-768 lkt-web-element-text-editor-buttons">
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-bold',
                                     }"
-                                    v-model="item.props.opacity"
+                                    @click="() => applyTextFormat('bold')"
                                 />
-
-                                <lkt-field
-                                    v-if="calculatedHasOpacityLayer"
-                                    v-bind="<FieldConfig>{
-                                        type: FieldType.Range,
-                                        min: 0,
-                                        max: 1,
-                                        step: .1,
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-italic',
                                     }"
-                                    v-model="item.props.opacity"
+                                    @click="() => applyTextFormat('italic')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-underline',
+                                    }"
+                                    @click="() => applyTextFormat('underline')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-strike',
+                                    }"
+                                    @click="() => applyTextFormat('strikeThrough')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-superscript',
+                                    }"
+                                    @click="() => applyTextFormat('superscript')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-subscript',
+                                    }"
+                                    @click="() => applyTextFormat('subscript')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-align-left',
+                                    }"
+                                    @click="() => applyTextAlignment('left')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-align-center',
+                                    }"
+                                    @click="() => applyTextAlignment('center')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-align-right',
+                                    }"
+                                    @click="() => applyTextAlignment('right')"
                                 />
                             </div>
-
-                            <lkt-field
-                                v-if="calculatedIsBanner"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Number,
-                                    label: 'Amount of CTA\'s',
-                                    min: 0,
-                                    max: 2,
-                                    step: 1,
-                                    canStep: true,
-                                }"
-                                v-model="item.config.amountOfCallToActions"
-                            />
-                        </div>
-                    </lkt-accordion>
-
-                    <template
-                        v-if="item.config.amountOfCallToActions > 0">
+                        </lkt-accordion>
                         <lkt-accordion
-                            v-for="cta in item.config.callToActions"
+                            v-if="!calculatedIsText"
                             v-bind="<AccordionConfig>{
                                 type: AccordionType.Auto,
-                                title: 'CTA #1'
+                                title: 'Config',
+                                modelValue: true,
+                                toggleMode: AccordionToggleMode.Display
+                            }"
+                        >
+                            <div class="lkt-grid-1">
+
+                                <lkt-field
+                                    v-if="computedCustomClassField"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        ...computedCustomClassField,
+                                        canClear: true
+                                    }"
+                                    v-model="item.props.class"
+                                />
+
+                                <lkt-field
+                                    v-if="calculatedHasHeader"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Switch,
+                                        label: 'Has header',
+                                    }"
+                                    v-model="item.config.hasHeader"
+                                />
+
+                                <lkt-field
+                                    v-if="calculatedHasSubHeader"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Switch,
+                                        label: 'Has sub-header',
+                                    }"
+                                    v-model="item.config.hasSubHeader"
+                                />
+                                <lkt-field
+                                    v-if="calculatedHasIcon"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Switch,
+                                        label: 'Has icon',
+                                    }"
+                                    v-model="item.config.hasIcon"
+                                />
+                                <lkt-field
+                                    v-if="calculatedHasIcon"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Text,
+                                        label: 'Icon',
+                                        canClear: true,
+                                        options: LKT_ICON_PACK_ICONS
+                                    }"
+                                    v-model="item.props.icon"
+                                    :disabled="!item.config.hasIcon"
+                                />
+
+
+                                <lkt-field
+                                    v-if="calculatedHasImage"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Image,
+                                        label: 'Image',
+                                        fileBrowserConfig: fileBrowserConfig,
+                                    }"
+                                    v-model="item.props.src"
+                                    @picked-files="onPickedFiles"
+                                />
+
+
+                                <lkt-field
+                                    v-if="calculatedIsBanner"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Image,
+                                        label: 'Media content',
+                                        fileBrowserConfig: fileBrowserConfig,
+                                    }"
+                                    v-model="item.props.media.src"
+                                    @picked-files="onPickedFiles"
+                                />
+
+                                <lkt-field
+                                    v-if="calculatedIsBanner"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        label: 'Type',
+                                        options: bannerTypeOptions,
+                                    }"
+                                    v-model="item.props.type"
+                                />
+
+                                <lkt-field
+                                    v-if="calculatedHasBackgroundMultimedia"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Image,
+                                        label: 'Background Image',
+                                        fileBrowserConfig: fileBrowserConfig,
+                                    }"
+                                    v-model="item.props.art.src"
+                                    @picked-files="onPickedFiles"
+                                />
+
+                                <div>
+                                    <lkt-field
+                                        v-if="calculatedHasOpacityLayer"
+                                        v-bind="<FieldConfig>{
+                                            type: FieldType.Number,
+                                            label: 'Background opacity',
+                                            min: 0,
+                                            max: 1,
+                                            step: .1,
+                                            canStep: true,
+                                        }"
+                                        v-model="item.props.opacity"
+                                    />
+
+                                    <lkt-field
+                                        v-if="calculatedHasOpacityLayer"
+                                        v-bind="<FieldConfig>{
+                                            type: FieldType.Range,
+                                            min: 0,
+                                            max: 1,
+                                            step: .1,
+                                        }"
+                                        v-model="item.props.opacity"
+                                    />
+                                </div>
+
+                                <lkt-field
+                                    v-if="calculatedIsBanner"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Number,
+                                        label: 'Amount of CTA\'s',
+                                        min: 0,
+                                        max: 2,
+                                        step: 1,
+                                        canStep: true,
+                                    }"
+                                    v-model="item.config.amountOfCallToActions"
+                                />
+                            </div>
+                        </lkt-accordion>
+
+                        <template
+                            v-if="item.config.amountOfCallToActions > 0">
+                            <lkt-accordion
+                                v-for="cta in item.config.callToActions"
+                                v-bind="<AccordionConfig>{
+                                    type: AccordionType.Auto,
+                                    title: 'CTA #1'
+                                }"
+                            >
+                                <div class="lkt-grid-1">
+                                    <lkt-field
+                                        v-bind="<FieldConfig>{
+                                            type: FieldType.Switch,
+                                            label: 'Has icon',
+                                        }"
+                                        v-model="cta.config.hasIcon"
+                                    />
+                                    <lkt-field
+                                        v-bind="<FieldConfig>{
+                                            type: FieldType.Text,
+                                            label: 'Icon',
+                                        }"
+                                        v-model="cta.props.icon"
+                                        :disabled="!cta.config.hasIcon"
+                                    />
+                                </div>
+                            </lkt-accordion>
+                        </template>
+
+                        <lkt-accordion
+                            v-if="calculatedHasAccordionConfig"
+                            v-bind="<AccordionConfig>{
+                                type: AccordionType.Auto,
+                                title: 'Accordion Config'
                             }"
                         >
                             <div class="lkt-grid-1">
                                 <lkt-field
                                     v-bind="<FieldConfig>{
-                                        type: FieldType.Switch,
-                                        label: 'Has icon',
+                                        type: FieldType.Select,
+                                        label: 'Type',
+                                        options: accordionTypeOptions,
                                     }"
-                                    v-model="cta.config.hasIcon"
-                                />
-                                <lkt-field
-                                    v-bind="<FieldConfig>{
-                                        type: FieldType.Text,
-                                        label: 'Icon',
-                                    }"
-                                    v-model="cta.props.icon"
-                                    :disabled="!cta.config.hasIcon"
+                                    v-model="item.props.type"
                                 />
                             </div>
                         </lkt-accordion>
-                    </template>
-
-                    <lkt-accordion
-                        v-if="calculatedHasAccordionConfig"
-                        v-bind="<AccordionConfig>{
-                            type: AccordionType.Auto,
-                            title: 'Accordion Config'
-                        }"
-                    >
-                        <div class="lkt-grid-1">
-                            <lkt-field
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: 'Type',
-                                    options: accordionTypeOptions,
-                                }"
-                                v-model="item.props.type"
-                            />
-                        </div>
-                    </lkt-accordion>
 
 
-                    <lkt-accordion
-                        v-if="calculatedHasLayout || calculatedHasParentLayout"
-                        v-bind="<AccordionConfig>{
-                            type: AccordionType.Auto,
-                            title: 'Layout Config'
-                        }"
-                    >
-                        <div class="lkt-grid-1">
-                            <lkt-field
-                                v-if="calculatedHasLayout"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: 'Type',
-                                    options: layoutTypeOptions,
-                                }"
-                                v-model="item.layout.type"
-                            />
-                            <lkt-field
-                                v-if="calculatedHasLayout && item.layout.type !== WebElementLayoutType.FlexColumn"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: item.layout.type === WebElementLayoutType.Grid ? 'Items per row (based on device width)' : 'Column size (based on device width)',
-                                    options: amountOfItemsOptions,
-                                    multiple: true,
-                                    searchable: true,
-                                    canClear: true,
-                                    optionsConfig: {
-                                        filter: filterLayoutMediaOptions
-                                    }
-                                }"
-                                v-model="item.layout.amountOfItems"
-                            />
-                            <lkt-field
-                                v-if="calculatedHasLayout"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: 'Align items',
-                                    options: alignItemsOptions,
-                                    multiple: true,
-                                    searchable: true,
-                                    optionsConfig: {
-                                        filter: filterLayoutAlignItemsOptions
-                                    }
-                                }"
-                                v-model="item.layout.alignItems"
-                            />
-                            <lkt-field
-                                v-if="calculatedHasLayout"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: 'Justify content',
-                                    options: justifyContentOptions,
-                                    multiple: true,
-                                    searchable: true,
-                                    optionsConfig: {
-                                        filter: filterLayoutJustifyContentOptions
-                                    }
-                                }"
-                                v-model="item.layout.justifyContent"
-                            />
-                            <lkt-field
-                                v-if="calculatedHasParentLayout"
-                                v-bind="<FieldConfig>{
-                                    type: FieldType.Select,
-                                    label: 'Columns Reserved',
-                                    options: flexColumnsOptions,
-                                    multiple: true,
-                                    searchable: true,
-                                    optionsConfig: {
-                                        filter: filterLayoutColumnsOptions
-                                    }
-                                }"
-                                v-model="item.layout.columns"
-                            />
-
-                        </div>
-                    </lkt-accordion>
-
-                    <lkt-button
-                        v-bind="<ButtonConfig>{
-                            text: 'Duplicate',
-                            icon: 'lkt-icn-more',
-                            type: ButtonType.Split,
-                        }"
-                    >
-                        <template #split="{doClose}">
+                        <lkt-accordion
+                            v-if="calculatedHasLayout || calculatedHasParentLayout"
+                            v-bind="<AccordionConfig>{
+                                type: AccordionType.Auto,
+                                title: 'Layout Config'
+                            }"
+                        >
                             <div class="lkt-grid-1">
-                                <lkt-button
-                                    v-bind="<ButtonConfig>{
-                                        text: 'Before',
-                                        events: {
-                                            click: doDuplicateBefore
+                                <lkt-field
+                                    v-if="calculatedHasLayout"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        label: 'Type',
+                                        options: layoutTypeOptions,
+                                    }"
+                                    v-model="item.layout.type"
+                                />
+                                <lkt-field
+                                    v-if="calculatedHasLayout && item.layout.type !== WebElementLayoutType.FlexColumn"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        label: item.layout.type === WebElementLayoutType.Grid ? 'Items per row (based on device width)' : 'Column size (based on device width)',
+                                        options: amountOfItemsOptions,
+                                        multiple: true,
+                                        searchable: true,
+                                        canClear: true,
+                                        optionsConfig: {
+                                            filter: filterLayoutMediaOptions
                                         }
                                     }"
+                                    v-model="item.layout.amountOfItems"
                                 />
-                                <lkt-button
-                                    v-bind="<ButtonConfig>{
-                                        text: 'After',
-                                        events: {
-                                            click: doDuplicateAfter
+                                <lkt-field
+                                    v-if="calculatedHasLayout"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        label: 'Align items',
+                                        options: alignItemsOptions,
+                                        multiple: true,
+                                        searchable: true,
+                                        optionsConfig: {
+                                            filter: filterLayoutAlignItemsOptions
                                         }
                                     }"
+                                    v-model="item.layout.alignItems"
                                 />
-                            </div>
-                        </template>
-                    </lkt-button>
+                                <lkt-field
+                                    v-if="calculatedHasLayout"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        label: 'Justify content',
+                                        options: justifyContentOptions,
+                                        multiple: true,
+                                        searchable: true,
+                                        optionsConfig: {
+                                            filter: filterLayoutJustifyContentOptions
+                                        }
+                                    }"
+                                    v-model="item.layout.justifyContent"
+                                />
+                                <lkt-field
+                                    v-if="calculatedHasParentLayout"
+                                    v-bind="<FieldConfig>{
+                                        type: FieldType.Select,
+                                        label: 'Columns Reserved',
+                                        options: flexColumnsOptions,
+                                        multiple: true,
+                                        searchable: true,
+                                        optionsConfig: {
+                                            filter: filterLayoutColumnsOptions
+                                        }
+                                    }"
+                                    v-model="item.layout.columns"
+                                />
 
-                    <lkt-button
-                        v-bind="<ButtonConfig>{
-                            text: 'Remove element',
-                            icon: 'lkt-icn-less',
-                            events: {
-                                click: doRemoveElement
-                            }
-                        }"
-                    />
+                            </div>
+                        </lkt-accordion>
+
+                        <lkt-button
+                            v-bind="<ButtonConfig>{
+                                text: 'Duplicate',
+                                icon: 'lkt-icn-more',
+                                type: ButtonType.Split,
+                            }"
+                        >
+                            <template #split="{doClose}">
+                                <div class="lkt-grid-1">
+                                    <lkt-button
+                                        v-bind="<ButtonConfig>{
+                                            text: 'Before',
+                                            events: {
+                                                click: doDuplicateBefore
+                                            }
+                                        }"
+                                    />
+                                    <lkt-button
+                                        v-bind="<ButtonConfig>{
+                                            text: 'After',
+                                            events: {
+                                                click: doDuplicateAfter
+                                            }
+                                        }"
+                                    />
+                                </div>
+                            </template>
+                        </lkt-button>
+
+                        <lkt-button
+                            v-bind="<ButtonConfig>{
+                                text: 'Remove element',
+                                icon: 'lkt-icn-less',
+                                events: {
+                                    click: doRemoveElement
+                                }
+                            }"
+                        />
+                    </div>
                 </div>
             </div>
         </template>

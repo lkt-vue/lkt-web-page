@@ -1,33 +1,44 @@
 <script setup lang="ts">
-import {ButtonConfig, ButtonType, FileBrowserConfig, ItemCrudConfig, WebElement, WebElementType,} from 'lkt-vue-kernel';
+import {
+    ButtonConfig,
+    ButtonType,
+    FileBrowserConfig,
+    ItemCrudConfig,
+    WebElement,
+    WebElementType,
+    WebPage,
+    WebParentType,
+} from 'lkt-vue-kernel';
 import {getCurrentLanguage} from 'lkt-i18n';
-import {Component, computed, ref, watch} from 'vue';
-import LktText from "@/lib-components/LktText.vue";
-import LktWebElements from "@/lib-components/LktWebElements.vue";
-import {getLayoutCss} from "@/functions/layout-functions";
+import {computed, ref, watch} from 'vue';
+import LktText from "./LktText.vue";
+import LktWebElements from "./LktWebElements.vue";
+import {getLayoutCss} from "../functions/layout-functions";
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits([
+    'update:modelValue',
+    'crud-update',
+]);
 
     const props = withDefaults(defineProps<{
         modelValue: WebElement
-        parent?: WebElement
-        parentChildren: WebElement[]
+        parent: WebElement|WebPage
+        parentType: WebParentType
         index?: number
         lang?: string
         isPreview?: boolean
         canRenderActions?: boolean
         fileBrowserConfig?: FileBrowserConfig
         modalCrudConfig: ItemCrudConfig
-        parentLayoutComponent?: Component
+        disabled?: boolean
     }>(), {
         index: -1,
         isPreview: false,
+        disabled: false,
         canRenderActions: true,
     });
 
     const webElement = ref(props.modelValue);
-
-    console.log('webElement: ', webElement.value);
 
     watch(() => props.modelValue, (newValue, oldValue) => {
         webElement.value = newValue;
@@ -80,6 +91,10 @@ const computedComponent = computed(() => {
         return 'lkt-accordion';
     }
 })
+
+const onModalUpdate = () => {
+    emit('crud-update');
+}
 </script>
 
 <template>
@@ -88,6 +103,7 @@ const computedComponent = computed(() => {
             <lkt-text
                 v-if="webElement.type === WebElementType.LktText"
                 v-model="webElement.props.text[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
                 @input="handleInputText($event)"
             />
 
@@ -111,12 +127,15 @@ const computedComponent = computed(() => {
                     :lang="currentLang"
                     :is-preview="isPreview"
                     :parent="webElement"
+                    :parent-type="WebParentType.Element"
                     :modal-crud-config="modalCrudConfig"
                     :file-browser-config="fileBrowserConfig"
+                    :disabled="disabled"
                 />
                 <lkt-text
                     v-else
                     v-model="webElement.props.text[currentLang]"
+                    :disabled="disabled || parentType === WebParentType.Page"
                     @input="handleInputText($event, 'text')"
                 />
             </component>
@@ -125,12 +144,13 @@ const computedComponent = computed(() => {
                 v-else-if="webElement.type === WebElementType.LktImage"
                 :class="webElement.props.class"
                 :src="webElement.props.src"
-                :alt="webElement.props.alt[currentLang]"
-                :title="webElement.props.title[currentLang]"
+                :alt="typeof webElement.props.alt === 'object' ? webElement.props.alt[currentLang] : ''"
+                :title="typeof webElement.props.title === 'object' ? webElement.props.title[currentLang] : ''"
             >
                 <template #text>
                     <lkt-text
                         v-model="webElement.props.text[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'text')"
                     />
                 </template>
@@ -144,6 +164,7 @@ const computedComponent = computed(() => {
                 <template #text>
                     <lkt-text
                         v-model="webElement.props.text[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'text')"
                     />
                 </template>
@@ -157,6 +178,7 @@ const computedComponent = computed(() => {
                 <template #text>
                     <lkt-text
                         v-model="webElement.props.text[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'text')"
                     />
                 </template>
@@ -170,6 +192,7 @@ const computedComponent = computed(() => {
                 <template #text>
                     <lkt-text
                         v-model="webElement.props.text[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'text')"
                     />
                 </template>
@@ -183,6 +206,7 @@ const computedComponent = computed(() => {
                 <template #text>
                     <lkt-text
                         v-model="webElement.props.text[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'text')"
                     />
                 </template>
@@ -200,17 +224,20 @@ const computedComponent = computed(() => {
                 <template #header v-if="webElement.config?.hasHeader">
                     <lkt-text
                         v-model="webElement.props.header[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'header')"
                     />
                 </template>
                 <template #subHeader v-if="webElement.config?.hasSubHeader">
                     <lkt-text
                         v-model="webElement.props.subHeader[currentLang]"
+                        :disabled="disabled || parentType === WebParentType.Page"
                         @input="handleInputText($event, 'subHeader')"
                     />
                 </template>
                 <lkt-text
                     v-model="webElement.props.text[currentLang]"
+                    :disabled="disabled || parentType === WebParentType.Page"
                     @input="handleInputText($event, 'text')"
                 />
             </lkt-banner>
@@ -224,7 +251,9 @@ const computedComponent = computed(() => {
                 :lang="currentLang"
                 :is-preview="isPreview"
                 :parent="webElement"
+                :parent-type="WebParentType.Element"
                 :modal-crud-config="modalCrudConfig"
+                :disabled="disabled"
             />
 
             <component
@@ -243,13 +272,12 @@ const computedComponent = computed(() => {
                     modal: 'lkt-web-element-config',
                     modalKey: webElement.id,
                     modalData: {
-                        modalCrudConfig,
                         element: webElement,
                         parent,
-                        parentChildren,
-                        indexInParentChildren: index,
+                        parentType,
                         fileBrowserConfig,
-                        parentLayoutComponent,
+                        modalCrudConfig,
+                        onUpdate: onModalUpdate
                     }
                 }"
             />

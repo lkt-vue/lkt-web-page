@@ -25,12 +25,15 @@ export default {
                 'vue',
                 'vue-router',
                 'lkt-loader',
+                'lkt-i18n',
                 'lkt-http-client',
+                'lkt-field',
                 'lkt-modal',
                 'lkt-modal-confirm',
                 'lkt-events',
                 'lkt-control-tools',
                 'lkt-string-tools',
+                'lkt-vue-kernel',
             ],
             output: {
                 globals: {

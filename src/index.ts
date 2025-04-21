@@ -20,3 +20,6 @@ const LktWebPage: Plugin = {
 };
 
 export default LktWebPage;
+
+export {setupWebElementsHttp} from "./http/web-elements-http";
+export {setupWebPagesHttp} from "./http/web-pages-http";
