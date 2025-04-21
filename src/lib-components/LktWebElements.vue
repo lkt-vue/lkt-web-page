@@ -29,16 +29,18 @@ const props = withDefaults(defineProps<{
     fileBrowserConfig: FileBrowserConfig
     modalCrudConfig: ItemCrudConfig
     disabled?: boolean
+    editing?: boolean
 }>(), {
     layoutSelector: '',
     isPreview: false,
     isChild: false,
     disabled: false,
+    editing: false,
     parentType: WebParentType.Element
 });
 
 const items = ref(props.modelValue);
-const editing = ref(false);
+const editing = ref(props.editing);
 
 watch(items, (v) => {
     emit('update:modelValue', v);
@@ -50,8 +52,9 @@ watch(editing, (v) => {
 
 const computedTableConfig = computed(() => {
 
-    let perms = [TablePermission.Update, TablePermission.Sort, TablePermission.SwitchEditMode];
+    let perms = [TablePermission.Update, TablePermission.Sort];
     if (!props.isChild) perms.push(TablePermission.Create);
+    if (props.parentType === WebParentType.Page) perms.push(TablePermission.SwitchEditMode)
 
     let type = props.isPreview ? TableType.Table : TableType.Item;
     if (editing.value) type = TableType.Table;
@@ -106,7 +109,7 @@ const onCrudUpdate = () => {
 
 <template>
     <div>
-        <span class="like-lkt-field-label">Web Elements</span>
+        <span v-if="parentType === WebParentType.Page" class="like-lkt-field-label">Web Elements</span>
         <lkt-table
             class="lkt-elements-table"
             v-model="items"
@@ -126,6 +129,7 @@ const onCrudUpdate = () => {
                     :modal-crud-config="modalCrudConfig"
                     :can-render-actions="!editing"
                     :disabled="disabled || !editing"
+                    :editing="editing"
                     @crud-update="onCrudUpdate"
                 />
             </template>

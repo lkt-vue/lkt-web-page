@@ -10,6 +10,7 @@ type __VLS_Props = {
     fileBrowserConfig: FileBrowserConfig;
     modalCrudConfig: ItemCrudConfig;
     disabled?: boolean;
+    editing?: boolean;
 };
 declare const _default: import("vue").DefineComponent<__VLS_Props, {}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
@@ -19,6 +20,7 @@ declare const _default: import("vue").DefineComponent<__VLS_Props, {}, {}, {}, {
     "onCrud-update"?: ((...args: any[]) => any) | undefined;
 }>, {
     disabled: boolean;
+    editing: boolean;
     parentType: WebParentType;
     isPreview: boolean;
     layoutSelector: string;

@@ -31,6 +31,7 @@ const emit = defineEmits([
         fileBrowserConfig?: FileBrowserConfig
         modalCrudConfig: ItemCrudConfig
         disabled?: boolean
+        editing?: boolean
     }>(), {
         index: -1,
         isPreview: false,
@@ -131,6 +132,7 @@ const onModalUpdate = () => {
                     :modal-crud-config="modalCrudConfig"
                     :file-browser-config="fileBrowserConfig"
                     :disabled="disabled"
+                    :editing="editing"
                 />
                 <lkt-text
                     v-else
@@ -254,6 +256,7 @@ const onModalUpdate = () => {
                 :parent-type="WebParentType.Element"
                 :modal-crud-config="modalCrudConfig"
                 :disabled="disabled"
+                :editing="editing"
             />
 
             <component

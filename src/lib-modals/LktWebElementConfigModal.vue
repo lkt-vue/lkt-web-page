@@ -94,6 +94,7 @@ const props = withDefaults(defineProps<{
         calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(webElement.value.type),
         calculatedIsBanner = [WebElementType.LktTextBanner].includes(webElement.value.type),
         calculatedIsText = [WebElementType.LktText].includes(webElement.value.type),
+        calculatedIsLayout = [WebElementType.LktLayout].includes(webElement.value.type),
         calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(webElement.value.type),
         calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(webElement.value.type),
         calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout].includes(webElement.value.type),
@@ -548,7 +549,7 @@ onMounted(() => {
                             </div>
                         </lkt-accordion>
                         <lkt-accordion
-                            v-if="!calculatedIsText"
+                            v-if="!calculatedIsText && !calculatedIsLayout"
                             v-bind="<AccordionConfig>{
                                 type: AccordionType.Auto,
                                 title: 'Config',
