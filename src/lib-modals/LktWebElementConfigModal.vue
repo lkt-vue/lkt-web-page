@@ -3,7 +3,9 @@ import {computed, nextTick, onMounted, ref, watch} from 'vue';
 import {
     AccordionConfig,
     AccordionToggleMode,
-    AccordionType, applyTextAlignment, applyTextFormat,
+    AccordionType,
+    applyTextAlignment,
+    applyTextFormat,
     ButtonConfig,
     ButtonType,
     ensureFieldConfig,
@@ -20,7 +22,9 @@ import {
     OptionConfig,
     WebElement,
     WebElementLayoutType,
-    WebElementType, WebPage, WebParentType,
+    WebElementType,
+    WebPage,
+    WebParentType,
 } from 'lkt-vue-kernel';
 import {kebabCaseToCamelCase, ucfirst} from 'lkt-string-tools';
 import {getAvailableLanguages, getCurrentLanguage} from 'lkt-i18n';
@@ -57,11 +61,6 @@ const props = withDefaults(defineProps<{
         webElement = ref(new WebElement(props.element)),
         itemCrudRef = ref(null),
         isLoading = ref(false);
-
-    const doRemoveElement = () => {
-        // props.parentChildren.splice(props.indexInParentChildren, 1);
-        closeModal(props.modalName, props.modalKey);
-    }
 
     const doDuplicateBefore = () => {
         let clone = webElement.value.getClone();
@@ -384,7 +383,7 @@ onMounted(() => {
             mode: id > 0 ? ItemCrudMode.Update : ItemCrudMode.Create,
             view: ItemCrudView.Modal,
             editing: true,
-            perms: ['update'],
+            perms: ['update', 'drop', 'delete'],
             title: computedTitle,
             modalConfig: {
                 modalName,
@@ -427,7 +426,7 @@ onMounted(() => {
                     ...webElement,
                 },
                 events: {
-                    click: doRemoveElement,
+                    click: props.onUpdate
                 }
             },
         }"
@@ -443,6 +442,7 @@ onMounted(() => {
                         :can-render-actions="false"
                         :modal-crud-config="modalCrudConfig"
                         :parent="webElement"
+                        :parent-type="WebParentType.Element"
                     />
 
                     <template
@@ -461,6 +461,7 @@ onMounted(() => {
                                 :can-render-actions="false"
                                 :modal-crud-config="modalCrudConfig"
                                 :parent="webElement"
+                                :parent-type="WebParentType.Element"
                             />
                         </lkt-accordion>
                     </template>
@@ -845,16 +846,6 @@ onMounted(() => {
                                 </div>
                             </template>
                         </lkt-button>
-
-                        <lkt-button
-                            v-bind="<ButtonConfig>{
-                                text: 'Remove element',
-                                icon: 'lkt-icn-less',
-                                events: {
-                                    click: doRemoveElement
-                                }
-                            }"
-                        />
                     </div>
                 </div>
             </div>
