@@ -420,6 +420,16 @@ onMounted(() => {
                     click: props.onUpdate
                 }
             },
+            dropButton: {
+                ...modalCrudConfig.dropButton,
+                resourceData: {
+                    ...modalCrudConfig.dropButton?.resourceData,
+                    ...webElement,
+                },
+                events: {
+                    click: doRemoveElement,
+                }
+            },
         }"
     >
         <template #item="{item}">
