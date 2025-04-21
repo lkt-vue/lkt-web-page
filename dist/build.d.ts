@@ -1,6 +1,6 @@
-declare namespace jl {
+declare namespace El {
     function install(s: any): void;
 }
+declare function Fl(): void;
 declare function Rl(): void;
-declare function El(): void;
-export { jl as default, Rl as setupWebElementsHttp, El as setupWebPagesHttp };
+export { El as default, Fl as setupWebElementsHttp, Rl as setupWebPagesHttp };

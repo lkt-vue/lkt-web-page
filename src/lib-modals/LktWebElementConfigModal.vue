@@ -58,7 +58,6 @@ const props = withDefaults(defineProps<{
     const id = parseInt(props.modalKey);
     const webElement = ref(new WebElement(props.element));
     const itemCrudRef = ref(null);
-    const editableConfig = ref(props.element);
     const isLoading = ref(false);
 
     const doRemoveElement = () => {
@@ -99,23 +98,23 @@ const props = withDefaults(defineProps<{
     const languages = getAvailableLanguages(),
         currentLang = getCurrentLanguage();
 
-    const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner].includes(editableConfig.value.type),
-        calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
-        calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
-        calculatedIsBanner = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
-        calculatedIsText = [WebElementType.LktText].includes(editableConfig.value.type),
-        calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(editableConfig.value.type),
-        calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(editableConfig.value.type),
-        calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout].includes(editableConfig.value.type),
-        calculatedHasImage = [WebElementType.LktImage].includes(editableConfig.value.type),
-        calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(editableConfig.value.type),
-        calculatedHasChildren = [WebElementType.LktLayoutAccordion, WebElementType.LktLayoutBox, WebElementType.LktLayout].includes(editableConfig.value.type),
+    const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner].includes(webElement.value.type),
+        calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(webElement.value.type),
+        calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(webElement.value.type),
+        calculatedIsBanner = [WebElementType.LktTextBanner].includes(webElement.value.type),
+        calculatedIsText = [WebElementType.LktText].includes(webElement.value.type),
+        calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(webElement.value.type),
+        calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(webElement.value.type),
+        calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout].includes(webElement.value.type),
+        calculatedHasImage = [WebElementType.LktImage].includes(webElement.value.type),
+        calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(webElement.value.type),
+        calculatedHasChildren = [WebElementType.LktLayoutAccordion, WebElementType.LktLayoutBox, WebElementType.LktLayout].includes(webElement.value.type),
         calculatedHasParentLayout = [WebElementLayoutType.FlexRow, WebElementLayoutType.FlexRows].includes(props.parent?.layout?.type);
 
     const accordionTypeOptions = getAccordionTypeOptions(),
         bannerTypeOptions = getBannerTypeOptions(),
         layoutTypeOptions = getLayoutTypeOptions(),
-        amountOfItemsOptions:OptionConfig[] = getLayoutAmountOfItemsOptions();
+        amountOfItemsOptions = getLayoutAmountOfItemsOptions();
 
     const flexColumnsOptions:OptionConfig[] = [
         {
@@ -235,6 +234,7 @@ const props = withDefaults(defineProps<{
     ];
 
     const _filterLayoutMediaQueryOption = (haystack: OptionConfig[], needle: OptionConfig) => {
+        console.log('_filterLayoutMediaQueryOption', haystack, needle);
         if (haystack.length > 0) {
 
             let needleValue = String(needle.value);
@@ -265,35 +265,35 @@ const props = withDefaults(defineProps<{
 
     const filterLayoutMediaOptions = (option: LktObject) => {
         return _filterLayoutMediaQueryOption(
-            editableConfig.value.layout?.amountOfItems ?? [],
+            webElement.value.layout?.amountOfItems ?? [],
             option,
         );
     }
 
     const filterLayoutAlignItemsOptions = (option: LktObject) => {
         return _filterLayoutMediaQueryOption(
-            editableConfig.value.layout?.alignItems ?? [],
+            webElement.value.layout?.alignItems ?? [],
             option,
         );
     }
 
     const filterLayoutJustifyContentOptions = (option: LktObject) => {
         return _filterLayoutMediaQueryOption(
-            editableConfig.value.layout?.justifyContent ?? [],
+            webElement.value.layout?.justifyContent ?? [],
             option,
         );
     }
 
     const filterLayoutColumnsOptions = (option: LktObject) => {
         return _filterLayoutMediaQueryOption(
-            editableConfig.value.layout?.columns ?? [],
+            webElement.value.layout?.columns ?? [],
             option,
         );
     }
 
     const computedCustomClassField = computed((): FieldConfig|undefined => {
         let config = {};
-        switch (editableConfig.value.type) {
+        switch (webElement.value.type) {
             case WebElementType.LktLayoutBox:
             case WebElementType.LktTextBox:
                 config = LktSettings.defaultFieldLktBoxElementCustomClassField;
@@ -319,12 +319,12 @@ const props = withDefaults(defineProps<{
     });
 
     const computedTitle = computed(() => {
-        return ucfirst(kebabCaseToCamelCase(editableConfig.value.type)) + ' Config';
+        return ucfirst(kebabCaseToCamelCase(webElement.value.type)) + ' Config';
     })
 
     const onPickedFiles = (fileEntities: Array<FileEntity>) => {
-        editableConfig.value.props.alt = fileEntities[0].nameData;
-        editableConfig.value.props.title = fileEntities[0].nameData;
+        webElement.value.props.alt = fileEntities[0].nameData;
+        webElement.value.props.title = fileEntities[0].nameData;
     }
 
     const updatingModelValue = ref(false);
@@ -332,25 +332,25 @@ const props = withDefaults(defineProps<{
     watch(() => props.element, (v) => {
         console.log('updating model value');
         updatingModelValue.value = true;
-        editableConfig.value = v;
+        webElement.value = v;
         nextTick(() => {
             updatingModelValue.value = false;
         })
     })
 
-    watch(() => editableConfig.value.config.amountOfCallToActions, (v) => {
+    watch(() => webElement.value.config.amountOfCallToActions, (v) => {
         console.log('updated amount of cta: ', v);
-        let l = editableConfig.value.config.callToActions.length;
+        let l = webElement.value.config.callToActions.length;
         if (v > l) {
-            editableConfig.value.config.callToActions.push(getDefaultLktButtonWebElement());
+            webElement.value.config.callToActions.push(getDefaultLktButtonWebElement());
         } else {
-            editableConfig.value.config.callToActions.splice(v, 1);
+            webElement.value.config.callToActions.splice(v, 1);
         }
     })
 
 onMounted(() => {
     console.log('mounted');
-    console.log(editableConfig.value);
+    console.log(webElement.value);
     if (!webElement.value.id && webElement.value.type === WebElementType.LktLayout) {
         isLoading.value = true;
         nextTick(() => {
