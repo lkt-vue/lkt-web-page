@@ -53,22 +53,14 @@ const props = withDefaults(defineProps<{
         zIndex: 500,
     });
 
-    console.log('webParent: ', props.parent, props.parentType);
-
-    const id = parseInt(props.modalKey);
-    const webElement = ref(new WebElement(props.element));
-    const itemCrudRef = ref(null);
-    const isLoading = ref(false);
+    const id = parseInt(props.modalKey),
+        webElement = ref(new WebElement(props.element)),
+        itemCrudRef = ref(null),
+        isLoading = ref(false);
 
     const doRemoveElement = () => {
         // props.parentChildren.splice(props.indexInParentChildren, 1);
         closeModal(props.modalName, props.modalKey);
-    }
-
-    const resetCloneId = (clone: WebElement) => {
-        clone.id = 0;
-        clone.children?.forEach(child => resetCloneId(child));
-        return clone;
     }
 
     const doDuplicateBefore = () => {
@@ -234,7 +226,6 @@ const props = withDefaults(defineProps<{
     ];
 
     const _filterLayoutMediaQueryOption = (haystack: OptionConfig[], needle: OptionConfig) => {
-        console.log('_filterLayoutMediaQueryOption', haystack, needle);
         if (haystack.length > 0) {
 
             let needleValue = String(needle.value);
