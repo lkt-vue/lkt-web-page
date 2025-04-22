@@ -60,12 +60,12 @@ export const getLayoutAmountOfItemsOptions = () => {
         'default': {
             css: '{n}',
             label: 'Default: {n}',
-            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            columns: ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         },
         'from768': {
             css: '{n}--from-768',
             label: 'From 768px: {n}',
-            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            columns: ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         },
     };
 
@@ -79,13 +79,11 @@ export const getLayoutAmountOfItemsOptions = () => {
             || !Array.isArray(breakpointConfig.columns)
             || breakpointConfig.columns.length === 0) continue;
 
-        let begin = breakpointConfig.columns[0],
-            limit = breakpointConfig.columns[breakpointConfig.columns.length - 1];
-
-        for (let i = begin; i <= limit; ++i) {
+        for (let i in breakpointConfig.columns) {
+            let key = breakpointConfig.columns[i].toString();
             r.push({
-                value: breakpointConfig.css.replace('{n}', i.toString()),
-                label: breakpointConfig.label.replace('{n}', i.toString()),
+                value: breakpointConfig.css.replace('{n}', key),
+                label: breakpointConfig.label.replace('{n}', key),
             })
         }
     }

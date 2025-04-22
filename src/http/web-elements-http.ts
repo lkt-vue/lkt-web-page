@@ -38,6 +38,7 @@ export const setupWebElementsHttp = () => {
         params: {
             type: {default: undefined},
             children: {default: undefined},
+            subElements: {default: undefined},
             component: {default: undefined},
             config: {default: undefined},
             layout: {default: undefined},
@@ -49,8 +50,7 @@ export const setupWebElementsHttp = () => {
             afterElement: {default: undefined},
         },
         digToPerms: 'perms',
-        digToData: 'item',
-        digToAutoReloadId: 'id'
+        digToAutoReloadId: 'item.id'
     });
 
     createHTTPPutResource({
@@ -59,13 +59,13 @@ export const setupWebElementsHttp = () => {
         params: {
             id: {default: undefined},
             children: {default: undefined},
+            subElements: {default: undefined},
             component: {default: undefined},
             config: {default: undefined},
             layout: {default: undefined},
             props: {default: undefined},
         },
-        digToPerms: 'perms',
-        digToData: 'item'
+        digToPerms: 'perms'
     });
 
     createHTTPDeleteResource({

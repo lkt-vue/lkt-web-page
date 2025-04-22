@@ -7,10 +7,11 @@ type __VLS_Props = {
     lang?: string;
     isPreview?: boolean;
     canRenderActions?: boolean;
-    fileBrowserConfig?: FileBrowserConfig;
+    fileBrowserConfig: FileBrowserConfig;
     modalCrudConfig: ItemCrudConfig;
     disabled?: boolean;
     editing?: boolean;
+    defaultAppearance?: string;
 };
 declare const _default: import("vue").DefineComponent<__VLS_Props, {}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;

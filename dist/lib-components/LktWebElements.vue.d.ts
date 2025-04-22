@@ -4,6 +4,7 @@ type __VLS_Props = {
     parent: WebElement | WebPage;
     parentType?: WebParentType;
     layoutSelector?: string;
+    defaultAppearance?: string;
     lang: string;
     isChild?: boolean;
     isPreview?: boolean;

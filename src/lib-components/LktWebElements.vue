@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<{
     parent: WebElement|WebPage
     parentType?: WebParentType
     layoutSelector?: string
+    defaultAppearance?: string
     lang: string
     isChild?: boolean
     isPreview?: boolean
@@ -59,7 +60,7 @@ const computedTableConfig = computed(() => {
     let type = props.isPreview ? TableType.Table : TableType.Item;
     if (editing.value) type = TableType.Table;
 
-    let itemsContainerClass = 'lkt-grid-1';
+    let itemsContainerClass = 'lkt-elements-table--default-grid';
     if (props.isChild) itemsContainerClass = props.layoutSelector;
 
     return <TableConfig>{
@@ -122,7 +123,6 @@ const onCrudUpdate = () => {
                     :index="index"
                     :lang="lang"
                     :is-preview="isPreview"
-                    :parent-children="items"
                     :parent="parent"
                     :parent-type="parentType"
                     :file-browser-config="fileBrowserConfig"
@@ -130,6 +130,7 @@ const onCrudUpdate = () => {
                     :can-render-actions="!editing"
                     :disabled="disabled || !editing"
                     :editing="editing"
+                    :default-appearance="defaultAppearance"
                     @crud-update="onCrudUpdate"
                 />
             </template>

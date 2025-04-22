@@ -59,8 +59,9 @@ const props = withDefaults(defineProps<{
         <div class="lkt-grid-1">
             <lkt-accordion
                 v-bind="<AccordionConfig>{
-                    type: AccordionType.Always,
-                    title: 'Content'
+                    type: AccordionType.Auto,
+                    title: 'Individual elements',
+                    modelValue: true,
                 }"
             >
                 <div class="lkt-grid-3">
@@ -146,8 +147,29 @@ const props = withDefaults(defineProps<{
 
             <lkt-accordion
                 v-bind="<AccordionConfig>{
-                    type: AccordionType.Always,
-                    title: 'Containers'
+                    type: AccordionType.Auto,
+                    title: 'Collection elements',
+                }"
+            >
+                <div class="lkt-grid-3">
+                    <lkt-button
+                        v-bind="<ButtonConfig>{
+                            icon: 'lkt-icn-info',
+                            text: 'LktIcons',
+                            events: {
+                                click: () => {
+                                    doAddElement(WebElementType.LktIcons);
+                                }
+                            }
+                        }"
+                    />
+                </div>
+            </lkt-accordion>
+
+            <lkt-accordion
+                v-bind="<AccordionConfig>{
+                    type: AccordionType.Auto,
+                    title: 'Containers',
                 }"
             >
                 <div class="lkt-grid-3">

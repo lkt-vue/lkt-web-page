@@ -51,6 +51,7 @@ const props = withDefaults(defineProps<{
         afterElement?: number
         beforeElement?: number
         onUpdate?: Function
+        defaultAppearance?: string
     }>(), {
         modalName: '',
         modalKey: '_',
@@ -89,7 +90,7 @@ const props = withDefaults(defineProps<{
     const languages = getAvailableLanguages(),
         currentLang = getCurrentLanguage();
 
-    const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner].includes(webElement.value.type),
+    const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner, WebElementType.LktIcons].includes(webElement.value.type),
         calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(webElement.value.type),
         calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(webElement.value.type),
         calculatedIsBanner = [WebElementType.LktTextBanner].includes(webElement.value.type),
@@ -97,7 +98,7 @@ const props = withDefaults(defineProps<{
         calculatedIsLayout = [WebElementType.LktLayout].includes(webElement.value.type),
         calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(webElement.value.type),
         calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(webElement.value.type),
-        calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout].includes(webElement.value.type),
+        calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout, WebElementType.LktIcons].includes(webElement.value.type),
         calculatedHasImage = [WebElementType.LktImage].includes(webElement.value.type),
         calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(webElement.value.type),
         calculatedHasChildren = [WebElementType.LktLayoutAccordion, WebElementType.LktLayoutBox, WebElementType.LktLayout].includes(webElement.value.type),
@@ -282,6 +283,10 @@ const props = withDefaults(defineProps<{
         );
     }
 
+    const addSubElement = () => {
+        webElement.value.addSubElement();
+    }
+
     const computedCustomClassField = computed((): FieldConfig|undefined => {
         let config = {};
         switch (webElement.value.type) {
@@ -296,6 +301,7 @@ const props = withDefaults(defineProps<{
                 break;
 
             case WebElementType.LktIcon:
+            case WebElementType.LktIcons:
                 config = LktSettings.defaultFieldLktIconElementCustomClassField;
                 break;
 
@@ -313,21 +319,11 @@ const props = withDefaults(defineProps<{
         return ucfirst(kebabCaseToCamelCase(webElement.value.type)) + ' Config';
     })
 
-    const onPickedFiles = (fileEntities: Array<FileEntity>) => {
-        webElement.value.props.alt = fileEntities[0].nameData;
-        webElement.value.props.title = fileEntities[0].nameData;
+    const onPickedFiles = (fileEntities: Array<FileEntity>, ins: LktObject) => {
+        if (!ins) ins = webElement.value.props;
+        ins.alt = fileEntities[0].nameData;
+        ins.title = fileEntities[0].nameData;
     }
-
-    const updatingModelValue = ref(false);
-
-    watch(() => props.element, (v) => {
-        console.log('updating model value');
-        updatingModelValue.value = true;
-        webElement.value = v;
-        nextTick(() => {
-            updatingModelValue.value = false;
-        })
-    })
 
     watch(() => webElement.value.config.amountOfCallToActions, (v) => {
         console.log('updated amount of cta: ', v);
@@ -444,6 +440,8 @@ onMounted(() => {
                         :modal-crud-config="modalCrudConfig"
                         :parent="webElement"
                         :parent-type="WebParentType.Element"
+                        :default-appearance="defaultAppearance"
+                        @crud-update="onUpdate"
                     />
 
                     <template
@@ -463,13 +461,14 @@ onMounted(() => {
                                 :modal-crud-config="modalCrudConfig"
                                 :parent="webElement"
                                 :parent-type="WebParentType.Element"
+                                :default-appearance="defaultAppearance"
                             />
                         </lkt-accordion>
                     </template>
                 </div>
-                <div class="lkt-flex-col-3 lkt-grid-1">
+                <div class="lkt-flex-col-3">
 
-                    <div class="lkt-web-element-config-scroller">
+                    <div class="lkt-web-element-config-scroller lkt-grid-1">
 
                         <lkt-button
                             v-if="calculatedHasChildren"
@@ -485,6 +484,18 @@ onMounted(() => {
                                 }
                             }"
                         />
+
+                        <lkt-button
+                            v-if="item.type === WebElementType.LktIcons"
+                            v-bind="<ButtonConfig>{
+                                text: 'Add icon',
+                                icon: 'lkt-icn-more',
+                                events: {
+                                    click: addSubElement
+                                }
+                            }"
+                        />
+
                         <lkt-accordion
                             v-bind="<AccordionConfig>{
                                 type: AccordionType.Always,
@@ -548,6 +559,7 @@ onMounted(() => {
                                 />
                             </div>
                         </lkt-accordion>
+
                         <lkt-accordion
                             v-if="!calculatedIsText && !calculatedIsLayout"
                             v-bind="<AccordionConfig>{
@@ -627,7 +639,7 @@ onMounted(() => {
                                         fileBrowserConfig: fileBrowserConfig,
                                     }"
                                     v-model="item.props.media.src"
-                                    @picked-files="onPickedFiles"
+                                    @picked-files="($event) => onPickedFiles($event, item.props.media)"
                                 />
 
                                 <lkt-field
@@ -648,7 +660,7 @@ onMounted(() => {
                                         fileBrowserConfig: fileBrowserConfig,
                                     }"
                                     v-model="item.props.art.src"
-                                    @picked-files="onPickedFiles"
+                                    @picked-files="($event) => onPickedFiles($event, item.props.art)"
                                 />
 
                                 <div>

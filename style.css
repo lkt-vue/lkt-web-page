@@ -1,35 +1,10 @@
-.component-menu {
-    background-color: white;
-    border: 1px solid #ccc;
-    position: absolute;
-    z-index: 10;
-    width: 200px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.component-menu ul {
-    list-style-type: none;
-    padding: 10px;
-}
-
-.component-menu li {
-    cursor: pointer;
-    padding: 5px;
-}
-
-.component-menu li:hover {
-    background-color: #f0f0f0;
-}
-
+/**
+ * Web Elements grid
+ * Attempt to be the less intrusive as possible
+ *
+ */
 .lkt-element {
-    display: flex;
-    align-items: center;
-    gap: 15px;
     position: relative;
-}
-
-.lkt-element-content {
-    width: 100%;
 }
 
 .lkt-element-actions {
@@ -39,10 +14,6 @@
     position: absolute;
     right: 0;
     top: -15px;
-}
-
-.lkt-element.is-text .lkt-element-actions {
-    top: -60px;
 }
 
 .lkt-element:hover > .lkt-element-actions {
@@ -62,14 +33,6 @@
     white-space: pre-wrap;
     display: block;
     outline: none;
-    word-break: break-all;
-}
-
-.lkt-element-tooltip-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    min-width: 200px;
 }
 
 .lkt-element-actions .lkt-tooltip {
@@ -85,10 +48,18 @@
     display: flex;
     flex-direction: row;
 }
-.layout-mode td:not([data-role="drag-indicator"]) {
+.lkt-elements-table td:not([data-role="drag-indicator"]) {
     width: 100%;
 }
 
+.lkt-elements-table--default-grid > *:not(:first-child) {
+    margin-top: 15px;
+}
+
+
+/**
+ * Config modal
+ */
 .lkt-web-element-config-modal, .lkt-file-browser {
     --lkt-modal-max-width-default: 100%;
     --lkt-modal-width-default: 100%;
@@ -106,6 +77,28 @@
     max-height: 50px;
 }
 
+.lkt-web-element-text-editor-buttons {
+    --lkt-grid--gap: 10px;
+    --lkt-grid-gap: 10px;
+}
+
+.lkt-web-element-text-editor-buttons .lkt-button {
+    --lkt-button--width: auto;
+    --lkt-button--min-width: 100%;
+    --lkt-button--padding: 0;
+    --lkt-button--justify-content: center;
+    --lkt-button--align-items: center;
+    --lkt-button--display: flex;
+}
+
+.lkt-web-element-config-scroller {
+    height: 85vh;
+    overflow-y: scroll;
+}
+
+/**
+ * File browser
+ */
 .lkt-file-browser .lkt-menu .lkt-anchor {
     --lkt-anchor--justify-content: flex-start;
 }
@@ -130,22 +123,4 @@
     z-index: 1;
     background: #fff;
     border-radius: 4px;
-}
-
-.lkt-web-element-text-editor-buttons {
-    --lkt-grid--gap: 10px;
-}
-
-.lkt-web-element-text-editor-buttons .lkt-button {
-    --lkt-button--width: auto;
-    --lkt-button--min-width: 100%;
-    --lkt-button--padding: 0;
-    --lkt-button--justify-content: center;
-    --lkt-button--align-items: center;
-    --lkt-button--display: flex;
-}
-
-.lkt-web-element-config-scroller {
-    height: 85vh;
-    overflow-y: scroll;
 }
