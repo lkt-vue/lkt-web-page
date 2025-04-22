@@ -6,6 +6,7 @@ type __VLS_Props = {
     index?: number;
     lang?: string;
     isPreview?: boolean;
+    isSubElement?: boolean;
     canRenderActions?: boolean;
     fileBrowserConfig: FileBrowserConfig;
     modalCrudConfig: ItemCrudConfig;

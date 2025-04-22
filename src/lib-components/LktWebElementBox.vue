@@ -27,6 +27,7 @@ const emit = defineEmits([
         index?: number
         lang?: string
         isPreview?: boolean
+        isSubElement?: boolean
         canRenderActions?: boolean
         fileBrowserConfig: FileBrowserConfig
         modalCrudConfig: ItemCrudConfig
@@ -282,6 +283,7 @@ const onModalUpdate = () => {
                 :disabled="disabled"
                 :editing="editing"
                 :default-appearance="webElement.props.class"
+                is-sub-element
             />
 
         </section>
@@ -323,6 +325,7 @@ const onModalUpdate = () => {
                         fileBrowserConfig,
                         modalCrudConfig,
                         defaultAppearance,
+                        isSubElement,
                         onUpdate: onModalUpdate
                     }
                 }"

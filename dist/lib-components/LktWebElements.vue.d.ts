@@ -8,6 +8,7 @@ type __VLS_Props = {
     lang: string;
     isChild?: boolean;
     isPreview?: boolean;
+    isSubElement?: boolean;
     fileBrowserConfig: FileBrowserConfig;
     modalCrudConfig: ItemCrudConfig;
     disabled?: boolean;

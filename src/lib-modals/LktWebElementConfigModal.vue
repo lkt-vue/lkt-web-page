@@ -40,303 +40,304 @@ import {LKT_ICON_PACK_ICONS} from "../constants/lkt-icon-pack";
 import {httpCall, HTTPResponse} from "lkt-http-client";
 
 const props = withDefaults(defineProps<{
-        modalName: string
-        modalKey: string
-        zIndex: number
-        fileBrowserConfig: FileBrowserConfig
-        modalCrudConfig: ItemCrudConfig
-        element: WebElement
-        parent: WebElement|WebPage
-        parentType: WebParentType
-        afterElement?: number
-        beforeElement?: number
-        onUpdate?: Function
-        defaultAppearance?: string
-    }>(), {
-        modalName: '',
-        modalKey: '_',
-        zIndex: 500,
-    });
+    modalName: string
+    modalKey: string
+    zIndex: number
+    fileBrowserConfig: FileBrowserConfig
+    modalCrudConfig: ItemCrudConfig
+    element: WebElement
+    parent: WebElement | WebPage
+    parentType: WebParentType
+    afterElement?: number
+    beforeElement?: number
+    onUpdate?: Function
+    defaultAppearance?: string
+    isSubElement?: boolean
+    beforeClose?: undefined
+}>(), {
+    modalName: '',
+    modalKey: '_',
+    zIndex: 500,
+});
 
-    const id = parseInt(props.modalKey),
-        webElement = ref(new WebElement(props.element)),
-        itemCrudRef = ref(null),
-        isLoading = ref(false);
+const id = parseInt(props.modalKey),
+    webElement = ref(new WebElement(props.element)),
+    itemCrudRef = ref(null),
+    isLoading = ref(false);
 
-    const doDuplicateBefore = () => {
-        let clone = webElement.value.getClone();
-        openModal('lkt-web-element-config', '_', {
-            element: clone,
-            parent: props.parent,
-            parentType: props.parentType,
-            fileBrowserConfig: props.fileBrowserConfig,
-            modalCrudConfig: props.modalCrudConfig,
-            beforeElement: webElement.value.id,
-        })
-    }
+const doDuplicateBefore = () => {
+    let clone = webElement.value.getClone();
+    openModal('lkt-web-element-config', '_', {
+        element: clone,
+        parent: props.parent,
+        parentType: props.parentType,
+        fileBrowserConfig: props.fileBrowserConfig,
+        modalCrudConfig: props.modalCrudConfig,
+        beforeElement: webElement.value.id,
+    })
+}
 
-    const doDuplicateAfter = () => {
-        let clone = webElement.value.getClone();
-        openModal('lkt-web-element-config', '_', {
-            element: clone,
-            parent: props.parent,
-            parentType: props.parentType,
-            fileBrowserConfig: props.fileBrowserConfig,
-            modalCrudConfig: props.modalCrudConfig,
-            afterElement: webElement.value.id,
-        })
-    }
+const doDuplicateAfter = () => {
+    let clone = webElement.value.getClone();
+    openModal('lkt-web-element-config', '_', {
+        element: clone,
+        parent: props.parent,
+        parentType: props.parentType,
+        fileBrowserConfig: props.fileBrowserConfig,
+        modalCrudConfig: props.modalCrudConfig,
+        afterElement: webElement.value.id,
+    })
+}
 
-    const languages = getAvailableLanguages(),
-        currentLang = getCurrentLanguage();
+const languages = getAvailableLanguages(),
+    currentLang = getCurrentLanguage();
 
-    const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner, WebElementType.LktIcons].includes(webElement.value.type),
-        calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(webElement.value.type),
-        calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(webElement.value.type),
-        calculatedIsBanner = [WebElementType.LktTextBanner].includes(webElement.value.type),
-        calculatedIsText = [WebElementType.LktText].includes(webElement.value.type),
-        calculatedIsLayout = [WebElementType.LktLayout].includes(webElement.value.type),
-        calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(webElement.value.type),
-        calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(webElement.value.type),
-        calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout, WebElementType.LktIcons].includes(webElement.value.type),
-        calculatedHasImage = [WebElementType.LktImage].includes(webElement.value.type),
-        calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(webElement.value.type),
-        calculatedHasChildren = [WebElementType.LktLayoutAccordion, WebElementType.LktLayoutBox, WebElementType.LktLayout].includes(webElement.value.type),
-        calculatedHasParentLayout = [WebElementLayoutType.FlexRow, WebElementLayoutType.FlexRows].includes(props.parent?.layout?.type);
+const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner, WebElementType.LktIcons].includes(webElement.value.type),
+    calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(webElement.value.type),
+    calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(webElement.value.type),
+    calculatedIsBanner = [WebElementType.LktTextBanner].includes(webElement.value.type),
+    calculatedIsText = [WebElementType.LktText].includes(webElement.value.type),
+    calculatedIsLayout = [WebElementType.LktLayout].includes(webElement.value.type),
+    calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(webElement.value.type),
+    calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(webElement.value.type),
+    calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout, WebElementType.LktIcons].includes(webElement.value.type),
+    calculatedHasImage = [WebElementType.LktImage].includes(webElement.value.type),
+    calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(webElement.value.type),
+    calculatedHasChildren = [WebElementType.LktLayoutAccordion, WebElementType.LktLayoutBox, WebElementType.LktLayout].includes(webElement.value.type),
+    calculatedHasParentLayout = [WebElementLayoutType.FlexRow, WebElementLayoutType.FlexRows].includes(props.parent?.layout?.type);
 
-    const accordionTypeOptions = getAccordionTypeOptions(),
-        bannerTypeOptions = getBannerTypeOptions(),
-        layoutTypeOptions = getLayoutTypeOptions(),
-        amountOfItemsOptions = getLayoutAmountOfItemsOptions();
+const accordionTypeOptions = getAccordionTypeOptions(),
+    bannerTypeOptions = getBannerTypeOptions(),
+    layoutTypeOptions = getLayoutTypeOptions(),
+    amountOfItemsOptions = getLayoutAmountOfItemsOptions();
 
-    const flexColumnsOptions:OptionConfig[] = [
-        {
-            value: 'lkt-flex-col-1',
-            label: 'Default: 1',
-        },
-        {
-            value: 'lkt-flex-col-2',
-            label: 'Default: 2',
-        },
-        {
-            value: 'lkt-flex-col-3',
-            label: 'Default: 3',
-        },
-        {
-            value: 'lkt-flex-col-4',
-            label: 'Default: 4',
-        },
-        {
-            value: 'lkt-flex-col-5',
-            label: 'Default: 5',
-        },
-        {
-            value: 'lkt-flex-col-6',
-            label: 'Default: 6',
-        },
-        {
-            value: 'lkt-flex-col-7',
-            label: 'Default: 7',
-        },
-        {
-            value: 'lkt-flex-col-8',
-            label: 'Default: 8',
-        },
-        {
-            value: 'lkt-flex-col-9',
-            label: 'Default: 9',
-        },
-        {
-            value: 'lkt-flex-col-10',
-            label: 'Default: 10',
-        },
-        {
-            value: 'lkt-flex-col-11',
-            label: 'Default: 11',
-        },
-        {
-            value: 'lkt-flex-col-12',
-            label: 'Default: 12',
-        },
-        {
-            value: 'lkt-flex-col-1--from-768',
-            label: 'From 768px: 1',
-        },
-        {
-            value: 'lkt-flex-col-2--from-768',
-            label: 'From 768px: 2',
-        },
-        {
-            value: 'lkt-flex-col-3--from-768',
-            label: 'From 768px: 3',
-        },
-        {
-            value: 'lkt-flex-col-4--from-768',
-            label: 'From 768px: 4',
-        },
-        {
-            value: 'lkt-flex-col-5--from-768',
-            label: 'From 768px: 5',
-        },
-    ];
+const flexColumnsOptions: OptionConfig[] = [
+    {
+        value: 'lkt-flex-col-1',
+        label: 'Default: 1',
+    },
+    {
+        value: 'lkt-flex-col-2',
+        label: 'Default: 2',
+    },
+    {
+        value: 'lkt-flex-col-3',
+        label: 'Default: 3',
+    },
+    {
+        value: 'lkt-flex-col-4',
+        label: 'Default: 4',
+    },
+    {
+        value: 'lkt-flex-col-5',
+        label: 'Default: 5',
+    },
+    {
+        value: 'lkt-flex-col-6',
+        label: 'Default: 6',
+    },
+    {
+        value: 'lkt-flex-col-7',
+        label: 'Default: 7',
+    },
+    {
+        value: 'lkt-flex-col-8',
+        label: 'Default: 8',
+    },
+    {
+        value: 'lkt-flex-col-9',
+        label: 'Default: 9',
+    },
+    {
+        value: 'lkt-flex-col-10',
+        label: 'Default: 10',
+    },
+    {
+        value: 'lkt-flex-col-11',
+        label: 'Default: 11',
+    },
+    {
+        value: 'lkt-flex-col-12',
+        label: 'Default: 12',
+    },
+    {
+        value: 'lkt-flex-col-1--from-768',
+        label: 'From 768px: 1',
+    },
+    {
+        value: 'lkt-flex-col-2--from-768',
+        label: 'From 768px: 2',
+    },
+    {
+        value: 'lkt-flex-col-3--from-768',
+        label: 'From 768px: 3',
+    },
+    {
+        value: 'lkt-flex-col-4--from-768',
+        label: 'From 768px: 4',
+    },
+    {
+        value: 'lkt-flex-col-5--from-768',
+        label: 'From 768px: 5',
+    },
+];
 
-    const alignItemsOptions:OptionConfig[] = [
-        {
-            value: 'lkt-align-items-start',
-            label: 'Default: Start',
-        },
-        {
-            value: 'lkt-align-items-center',
-            label: 'Default: Center',
-        },
-        {
-            value: 'lkt-align-items-end',
-            label: 'Default: End',
-        },
-    ];
+const alignItemsOptions: OptionConfig[] = [
+    {
+        value: 'lkt-align-items-start',
+        label: 'Default: Start',
+    },
+    {
+        value: 'lkt-align-items-center',
+        label: 'Default: Center',
+    },
+    {
+        value: 'lkt-align-items-end',
+        label: 'Default: End',
+    },
+];
 
-    const justifyContentOptions:OptionConfig[] = [
-        {
-            value: 'lkt-justify-content-stretch',
-            label: 'Default: Stretch',
-        },
-        {
-            value: 'lkt-justify-content-center',
-            label: 'Default: Center',
-        },
-        {
-            value: 'lkt-justify-content-space-between',
-            label: 'Default: Space Between',
-        },
-        {
-            value: 'lkt-justify-content-space-around',
-            label: 'Default: Space Around',
-        },
-        {
-            value: 'lkt-justify-content-space-evenly',
-            label: 'Default: Space Evenly',
-        },
-        {
-            value: 'lkt-justify-content-start',
-            label: 'Default: Start',
-        },
-        {
-            value: 'lkt-justify-content-end',
-            label: 'Default: End',
-        },
-    ];
+const justifyContentOptions: OptionConfig[] = [
+    {
+        value: 'lkt-justify-content-stretch',
+        label: 'Default: Stretch',
+    },
+    {
+        value: 'lkt-justify-content-center',
+        label: 'Default: Center',
+    },
+    {
+        value: 'lkt-justify-content-space-between',
+        label: 'Default: Space Between',
+    },
+    {
+        value: 'lkt-justify-content-space-around',
+        label: 'Default: Space Around',
+    },
+    {
+        value: 'lkt-justify-content-space-evenly',
+        label: 'Default: Space Evenly',
+    },
+    {
+        value: 'lkt-justify-content-start',
+        label: 'Default: Start',
+    },
+    {
+        value: 'lkt-justify-content-end',
+        label: 'Default: End',
+    },
+];
 
-    const _filterLayoutMediaQueryOption = (haystack: OptionConfig[], needle: OptionConfig) => {
-        if (haystack.length > 0) {
+const _filterLayoutMediaQueryOption = (haystack: OptionConfig[], needle: OptionConfig) => {
+    if (haystack.length > 0) {
 
-            let needleValue = String(needle.value);
+        let needleValue = String(needle.value);
 
-            let optionSearch = '';
-            if (needleValue.includes('--from')) optionSearch = '--' + needleValue.split('--')[1];
-            if (needleValue.includes('--to')) optionSearch = '--' + needleValue.split('--')[1];
+        let optionSearch = '';
+        if (needleValue.includes('--from')) optionSearch = '--' + needleValue.split('--')[1];
+        if (needleValue.includes('--to')) optionSearch = '--' + needleValue.split('--')[1];
 
-            // Filter to show only picked media selector
-            if (optionSearch !== '') {
-                let comparedValue = haystack.find(z => String(z).includes(optionSearch));
-                if (comparedValue) {
-                    //@ts-ignore
-                    return comparedValue === needle.value;
-                }
-            }
-
-            let comparedValue = haystack.find(z => !String(z).includes('--'));
+        // Filter to show only picked media selector
+        if (optionSearch !== '') {
+            let comparedValue = haystack.find(z => String(z).includes(optionSearch));
             if (comparedValue) {
                 //@ts-ignore
-                return comparedValue === needleValue || needleValue.includes('--');
+                return comparedValue === needle.value;
             }
         }
 
-        return true;
-    }
-
-
-    const filterLayoutMediaOptions = (option: LktObject) => {
-        return _filterLayoutMediaQueryOption(
-            webElement.value.layout?.amountOfItems ?? [],
-            option,
-        );
-    }
-
-    const filterLayoutAlignItemsOptions = (option: LktObject) => {
-        return _filterLayoutMediaQueryOption(
-            webElement.value.layout?.alignItems ?? [],
-            option,
-        );
-    }
-
-    const filterLayoutJustifyContentOptions = (option: LktObject) => {
-        return _filterLayoutMediaQueryOption(
-            webElement.value.layout?.justifyContent ?? [],
-            option,
-        );
-    }
-
-    const filterLayoutColumnsOptions = (option: LktObject) => {
-        return _filterLayoutMediaQueryOption(
-            webElement.value.layout?.columns ?? [],
-            option,
-        );
-    }
-
-    const addSubElement = () => {
-        webElement.value.addSubElement();
-    }
-
-    const computedCustomClassField = computed((): FieldConfig|undefined => {
-        let config = {};
-        switch (webElement.value.type) {
-            case WebElementType.LktLayoutBox:
-            case WebElementType.LktTextBox:
-                config = LktSettings.defaultFieldLktBoxElementCustomClassField;
-                break;
-
-            case WebElementType.LktLayoutAccordion:
-            case WebElementType.LktTextAccordion:
-                config = LktSettings.defaultFieldLktAccordionElementCustomClassField;
-                break;
-
-            case WebElementType.LktIcon:
-            case WebElementType.LktIcons:
-                config = LktSettings.defaultFieldLktIconElementCustomClassField;
-                break;
-
-            case WebElementType.LktImage:
-                config = LktSettings.defaultFieldLktImageElementCustomClassField;
-                break;
+        let comparedValue = haystack.find(z => !String(z).includes('--'));
+        if (comparedValue) {
+            //@ts-ignore
+            return comparedValue === needleValue || needleValue.includes('--');
         }
-
-        return Object.keys(config).length > 0
-            ? ensureFieldConfig(config, LktSettings.defaultFieldElementCustomClassField)
-            : undefined;
-    });
-
-    const computedTitle = computed(() => {
-        return ucfirst(kebabCaseToCamelCase(webElement.value.type)) + ' Config';
-    })
-
-    const onPickedFiles = (fileEntities: Array<FileEntity>, ins: LktObject) => {
-        if (!ins) ins = webElement.value.props;
-        ins.alt = fileEntities[0].nameData;
-        ins.title = fileEntities[0].nameData;
     }
 
-    watch(() => webElement.value.config.amountOfCallToActions, (v) => {
-        console.log('updated amount of cta: ', v);
-        let l = webElement.value.config.callToActions.length;
-        if (v > l) {
-            webElement.value.config.callToActions.push(getDefaultLktButtonWebElement());
-        } else {
-            webElement.value.config.callToActions.splice(v, 1);
-        }
-    })
+    return true;
+}
+
+
+const filterLayoutMediaOptions = (option: LktObject) => {
+    return _filterLayoutMediaQueryOption(
+        webElement.value.layout?.amountOfItems ?? [],
+        option,
+    );
+}
+
+const filterLayoutAlignItemsOptions = (option: LktObject) => {
+    return _filterLayoutMediaQueryOption(
+        webElement.value.layout?.alignItems ?? [],
+        option,
+    );
+}
+
+const filterLayoutJustifyContentOptions = (option: LktObject) => {
+    return _filterLayoutMediaQueryOption(
+        webElement.value.layout?.justifyContent ?? [],
+        option,
+    );
+}
+
+const filterLayoutColumnsOptions = (option: LktObject) => {
+    return _filterLayoutMediaQueryOption(
+        webElement.value.layout?.columns ?? [],
+        option,
+    );
+}
+
+const addSubElement = () => {
+    webElement.value.addSubElement();
+}
+
+const computedCustomClassField = computed((): FieldConfig | undefined => {
+    let config = {};
+    switch (webElement.value.type) {
+        case WebElementType.LktLayoutBox:
+        case WebElementType.LktTextBox:
+            config = LktSettings.defaultFieldLktBoxElementCustomClassField;
+            break;
+
+        case WebElementType.LktLayoutAccordion:
+        case WebElementType.LktTextAccordion:
+            config = LktSettings.defaultFieldLktAccordionElementCustomClassField;
+            break;
+
+        case WebElementType.LktIcon:
+        case WebElementType.LktIcons:
+            config = LktSettings.defaultFieldLktIconElementCustomClassField;
+            break;
+
+        case WebElementType.LktImage:
+            config = LktSettings.defaultFieldLktImageElementCustomClassField;
+            break;
+    }
+
+    return Object.keys(config).length > 0
+        ? ensureFieldConfig(config, LktSettings.defaultFieldElementCustomClassField)
+        : undefined;
+});
+
+const computedTitle = computed(() => {
+    return ucfirst(kebabCaseToCamelCase(webElement.value.type)) + ' Config';
+})
+
+const onPickedFiles = (fileEntities: Array<FileEntity>, ins: LktObject) => {
+    if (!ins) ins = webElement.value.props;
+    ins.alt = fileEntities[0].nameData;
+    ins.title = fileEntities[0].nameData;
+}
+
+watch(() => webElement.value.config.amountOfCallToActions, (v) => {
+    console.log('updated amount of cta: ', v);
+    let l = webElement.value.config.callToActions.length;
+    if (v > l) {
+        webElement.value.config.callToActions.push(getDefaultLktButtonWebElement());
+    } else {
+        webElement.value.config.callToActions.splice(v, 1);
+    }
+})
 
 onMounted(() => {
-    console.log('mounted');
     console.log(webElement.value);
     if (!webElement.value.id && webElement.value.type === WebElementType.LktLayout) {
         isLoading.value = true;
@@ -369,6 +370,82 @@ onMounted(() => {
     }
 
 })
+
+const computedPerms = computed(() => {
+    if (props.isSubElement) return [];
+    return ['update', 'drop', 'delete'];
+})
+
+const onCrudUpdated = () => {
+    if (typeof props.onUpdate === 'function') props.onUpdate();
+}
+
+const computedItemCrudConfig = computed((): ItemCrudConfig => {
+
+    let createButton: false | ButtonConfig = false;
+    let updateButton: false | ButtonConfig = false;
+
+    if (!isLoading.value && !props.isSubElement) {
+        createButton = {
+            ...props.modalCrudConfig.createButton,
+            resourceData: {
+                ...props.modalCrudConfig.createButton?.resourceData,
+                ...webElement.value,
+                parent: props.parent.id,
+                parentType: props.parentType,
+                afterElement: props.afterElement,
+                beforeElement: props.beforeElement,
+            },
+            events: {
+                click: onCrudUpdated
+            }
+        }
+        updateButton = {
+            ...props.modalCrudConfig.updateButton,
+            resourceData: {
+                ...props.modalCrudConfig.updateButton?.resourceData,
+                ...webElement.value,
+            },
+            events: {
+                click: onCrudUpdated
+            }
+        }
+    }
+
+    let beforeClose = onCrudUpdated;
+
+    return {
+        mode: id > 0 ? ItemCrudMode.Update : ItemCrudMode.Create,
+        view: ItemCrudView.Modal,
+        editing: true,
+        perms: computedPerms.value,
+        title: computedTitle.value,
+        beforeClose,
+        modalConfig: {
+            modalName: props.modalName,
+            modalKey: props.modalKey,
+            zIndex: props.zIndex,
+            title: computedTitle.value,
+            beforeClose,
+        },
+        readData: {
+            id,
+        },
+        ...props.modalCrudConfig,
+        createButton,
+        updateButton,
+        dropButton: props.isSubElement ? false : {
+            ...props.modalCrudConfig.dropButton,
+            resourceData: {
+                ...props.modalCrudConfig.dropButton?.resourceData,
+                ...webElement.value,
+            },
+            events: {
+                click: onCrudUpdated
+            }
+        },
+    }
+})
 </script>
 
 <template>
@@ -376,57 +453,7 @@ onMounted(() => {
         ref="itemCrudRef"
         class="lkt-web-element-config-modal"
         v-model="webElement"
-        v-bind="<ItemCrudConfig>{
-            mode: id > 0 ? ItemCrudMode.Update : ItemCrudMode.Create,
-            view: ItemCrudView.Modal,
-            editing: true,
-            perms: ['update', 'drop', 'delete'],
-            title: computedTitle,
-            modalConfig: {
-                modalName,
-                modalKey,
-                zIndex,
-                title: computedTitle
-            },
-            readData: {
-                id,
-            },
-            ...modalCrudConfig,
-            createButton: isLoading ? false : {
-                ...modalCrudConfig.createButton,
-                resourceData: {
-                    ...modalCrudConfig.createButton?.resourceData,
-                    ...webElement,
-                    parent: parent.id,
-                    parentType,
-                    afterElement,
-                    beforeElement,
-                },
-                events: {
-                    click: props.onUpdate
-                }
-            },
-            updateButton: {
-                ...modalCrudConfig.updateButton,
-                resourceData: {
-                    ...modalCrudConfig.updateButton?.resourceData,
-                    ...webElement,
-                },
-                events: {
-                    click: props.onUpdate
-                }
-            },
-            dropButton: {
-                ...modalCrudConfig.dropButton,
-                resourceData: {
-                    ...modalCrudConfig.dropButton?.resourceData,
-                    ...webElement,
-                },
-                events: {
-                    click: props.onUpdate
-                }
-            },
-        }"
+        v-bind="computedItemCrudConfig"
     >
         <template #item="{item}">
 

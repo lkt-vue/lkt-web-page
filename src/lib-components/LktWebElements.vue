@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, defineEmits, defineProps, ref, watch} from 'vue';
+import {computed, defineEmits, defineProps, nextTick, ref, watch} from 'vue';
 import {
     FileBrowserConfig,
     ItemCrudConfig,
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<{
     lang: string
     isChild?: boolean
     isPreview?: boolean
+    isSubElement?: boolean
     fileBrowserConfig: FileBrowserConfig
     modalCrudConfig: ItemCrudConfig
     disabled?: boolean
@@ -42,6 +43,7 @@ const props = withDefaults(defineProps<{
 
 const items = ref(props.modelValue);
 const editing = ref(props.editing);
+const refreshingSubElements = ref(false);
 
 watch(items, (v) => {
     emit('update:modelValue', v);
@@ -99,6 +101,15 @@ const computedTableConfig = computed(() => {
 });
 
 const onCrudUpdate = () => {
+    if (props.isSubElement) {
+        refreshingSubElements.value = true;
+        nextTick(() => {
+            refreshingSubElements.value = false;
+            emit('crud-update');
+        })
+        return;
+    }
+
     const resource = props.parentType === WebParentType.Page ? 'r-web-page-children' : 'r-web-element-children';
 
     httpCall(resource, {id: props.parent.id}).then((response: HTTPResponse) => {
@@ -119,6 +130,7 @@ const onCrudUpdate = () => {
         >
             <template #item="{_, index}">
                 <lkt-web-element-box
+                    v-if="!refreshingSubElements"
                     v-model="items[index]"
                     :index="index"
                     :lang="lang"
@@ -131,6 +143,7 @@ const onCrudUpdate = () => {
                     :disabled="disabled || !editing"
                     :editing="editing"
                     :default-appearance="defaultAppearance"
+                    :is-sub-element="isSubElement"
                     @crud-update="onCrudUpdate"
                 />
             </template>
