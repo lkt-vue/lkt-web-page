@@ -101,6 +101,7 @@ const computedComponentAppearance = computed(() => {
 })
 
 const onModalUpdate = () => {
+    console.log('triggered onModalUpdate!')
     emit('crud-update');
 }
 </script>

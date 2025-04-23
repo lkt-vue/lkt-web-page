@@ -60,10 +60,14 @@ const props = withDefaults(defineProps<{
     zIndex: 500,
 });
 
-const id = parseInt(props.modalKey),
+const id = ref(parseInt(props.modalKey)),
     webElement = ref(new WebElement(props.element)),
     itemCrudRef = ref(null),
     isLoading = ref(false);
+
+watch(() => props.modalKey, (v) => {
+    id.value = parseInt(v);
+})
 
 const doDuplicateBefore = () => {
     let clone = webElement.value.getClone();
@@ -338,7 +342,7 @@ watch(() => webElement.value.config.amountOfCallToActions, (v) => {
 })
 
 onMounted(() => {
-    console.log(webElement.value);
+    console.log('mounted: ', props);
     if (!webElement.value.id && webElement.value.type === WebElementType.LktLayout) {
         isLoading.value = true;
         nextTick(() => {
@@ -385,7 +389,9 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
     let createButton: false | ButtonConfig = false;
     let updateButton: false | ButtonConfig = false;
 
-    if (!isLoading.value && !props.isSubElement) {
+    const isCreatingLayout = !webElement.value.id && webElement.value.type === WebElementType.LktLayout;
+
+    if (!isCreatingLayout && !props.isSubElement) {
         createButton = {
             ...props.modalCrudConfig.createButton,
             resourceData: {
@@ -412,10 +418,10 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         }
     }
 
-    let beforeClose = onCrudUpdated;
+    let beforeClose = props.isSubElement ? onCrudUpdated : undefined;
 
     return {
-        mode: id > 0 ? ItemCrudMode.Update : ItemCrudMode.Create,
+        mode: id.value > 0 ? ItemCrudMode.Update : ItemCrudMode.Create,
         view: ItemCrudView.Modal,
         editing: true,
         perms: computedPerms.value,
@@ -429,7 +435,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
             beforeClose,
         },
         readData: {
-            id,
+            id: id.value,
         },
         ...props.modalCrudConfig,
         createButton,
@@ -446,6 +452,13 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         },
     }
 })
+
+console.log('webElementConfigCreated update: ', props.onUpdate)
+
+// const onCreate = () => {
+//     console.log('create, update, bibidi: ', props.onUpdate);
+//     onCrudUpdated();
+// }
 </script>
 
 <template>
@@ -508,6 +521,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                                     modalCrudConfig,
                                     parent: webElement,
                                     parentType: WebParentType.Element,
+                                    onUpdate: onCrudUpdate,
                                 }
                             }"
                         />

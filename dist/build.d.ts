@@ -1,5 +1,5 @@
 declare namespace $l {
-    function install(c: any): void;
+    function install(f: any): void;
 }
 declare function jl(): void;
 declare function Ml(): void;

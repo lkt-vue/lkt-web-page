@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<{
         parentType?: WebParentType
         fileBrowserConfig: FileBrowserConfig
         modalCrudConfig: ItemCrudConfig
+        onUpdate?: Function
     }>(), {
         modalName: '',
         modalKey: '_',
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<{
             parentType: props.parentType,
             fileBrowserConfig: props.fileBrowserConfig,
             modalCrudConfig: props.modalCrudConfig,
+            onUpdate: props.onUpdate,
         })
 
         setTimeout(() => {

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {computed, defineEmits, defineProps, nextTick, ref, watch} from 'vue';
 import {
+    ColumnConfig,
     FileBrowserConfig,
     ItemCrudConfig,
     TableConfig,
@@ -53,6 +54,24 @@ watch(editing, (v) => {
     console.log('editing', v);
 }, {deep: true})
 
+const onCrudUpdate = () => {
+    if (props.isSubElement) {
+        refreshingSubElements.value = true;
+        nextTick(() => {
+            refreshingSubElements.value = false;
+            emit('crud-update');
+        })
+        return;
+    }
+
+    const resource = props.parentType === WebParentType.Page ? 'r-web-page-children' : 'r-web-element-children';
+
+    httpCall(resource, {id: props.parent.id}).then((response: HTTPResponse) => {
+        items.value = response.data.map(z => new WebElement(z));
+        emit('crud-update');
+    })
+}
+
 const computedTableConfig = computed(() => {
 
     let perms = [TablePermission.Update, TablePermission.Sort];
@@ -95,28 +114,18 @@ const computedTableConfig = computed(() => {
                 modalCrudConfig: props.modalCrudConfig,
                 parent: props.parent,
                 parentType: props.parentType,
+                onUpdate: onCrudUpdate,
             }
-        }
+        },
+        columns: [
+            <ColumnConfig>{
+                key: 'keyMoment',
+                label: '',
+                isForRowKey: true,
+            }
+        ]
     }
 });
-
-const onCrudUpdate = () => {
-    if (props.isSubElement) {
-        refreshingSubElements.value = true;
-        nextTick(() => {
-            refreshingSubElements.value = false;
-            emit('crud-update');
-        })
-        return;
-    }
-
-    const resource = props.parentType === WebParentType.Page ? 'r-web-page-children' : 'r-web-element-children';
-
-    httpCall(resource, {id: props.parent.id}).then((response: HTTPResponse) => {
-        items.value = response.data.map(z => new WebElement(z));
-        emit('crud-update');
-    })
-}
 </script>
 
 <template>
