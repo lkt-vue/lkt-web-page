@@ -102,7 +102,7 @@ const props = withDefaults(defineProps<{
                     />
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-info',
+                            icon: 'lkt-icn-icon',
                             text: 'LktIcon',
                             events: {
                                 click: () => {
@@ -113,7 +113,7 @@ const props = withDefaults(defineProps<{
                     />
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-font',
+                            icon: 'lkt-icn-box',
                             text: 'LktTextBox',
                             events: {
                                 click: () => {
@@ -124,7 +124,7 @@ const props = withDefaults(defineProps<{
                     />
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-font',
+                            icon: 'lkt-icn-accordion',
                             text: 'LktTextAccordion',
                             events: {
                                 click: () => {
@@ -135,7 +135,7 @@ const props = withDefaults(defineProps<{
                     />
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-font',
+                            icon: 'lkt-icn-banner',
                             text: 'LktTextBanner',
                             events: {
                                 click: () => {
@@ -156,7 +156,7 @@ const props = withDefaults(defineProps<{
                 <div class="lkt-grid-3">
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-info',
+                            icon: 'lkt-icn-icon',
                             text: 'LktIcons',
                             events: {
                                 click: () => {
@@ -177,7 +177,7 @@ const props = withDefaults(defineProps<{
                 <div class="lkt-grid-3">
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-columns',
+                            icon: 'lkt-icn-box',
                             text: 'LktLayoutBox',
                             events: {
                                 click: () => {
@@ -188,7 +188,7 @@ const props = withDefaults(defineProps<{
                     />
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-columns',
+                            icon: 'lkt-icn-accordion',
                             text: 'LktLayoutAccordion',
                             events: {
                                 click: () => {
@@ -231,7 +231,7 @@ const props = withDefaults(defineProps<{
                     />
                     <lkt-button
                         v-bind="<ButtonConfig>{
-                            icon: 'lkt-icn-link',
+                            icon: 'lkt-icn-button',
                             text: 'LktButton',
                             events: {
                                 click: () => {

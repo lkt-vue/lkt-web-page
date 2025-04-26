@@ -601,7 +601,7 @@ const R = /* @__PURE__ */ X({
                     }
                   })), null, 16),
                   s(k, T(U({
-                    icon: "lkt-icn-info",
+                    icon: "lkt-icn-icon",
                     text: "LktIcon",
                     events: {
                       click: () => {
@@ -610,7 +610,7 @@ const R = /* @__PURE__ */ X({
                     }
                   })), null, 16),
                   s(k, T(U({
-                    icon: "lkt-icn-font",
+                    icon: "lkt-icn-box",
                     text: "LktTextBox",
                     events: {
                       click: () => {
@@ -619,7 +619,7 @@ const R = /* @__PURE__ */ X({
                     }
                   })), null, 16),
                   s(k, T(U({
-                    icon: "lkt-icn-font",
+                    icon: "lkt-icn-accordion",
                     text: "LktTextAccordion",
                     events: {
                       click: () => {
@@ -628,7 +628,7 @@ const R = /* @__PURE__ */ X({
                     }
                   })), null, 16),
                   s(k, T(U({
-                    icon: "lkt-icn-font",
+                    icon: "lkt-icn-banner",
                     text: "LktTextBanner",
                     events: {
                       click: () => {
@@ -647,7 +647,7 @@ const R = /* @__PURE__ */ X({
               default: w(() => [
                 S("div", cl, [
                   s(k, T(U({
-                    icon: "lkt-icn-info",
+                    icon: "lkt-icn-icon",
                     text: "LktIcons",
                     events: {
                       click: () => {
@@ -666,7 +666,7 @@ const R = /* @__PURE__ */ X({
               default: w(() => [
                 S("div", fl, [
                   s(k, T(U({
-                    icon: "lkt-icn-columns",
+                    icon: "lkt-icn-box",
                     text: "LktLayoutBox",
                     events: {
                       click: () => {
@@ -675,7 +675,7 @@ const R = /* @__PURE__ */ X({
                     }
                   })), null, 16),
                   s(k, T(U({
-                    icon: "lkt-icn-columns",
+                    icon: "lkt-icn-accordion",
                     text: "LktLayoutAccordion",
                     events: {
                       click: () => {
@@ -712,7 +712,7 @@ const R = /* @__PURE__ */ X({
                     }
                   })), null, 16),
                   s(k, T(U({
-                    icon: "lkt-icn-link",
+                    icon: "lkt-icn-button",
                     text: "LktButton",
                     events: {
                       click: () => {

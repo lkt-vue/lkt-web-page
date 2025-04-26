@@ -60,10 +60,19 @@
 /**
  * Config modal
  */
-.lkt-web-element-config-modal, .lkt-file-browser {
+.lkt-web-element-config-modal,
+.lkt-file-browser {
     --lkt-modal-max-width-default: 100%;
     --lkt-modal-width-default: 100%;
+    --lkt-modal--inner--width: 100%;
+    --lkt-modal--inner--max-width: 100%;
 }
+
+.lkt-web-element-config-modal .lkt-modal-back,
+.lkt-file-browser .lkt-modal-back {
+    display: none;
+}
+
 .lkt-web-element-config-modal .lkt-modal-inner,
 .lkt-file-browser .lkt-modal-inner {
     height: 100%;
@@ -92,7 +101,7 @@
 }
 
 .lkt-web-element-config-scroller {
-    height: 85vh;
+    max-height: 85vh;
     overflow-y: scroll;
 }
 
