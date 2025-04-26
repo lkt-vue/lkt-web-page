@@ -16,7 +16,7 @@ export const setupWebPagesHttp = () => {
         digToPerms: 'perms',
         digToData: 'results',
         mapData: (data: LktObject[]) => {
-            return data.map(z => new WebPage(data));
+            return data.map(d => new WebPage(d));
         }
     });
 
@@ -27,7 +27,7 @@ export const setupWebPagesHttp = () => {
         digToPerms: 'perms',
         digToData: 'results',
         mapData: (data: LktObject[]) => {
-            return data.map(z => new WebPage(data));
+            return data.map(d => new WebPage(d));
         }
     });
 
