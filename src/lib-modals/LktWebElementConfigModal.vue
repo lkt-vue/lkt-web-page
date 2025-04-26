@@ -93,17 +93,56 @@ const doDuplicateAfter = () => {
     })
 }
 
+const customSettings = webElement.value.getCustomSettings();
+
 const languages = getAvailableLanguages(),
     currentLang = getCurrentLanguage();
 
-const calculatedHasHeader = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktTextBanner, WebElementType.LktIcons].includes(webElement.value.type),
-    calculatedHasSubHeader = [WebElementType.LktTextBanner].includes(webElement.value.type),
-    calculatedHasBackgroundMultimedia = [WebElementType.LktTextBanner].includes(webElement.value.type),
-    calculatedIsBanner = [WebElementType.LktTextBanner].includes(webElement.value.type),
-    calculatedIsText = [WebElementType.LktText].includes(webElement.value.type),
-    calculatedIsLayout = [WebElementType.LktLayout].includes(webElement.value.type),
-    calculatedHasOpacityLayer = [WebElementType.LktTextBanner].includes(webElement.value.type),
-    calculatedHasIcon = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktTextBox, WebElementType.LktTextAccordion, WebElementType.LktIcon, WebElementType.LktButton, WebElementType.LktAnchor].includes(webElement.value.type),
+const calculatedHasTextEditor = !customSettings || customSettings.options?.textEditor === true;
+
+const calculatedHasHeader = [
+        WebElementType.LktLayoutBox,
+        WebElementType.LktLayoutAccordion,
+        WebElementType.LktTextBox,
+        WebElementType.LktTextAccordion,
+        WebElementType.LktTextBanner,
+        WebElementType.LktIcons
+    ].includes(webElement.value.type),
+
+    calculatedHasSubHeader = [
+        WebElementType.LktTextBanner
+    ].includes(webElement.value.type),
+
+    calculatedHasBackgroundMultimedia = [
+        WebElementType.LktTextBanner
+    ].includes(webElement.value.type),
+
+    calculatedIsBanner = [
+        WebElementType.LktTextBanner
+    ].includes(webElement.value.type),
+
+    calculatedIsText = [
+        WebElementType.LktText
+    ].includes(webElement.value.type),
+
+    calculatedIsLayout = [
+        WebElementType.LktLayout
+    ].includes(webElement.value.type),
+
+    calculatedHasOpacityLayer = [
+        WebElementType.LktTextBanner
+    ].includes(webElement.value.type),
+
+    calculatedHasIcon = [
+        WebElementType.LktLayoutBox,
+        WebElementType.LktLayoutAccordion,
+        WebElementType.LktTextBox,
+        WebElementType.LktTextAccordion,
+        WebElementType.LktIcon,
+        WebElementType.LktButton,
+        WebElementType.LktAnchor
+    ].includes(webElement.value.type),
+
     calculatedHasLayout = [WebElementType.LktLayoutBox, WebElementType.LktLayoutAccordion, WebElementType.LktLayout, WebElementType.LktIcons].includes(webElement.value.type),
     calculatedHasImage = [WebElementType.LktImage].includes(webElement.value.type),
     calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(webElement.value.type),
@@ -404,7 +443,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
             },
             events: {
                 click: onCrudUpdated
-            }
+            },
         }
         updateButton = {
             ...props.modalCrudConfig.updateButton,
@@ -450,10 +489,9 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                 click: onCrudUpdated
             }
         },
+        enabledSaveWithoutChanges: true
     }
 })
-
-console.log('webElementConfigCreated update: ', props.onUpdate)
 
 // const onCreate = () => {
 //     console.log('create, update, bibidi: ', props.onUpdate);
@@ -538,6 +576,7 @@ console.log('webElementConfigCreated update: ', props.onUpdate)
                         />
 
                         <lkt-accordion
+                            v-if="calculatedHasTextEditor"
                             v-bind="<AccordionConfig>{
                                 type: AccordionType.Always,
                                 title: 'Text editor'

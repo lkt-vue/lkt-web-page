@@ -4,7 +4,7 @@ import {
     ButtonType,
     FileBrowserConfig,
     ItemCrudConfig,
-    WebElement,
+    WebElement, WebElementController,
     WebElementType,
     WebPage,
     WebParentType,
@@ -14,6 +14,7 @@ import {computed, ref, watch} from 'vue';
 import LktText from "./LktText.vue";
 import LktWebElements from "./LktWebElements.vue";
 import {getLayoutCss} from "../functions/layout-functions";
+import LktCustomElement from "./LktCustomElement.vue";
 
 const emit = defineEmits([
     'update:modelValue',
@@ -101,7 +102,6 @@ const computedComponentAppearance = computed(() => {
 })
 
 const onModalUpdate = () => {
-    console.log('triggered onModalUpdate!')
     emit('crud-update');
 }
 </script>
@@ -303,6 +303,11 @@ const onModalUpdate = () => {
             :file-browser-config="fileBrowserConfig"
             :disabled="disabled"
             :editing="editing"
+        />
+
+        <lkt-custom-element
+            v-else-if="webElement.type.startsWith('custom:')"
+            :settings="WebElementController.getCustomWebElementSettings(webElement.type)"
         />
 
         <component

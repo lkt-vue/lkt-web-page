@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import {
     AccordionConfig,
     AccordionType,
@@ -7,7 +7,7 @@ import {
     FileBrowserConfig,
     ItemCrudConfig,
     ModalConfig,
-    WebElement,
+    WebElement, WebElementController,
     WebElementType,
     WebPage,
     WebParentType,
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<{
 
     const webParent = ref(props.parent);
 
-    const doAddElement = (type: WebElementType) => {
+    const doAddElement = (type: WebElementType|string) => {
         openModal('lkt-web-element-config', '_', {
             element: WebElement.createByType(type),
             parent: webParent.value,
@@ -46,6 +46,10 @@ const props = withDefaults(defineProps<{
             closeModal(props.modalName, props.modalKey);
         }, 200);
     };
+
+    const computedCustomWebElements = computed(() => {
+        return WebElementController.getElements();
+    });
 </script>
 
 <template>
@@ -236,6 +240,28 @@ const props = withDefaults(defineProps<{
                             events: {
                                 click: () => {
                                     doAddElement(WebElementType.LktButton);
+                                }
+                            }
+                        }"
+                    />
+                </div>
+            </lkt-accordion>
+
+            <lkt-accordion
+                v-bind="<AccordionConfig>{
+                    type: AccordionType.Auto,
+                    title: 'Custom'
+                }"
+            >
+                <div class="lkt-grid-3">
+                    <lkt-button
+                        v-for="customWebElement in computedCustomWebElements"
+                        v-bind="<ButtonConfig>{
+                            icon: customWebElement.icon,
+                            text: customWebElement.label ?? customWebElement.id,
+                            events: {
+                                click: () => {
+                                    doAddElement(`custom:${customWebElement.id}`);
                                 }
                             }
                         }"

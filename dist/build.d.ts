@@ -1,6 +1,6 @@
-declare namespace $l {
-    function install(f: any): void;
+declare namespace Gl {
+    function install(s: any): void;
 }
-declare function jl(): void;
-declare function Ml(): void;
-export { $l as default, jl as setupWebElementsHttp, Ml as setupWebPagesHttp };
+declare function zl(): void;
+declare function _l(): void;
+export { Gl as default, zl as setupWebElementsHttp, _l as setupWebPagesHttp };

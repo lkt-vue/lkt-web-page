@@ -10,6 +10,28 @@ import {LktObject, WebElement, WebPage} from "lkt-vue-kernel";
 export const setupWebPagesHttp = () => {
 
     createHTTPGetResource({
+        url: '/web/pages',
+        name: 'ls-web-pages',
+        params: {},
+        digToPerms: 'perms',
+        digToData: 'results',
+        mapData: (data: LktObject[]) => {
+            return data.map(z => new WebPage(data));
+        }
+    });
+
+    createHTTPGetResource({
+        url: '/web/pages/{type}',
+        name: 'ls-web-pages-type',
+        params: {type: {default: undefined}},
+        digToPerms: 'perms',
+        digToData: 'results',
+        mapData: (data: LktObject[]) => {
+            return data.map(z => new WebPage(data));
+        }
+    });
+
+    createHTTPGetResource({
         url: '/web/page/{id}',
         name: 'r-web-page',
         params: {id: {default: undefined}},
