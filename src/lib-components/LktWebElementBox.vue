@@ -15,54 +15,55 @@ import LktText from "./LktText.vue";
 import LktWebElements from "./LktWebElements.vue";
 import {getLayoutCss} from "../functions/layout-functions";
 import LktCustomElement from "./LktCustomElement.vue";
+import WebElementActionsButton from "@/lib-components/WebElementActionsButton.vue";
 
 const emit = defineEmits([
     'update:modelValue',
     'crud-update',
 ]);
 
-    const props = withDefaults(defineProps<{
-        modelValue: WebElement
-        parent: WebElement|WebPage
-        parentType: WebParentType
-        index?: number
-        lang?: string
-        isPreview?: boolean
-        isSubElement?: boolean
-        canRenderActions?: boolean
-        fileBrowserConfig: FileBrowserConfig
-        modalCrudConfig: ItemCrudConfig
-        disabled?: boolean
-        editing?: boolean
-        defaultAppearance?: string
-    }>(), {
-        index: -1,
-        isPreview: false,
-        disabled: false,
-        canRenderActions: true,
-    });
+const props = withDefaults(defineProps<{
+    modelValue: WebElement
+    parent: WebElement | WebPage
+    parentType: WebParentType
+    index?: number
+    lang?: string
+    isPreview?: boolean
+    isSubElement?: boolean
+    canRenderActions?: boolean
+    fileBrowserConfig: FileBrowserConfig
+    modalCrudConfig: ItemCrudConfig
+    disabled?: boolean
+    editing?: boolean
+    defaultAppearance?: string
+}>(), {
+    index: -1,
+    isPreview: false,
+    disabled: false,
+    canRenderActions: true,
+});
 
-    const webElement = ref(props.modelValue);
+const webElement = ref(props.modelValue);
 
-    watch(() => props.modelValue, (newValue, oldValue) => {
-        webElement.value = newValue;
-    })
+watch(() => props.modelValue, (newValue, oldValue) => {
+    webElement.value = newValue;
+})
 
-    watch(webElement, (newValue, oldValue) => {
-        emit('update:modelValue', newValue);
-    })
+watch(webElement, (newValue, oldValue) => {
+    emit('update:modelValue', newValue);
+})
 
-    const appendingItems = ref(false);
+const appendingItems = ref(false);
 
-    const handleInputText = (event: Event, prop: string = 'text') => {
-        const text = (event.target as HTMLElement).innerHTML.trim()
+const handleInputText = (event: Event, prop: string = 'text') => {
+    const text = (event.target as HTMLElement).innerHTML.trim()
 
-        if (text !== webElement.value.props[prop][currentLang]) {
-            webElement.value.props[prop][currentLang] = text;
-        }
+    if (text !== webElement.value.props[prop][currentLang]) {
+        webElement.value.props[prop][currentLang] = text;
     }
+}
 
-    const currentLang = props.lang ?? getCurrentLanguage();
+const currentLang = props.lang ?? getCurrentLanguage();
 
 const computedIsTypeOne = computed(() => {
     return [
@@ -101,197 +102,56 @@ const computedComponentAppearance = computed(() => {
     return props.defaultAppearance
 })
 
+const computedClassName = computed(() => {
+    return `lkt-element is-${webElement.value.type} is-${webElement.value.id} ${computedComponentAppearance.value}`;
+})
+
 const onModalUpdate = () => {
     emit('crud-update');
 }
 </script>
 
 <template>
-    <div class="lkt-element" :class="`is-${webElement.type} is-${webElement.id}`" :key="webElement.keyMoment">
-        <lkt-text
-            v-if="webElement.type === WebElementType.LktText"
-            v-model="webElement.props.text[currentLang]"
-            :disabled="disabled || parentType === WebParentType.Page"
-            @input="handleInputText($event)"
-        />
-
-        <component
-            v-else-if="computedIsTypeOne"
-            :is="computedComponent"
-            :icon="webElement.config.hasHeader && webElement.config.hasIcon ? webElement.props.icon : ''"
-            :class="computedComponentAppearance"
-        >
-            <template #header v-if="webElement.config?.hasHeader">
-                <lkt-text
-                    v-model="webElement.props.header[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'header')"
-                />
-            </template>
-            <lkt-web-elements
-                v-if="computedIsLayoutContainer"
-                v-model="webElement.children"
-                :layout-selector="getLayoutCss(webElement)"
-                is-child
-                :lang="currentLang"
-                :is-preview="isPreview"
-                :parent="webElement"
-                :parent-type="WebParentType.Element"
-                :modal-crud-config="modalCrudConfig"
-                :file-browser-config="fileBrowserConfig"
-                :disabled="disabled"
-                :editing="editing"
+    <lkt-text
+        v-if="webElement.type === WebElementType.LktText"
+        :class="computedClassName"
+        v-model="webElement.props.text[currentLang]"
+        :disabled="disabled || parentType === WebParentType.Page"
+        @input="handleInputText($event)"
+    >
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
             />
+        </template>
+    </lkt-text>
+
+    <component
+        v-else-if="computedIsTypeOne"
+        :is="computedComponent"
+        :icon="webElement.config.hasHeader && webElement.config.hasIcon ? webElement.props.icon : ''"
+        :class="computedClassName"
+    >
+        <template #header v-if="webElement.config?.hasHeader">
             <lkt-text
-                v-else
-                v-model="webElement.props.text[currentLang]"
+                v-model="webElement.props.header[currentLang]"
                 :disabled="disabled || parentType === WebParentType.Page"
-                @input="handleInputText($event, 'text')"
+                @input="handleInputText($event, 'header')"
             />
-        </component>
-
-        <lkt-image
-            v-else-if="webElement.type === WebElementType.LktImage"
-            :class="computedComponentAppearance"
-            :src="webElement.props.src"
-            :alt="typeof webElement.props.alt === 'object' ? webElement.props.alt[currentLang] : ''"
-            :title="typeof webElement.props.title === 'object' ? webElement.props.title[currentLang] : ''"
-        >
-            <template #text>
-                <lkt-text
-                    v-model="webElement.props.text[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'text')"
-                />
-            </template>
-        </lkt-image>
-
-        <lkt-icon
-            v-else-if="webElement.type === WebElementType.LktIcon"
-            :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-            :class="computedComponentAppearance"
-        >
-            <template #text>
-                <lkt-text
-                    v-model="webElement.props.text[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'text')"
-                />
-            </template>
-        </lkt-icon>
-
-        <lkt-header
-            v-else-if="webElement.type === WebElementType.LktHeader"
-            :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-            :class="computedComponentAppearance"
-        >
-            <template #text>
-                <lkt-text
-                    v-model="webElement.props.text[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'text')"
-                />
-            </template>
-        </lkt-header>
-
-        <lkt-button
-            v-else-if="webElement.type === WebElementType.LktButton"
-            :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-            :class="computedComponentAppearance"
-        >
-            <template #text>
-                <lkt-text
-                    v-model="webElement.props.text[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'text')"
-                />
-            </template>
-        </lkt-button>
-
-        <lkt-anchor
-            v-else-if="webElement.type === WebElementType.LktAnchor"
-            :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-            :class="computedComponentAppearance"
-        >
-            <template #text>
-                <lkt-text
-                    v-model="webElement.props.text[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'text')"
-                />
-            </template>
-        </lkt-anchor>
-
-        <lkt-banner
-            v-else-if="webElement.type === WebElementType.LktTextBanner"
-            :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-            :class="computedComponentAppearance"
-            :opacity="webElement.props.opacity"
-            :art="webElement.props.art"
-            :media="webElement.props.media"
-            :type="webElement.props.type"
-        >
-            <template #header v-if="webElement.config?.hasHeader">
-                <lkt-text
-                    v-model="webElement.props.header[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'header')"
-                />
-            </template>
-            <template #subHeader v-if="webElement.config?.hasSubHeader">
-                <lkt-text
-                    v-model="webElement.props.subHeader[currentLang]"
-                    :disabled="disabled || parentType === WebParentType.Page"
-                    @input="handleInputText($event, 'subHeader')"
-                />
-            </template>
-            <lkt-text
-                v-model="webElement.props.text[currentLang]"
-                :disabled="disabled || parentType === WebParentType.Page"
-                @input="handleInputText($event, 'text')"
-            />
-        </lkt-banner>
-
-        <section
-            v-else-if="webElement.type === WebElementType.LktIcons"
-        >
-            <lkt-header v-if="webElement.config?.hasHeader">
-                <template #text >
-                    <lkt-text
-                        v-model="webElement.props.header[currentLang]"
-                        :disabled="disabled || parentType === WebParentType.Page"
-                        @input="handleInputText($event, 'header')"
-                    />
-                </template>
-            </lkt-header>
-
-            <lkt-text
-                v-model="webElement.props.text[currentLang]"
-                :disabled="disabled || parentType === WebParentType.Page"
-                @input="handleInputText($event, 'text')"
-            />
-
-            <lkt-web-elements
-                v-model="webElement.subElements"
-                :layout-selector="getLayoutCss(webElement)"
-                is-child
-                :lang="currentLang"
-                :is-preview="isPreview"
-                :parent="webElement"
-                :parent-type="WebParentType.Element"
-                :modal-crud-config="modalCrudConfig"
-                :file-browser-config="fileBrowserConfig"
-                :disabled="disabled"
-                :editing="editing"
-                :default-appearance="webElement.props.class"
-                is-sub-element
-            />
-
-        </section>
-
-
+        </template>
         <lkt-web-elements
-            v-else-if="webElement.type === WebElementType.LktLayout"
+            v-if="computedIsLayoutContainer"
             v-model="webElement.children"
             :layout-selector="getLayoutCss(webElement)"
             is-child
@@ -304,38 +164,342 @@ const onModalUpdate = () => {
             :disabled="disabled"
             :editing="editing"
         />
-
-        <lkt-custom-element
-            v-else-if="webElement.type.startsWith('custom:')"
-            :settings="WebElementController.getCustomWebElementSettings(webElement.type)"
-        />
-
-        <component
+        <lkt-text
             v-else
-            :is="webElement.component"
-            v-bind="webElement.props"
+            v-model="webElement.props.text[currentLang]"
+            :disabled="disabled || parentType === WebParentType.Page"
+            @input="handleInputText($event, 'text')"
         />
 
-        <div class="lkt-element-actions" v-if="!appendingItems && canRenderActions">
-            <lkt-button
-                v-bind="<ButtonConfig>{
-                    type: ButtonType.Button,
-                    text: webElement.type,
-                    icon: 'lkt-icn-settings-cogs',
-                    modal: 'lkt-web-element-config',
-                    modalKey: webElement.id,
-                    modalData: {
-                        element: webElement,
-                        parent,
-                        parentType,
-                        fileBrowserConfig,
-                        modalCrudConfig,
-                        defaultAppearance,
-                        isSubElement,
-                        onUpdate: onModalUpdate
-                    }
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
                 }"
             />
-        </div>
-    </div>
+        </template>
+    </component>
+
+    <lkt-image
+        v-else-if="webElement.type === WebElementType.LktImage"
+        :class="computedClassName"
+        :src="webElement.props.src"
+        :alt="typeof webElement.props.alt === 'object' ? webElement.props.alt[currentLang] : ''"
+        :title="typeof webElement.props.title === 'object' ? webElement.props.title[currentLang] : ''"
+    >
+        <template #text>
+            <lkt-text
+                v-model="webElement.props.text[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'text')"
+            />
+        </template>
+
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-image>
+
+    <lkt-icon
+        v-else-if="webElement.type === WebElementType.LktIcon"
+        :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
+        :class="computedClassName"
+    >
+        <template #text>
+            <lkt-text
+                v-model="webElement.props.text[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'text')"
+            />
+        </template>
+
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-icon>
+
+    <lkt-header
+        v-else-if="webElement.type === WebElementType.LktHeader"
+        :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
+        :class="computedClassName"
+    >
+        <template #text>
+            <lkt-text
+                v-model="webElement.props.text[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'text')"
+            />
+        </template>
+
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-header>
+
+    <lkt-button
+        v-else-if="webElement.type === WebElementType.LktButton"
+        :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
+        :class="computedClassName"
+    >
+        <template #text>
+            <lkt-text
+                v-model="webElement.props.text[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'text')"
+            />
+        </template>
+
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-button>
+
+    <lkt-anchor
+        v-else-if="webElement.type === WebElementType.LktAnchor"
+        :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
+        :class="computedClassName"
+    >
+        <template #text>
+            <lkt-text
+                v-model="webElement.props.text[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'text')"
+            />
+        </template>
+
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-anchor>
+
+    <lkt-banner
+        v-else-if="webElement.type === WebElementType.LktTextBanner"
+        :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
+        :class="computedClassName"
+        :opacity="webElement.props.opacity"
+        :art="webElement.props.art"
+        :media="webElement.props.media"
+        :type="webElement.props.type"
+    >
+        <template #header v-if="webElement.config?.hasHeader">
+            <lkt-text
+                v-model="webElement.props.header[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'header')"
+            />
+        </template>
+        <template #subHeader v-if="webElement.config?.hasSubHeader">
+            <lkt-text
+                v-model="webElement.props.subHeader[currentLang]"
+                :disabled="disabled || parentType === WebParentType.Page"
+                @input="handleInputText($event, 'subHeader')"
+            />
+        </template>
+        <lkt-text
+            v-model="webElement.props.text[currentLang]"
+            :disabled="disabled || parentType === WebParentType.Page"
+            @input="handleInputText($event, 'text')"
+        />
+
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-banner>
+
+    <section
+        v-else-if="webElement.type === WebElementType.LktIcons"
+    >
+        <lkt-header v-if="webElement.config?.hasHeader">
+            <template #text>
+                <lkt-text
+                    v-model="webElement.props.header[currentLang]"
+                    :disabled="disabled || parentType === WebParentType.Page"
+                    @input="handleInputText($event, 'header')"
+                />
+            </template>
+        </lkt-header>
+
+        <lkt-text
+            v-model="webElement.props.text[currentLang]"
+            :disabled="disabled || parentType === WebParentType.Page"
+            @input="handleInputText($event, 'text')"
+        />
+
+        <lkt-web-elements
+            v-model="webElement.subElements"
+            :layout-selector="getLayoutCss(webElement)"
+            is-child
+            :lang="currentLang"
+            :is-preview="isPreview"
+            :parent="webElement"
+            :parent-type="WebParentType.Element"
+            :modal-crud-config="modalCrudConfig"
+            :file-browser-config="fileBrowserConfig"
+            :disabled="disabled"
+            :editing="editing"
+            :default-appearance="webElement.props.class"
+            is-sub-element
+        >
+            <template #web-element-actions>
+                <web-element-actions-button
+                    v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+                />
+            </template>
+        </lkt-web-elements>
+
+    </section>
+
+
+    <lkt-web-elements
+        v-else-if="webElement.type === WebElementType.LktLayout"
+        v-model="webElement.children"
+        :class="computedClassName"
+        :layout-selector="getLayoutCss(webElement)"
+        is-child
+        :lang="currentLang"
+        :is-preview="isPreview"
+        :parent="webElement"
+        :parent-type="WebParentType.Element"
+        :modal-crud-config="modalCrudConfig"
+        :file-browser-config="fileBrowserConfig"
+        :disabled="disabled"
+        :editing="editing"
+    >
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-web-elements>
+
+    <lkt-custom-element
+        v-else-if="webElement.type.startsWith('custom:')"
+        :settings="WebElementController.getCustomWebElementSettings(webElement.type)"
+    >
+        <template #web-element-actions>
+            <web-element-actions-button
+                v-bind="{
+                    webElement,
+                    appendingItems,
+                    canRenderActions,
+                    parent,
+                    parentType,
+                    fileBrowserConfig,
+                    modalCrudConfig,
+                    defaultAppearance,
+                    isSubElement,
+                    onUpdate: onModalUpdate
+                }"
+            />
+        </template>
+    </lkt-custom-element>
 </template>

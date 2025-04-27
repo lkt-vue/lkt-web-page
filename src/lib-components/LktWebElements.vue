@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, defineEmits, defineProps, nextTick, ref, watch} from 'vue';
+import {computed, defineEmits, defineProps, nextTick, ref, useSlots, watch} from 'vue';
 import {
     ColumnConfig,
     FileBrowserConfig,
@@ -18,6 +18,8 @@ const emit = defineEmits([
     'update:modelValue',
     'crud-update',
 ])
+
+const slots = useSlots();
 
 const props = withDefaults(defineProps<{
     modelValue: WebElement[]
@@ -79,6 +81,7 @@ const computedTableConfig = computed(() => {
     if (props.parentType === WebParentType.Page) perms.push(TablePermission.SwitchEditMode)
 
     let type = props.isPreview ? TableType.Table : TableType.Item;
+    type = TableType.Item;
     if (editing.value) type = TableType.Table;
 
     let itemsContainerClass = 'lkt-elements-table--default-grid';
@@ -136,6 +139,7 @@ const computedTableConfig = computed(() => {
             v-model="items"
             v-bind="computedTableConfig"
             v-model:edit-mode="editing"
+            skip-table-items-container
         >
             <template #item="{_, index}">
                 <lkt-web-element-box
@@ -157,5 +161,9 @@ const computedTableConfig = computed(() => {
                 />
             </template>
         </lkt-table>
+
+        <template v-if="slots['web-element-actions']">
+            <slot name="web-element-actions"/>
+        </template>
     </div>
 </template>

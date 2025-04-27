@@ -20,7 +20,7 @@ import {
     LktObject,
     LktSettings,
     OptionConfig,
-    WebElement,
+    WebElement, WebElementController,
     WebElementLayoutType,
     WebElementType,
     WebPage,
@@ -238,6 +238,10 @@ const alignItemsOptions: OptionConfig[] = [
         value: 'lkt-align-items-end',
         label: 'Default: End',
     },
+    {
+        value: 'lkt-align-items-stretch',
+        label: 'Default: Stretch',
+    },
 ];
 
 const justifyContentOptions: OptionConfig[] = [
@@ -333,30 +337,10 @@ const addSubElement = () => {
 }
 
 const computedCustomClassField = computed((): FieldConfig | undefined => {
-    let config = {};
-    switch (webElement.value.type) {
-        case WebElementType.LktLayoutBox:
-        case WebElementType.LktTextBox:
-            config = LktSettings.defaultFieldLktBoxElementCustomClassField;
-            break;
-
-        case WebElementType.LktLayoutAccordion:
-        case WebElementType.LktTextAccordion:
-            config = LktSettings.defaultFieldLktAccordionElementCustomClassField;
-            break;
-
-        case WebElementType.LktIcon:
-        case WebElementType.LktIcons:
-            config = LktSettings.defaultFieldLktIconElementCustomClassField;
-            break;
-
-        case WebElementType.LktImage:
-            config = LktSettings.defaultFieldLktImageElementCustomClassField;
-            break;
-    }
+    let config = WebElementController.getCustomAppearance(webElement.value.type);
 
     return Object.keys(config).length > 0
-        ? ensureFieldConfig(config, LktSettings.defaultFieldElementCustomClassField)
+        ? ensureFieldConfig({options: config.options}, LktSettings.defaultFieldElementCustomClassField)
         : undefined;
 });
 
