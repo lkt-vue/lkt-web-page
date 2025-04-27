@@ -85,6 +85,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                 </div>
 
                 <lkt-web-elements
+                    v-if="webPage.id > 0"
                     v-model="item.webElements"
                     :lang="getCurrentLanguage()"
                     :modal-crud-config="modalCrudConfig"
