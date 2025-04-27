@@ -1654,6 +1654,7 @@ const j = /* @__PURE__ */ G({
     name: "mk-web-page",
     params: {
       name: { default: void 0 },
+      type: { default: void 0 },
       webElements: { default: void 0 }
     },
     digToPerms: "perms",

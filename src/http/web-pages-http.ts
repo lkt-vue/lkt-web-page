@@ -58,6 +58,7 @@ export const setupWebPagesHttp = () => {
         name: 'mk-web-page',
         params: {
             name: {default: undefined},
+            type: {default: undefined},
             webElements: {default: undefined},
         },
         digToPerms: 'perms',
