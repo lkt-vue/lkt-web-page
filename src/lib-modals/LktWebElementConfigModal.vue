@@ -621,6 +621,24 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                                     }"
                                     @click="() => applyTextAlignment('right')"
                                 />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-align-justify',
+                                    }"
+                                    @click="() => applyTextAlignment('justify')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-list-bullet',
+                                    }"
+                                    @click="() => applyTextFormat('insertUnorderedList')"
+                                />
+                                <lkt-button
+                                    v-bind="<ButtonConfig>{
+                                        icon: 'lkt-icn-list-numbered',
+                                    }"
+                                    @click="() => applyTextFormat('insertOrderedList')"
+                                />
                             </div>
                         </lkt-accordion>
 
