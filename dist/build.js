@@ -1,4 +1,4 @@
-import { defineComponent as q, useSlots as He, createElementBlock as K, openBlock as p, renderSlot as Oe, createCommentVNode as L, setBlockTracking as Se, createElementVNode as R, unref as e, createBlock as v, resolveDynamicComponent as Fe, normalizeProps as b, mergeProps as f, resolveComponent as H, createVNode as d, guardReactiveProps as B, ref as N, watch as _, computed as M, normalizeClass as G, withCtx as V, createSlots as De, nextTick as $e, Fragment as ce, renderList as we, onMounted as al } from "vue";
+import { defineComponent as q, useSlots as He, createElementBlock as K, openBlock as p, renderSlot as Oe, createCommentVNode as L, setBlockTracking as Se, createElementVNode as R, unref as e, createBlock as v, resolveDynamicComponent as Fe, normalizeProps as C, mergeProps as f, resolveComponent as H, createVNode as d, guardReactiveProps as B, ref as N, watch as _, computed as M, normalizeClass as G, withCtx as V, createSlots as De, nextTick as $e, Fragment as ce, renderList as we, onMounted as al } from "vue";
 import { WebElementLayoutType as $, ButtonType as je, WebElementType as u, WebParentType as I, WebElementController as Te, TablePermission as se, TableType as pe, WebElement as ee, WebPage as fe, FieldType as S, AccordionType as O, BannerType as Pe, ensureFieldConfig as ol, LktSettings as nl, getDefaultLktButtonWebElement as ul, ItemCrudView as dl, ItemCrudMode as he, applyTextFormat as J, applyTextAlignment as me, AccordionToggleMode as rl } from "lkt-vue-kernel";
 import { getCurrentLanguage as Le, getAvailableLanguages as il } from "lkt-i18n";
 import { httpCall as xe, createHTTPGetResource as Z, createHTTPPostResource as Me, createHTTPPutResource as Ne, createHTTPDeleteResource as We } from "lkt-http-client";
@@ -15,8 +15,8 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     "keydown"
   ],
   setup(m, { emit: a }) {
-    const C = a, o = He(), l = (w) => {
-      C("input", w);
+    const k = a, o = He(), l = (w) => {
+      k("input", w);
     };
     return (w, T) => (p(), K("div", ml, [
       T[0] || (Se(-1, !0), (T[0] = R("div", {
@@ -30,9 +30,9 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
   }
 }), Ce = (m, a = !1) => {
   if (!m.layout || a) return "";
-  let C = [];
-  m.layout.type === $.FlexRow && (!m.layout.amountOfItems || m.layout.amountOfItems.length === 0) ? C.push("lkt-flex-row") : m.layout.type === $.FlexRows && (!m.layout.amountOfItems || m.layout.amountOfItems.length === 0) ? C.push("lkt-flex-rows") : m.layout.type === $.FlexColumn && C.push("lkt-flex-column"), m.layout.amountOfItems && m.layout.amountOfItems.length > 0 && (m.layout.type === $.FlexRow ? C.push(m.layout.amountOfItems.map((l) => `lkt-flex-row-${l}`).join(" ")) : m.layout.type === $.FlexRows ? C.push(m.layout.amountOfItems.map((l) => `lkt-flex-rows-${l}`).join(" ")) : C.push(m.layout.amountOfItems.map((l) => `lkt-grid-${l}`).join(" "))), m.layout.alignItems && m.layout.alignItems.length > 0 && C.push(m.layout.alignItems.join(" ")), m.layout.justifyContent && m.layout.justifyContent.length > 0 && C.push(m.layout.justifyContent.join(" ")), C.length > 0 && C.push("layout-mode");
-  let o = C.join(" ");
+  let k = [];
+  m.layout.type === $.FlexRow && (!m.layout.amountOfItems || m.layout.amountOfItems.length === 0) ? k.push("lkt-flex-row") : m.layout.type === $.FlexRows && (!m.layout.amountOfItems || m.layout.amountOfItems.length === 0) ? k.push("lkt-flex-rows") : m.layout.type === $.FlexColumn && k.push("lkt-flex-column"), m.layout.amountOfItems && m.layout.amountOfItems.length > 0 && (m.layout.type === $.FlexRow ? k.push(m.layout.amountOfItems.map((l) => `lkt-flex-row-${l}`).join(" ")) : m.layout.type === $.FlexRows ? k.push(m.layout.amountOfItems.map((l) => `lkt-flex-rows-${l}`).join(" ")) : k.push(m.layout.amountOfItems.map((l) => `lkt-grid-${l}`).join(" "))), m.layout.alignItems && m.layout.alignItems.length > 0 && k.push(m.layout.alignItems.join(" ")), m.layout.justifyContent && m.layout.justifyContent.length > 0 && k.push(m.layout.justifyContent.join(" ")), k.length > 0 && k.push("layout-mode");
+  let o = k.join(" ");
   return m.layout.type === $.FlexRows && (o = o.replace("flex-row-", "flex-rows-")), o;
 }, cl = /* @__PURE__ */ q({
   __name: "LktCustomElement",
@@ -40,7 +40,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     settings: {}
   },
   setup(m) {
-    return (a, C) => a.settings.type === "component" ? (p(), v(Fe(a.settings.component), b(f({ key: 0 }, a.settings.componentProps)), null, 16)) : L("", !0);
+    return (a, k) => a.settings.type === "component" ? (p(), v(Fe(a.settings.component), C(f({ key: 0 }, a.settings.componentProps)), null, 16)) : L("", !0);
   }
 }), fl = {
   key: 0,
@@ -60,10 +60,10 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     defaultAppearance: {}
   },
   setup(m) {
-    return (a, C) => {
+    return (a, k) => {
       const o = H("lkt-button");
       return !a.appendingItems && a.canRenderActions ? (p(), K("div", fl, [
-        d(o, b(B({
+        d(o, C(B({
           type: e(je).Button,
           icon: "lkt-icn-cog",
           modal: "lkt-web-element-config",
@@ -104,11 +104,11 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     "crud-update"
   ],
   setup(m, { emit: a }) {
-    const C = a, o = m, l = N(o.modelValue);
+    const k = a, o = m, l = N(o.modelValue);
     _(() => o.modelValue, (t, n) => {
       l.value = t;
     }), _(l, (t, n) => {
-      C("update:modelValue", t);
+      k("update:modelValue", t);
     });
     const w = N(!1), T = (t, n = "text") => {
       const X = t.target.innerHTML.trim();
@@ -122,7 +122,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
       u.LktLayoutBox,
       u.LktLayoutAccordion,
       u.LktLayout
-    ].includes(l.value.type)), k = M(() => {
+    ].includes(l.value.type)), b = M(() => {
       if ([
         u.LktLayoutBox,
         u.LktTextBox
@@ -134,7 +134,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
       ].includes(l.value.type))
         return "lkt-accordion";
     }), P = M(() => l.value.props.class ? l.value.props.class : o.defaultAppearance), h = M(() => `lkt-element is-${l.value.type} is-${l.value.id} ${P.value}`), U = () => {
-      C("crud-update");
+      k("crud-update");
     };
     return (t, n) => {
       var ne, ue, te, de;
@@ -148,7 +148,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         onInput: n[1] || (n[1] = (i) => T(i))
       }, {
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -162,13 +162,13 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           })), null, 16)
         ]),
         _: 1
-      }, 8, ["class", "modelValue", "disabled"])) : D.value ? (p(), v(Fe(k.value), {
+      }, 8, ["class", "modelValue", "disabled"])) : D.value ? (p(), v(Fe(b.value), {
         key: 1,
         icon: l.value.config.hasHeader && l.value.config.hasIcon ? l.value.props.icon : "",
         class: G(h.value)
       }, De({
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -234,7 +234,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           }, null, 8, ["modelValue", "disabled"])
         ]),
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -262,7 +262,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           }, null, 8, ["modelValue", "disabled"])
         ]),
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -290,7 +290,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           }, null, 8, ["modelValue", "disabled"])
         ]),
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -318,7 +318,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           }, null, 8, ["modelValue", "disabled"])
         ]),
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -346,7 +346,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           }, null, 8, ["modelValue", "disabled"])
         ]),
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -370,7 +370,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         type: l.value.props.type
       }, De({
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -452,7 +452,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           "is-sub-element": ""
         }, {
           "web-element-actions": V(() => [
-            d(W, b(B({
+            d(W, C(B({
               webElement: l.value,
               appendingItems: w.value,
               canRenderActions: t.canRenderActions,
@@ -484,7 +484,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         editing: t.editing
       }, {
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -503,7 +503,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         settings: e(Te).getCustomWebElementSettings(l.value.type)
       }, {
         "web-element-actions": V(() => [
-          d(W, b(B({
+          d(W, C(B({
             webElement: l.value,
             appendingItems: w.value,
             canRenderActions: t.canRenderActions,
@@ -545,32 +545,32 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     "crud-update"
   ],
   setup(m, { emit: a }) {
-    const C = a, o = He(), l = m, w = N(l.modelValue), T = N(l.editing), r = N(!1);
-    _(w, (k) => {
-      C("update:modelValue", k);
-    }, { deep: !0 }), _(T, (k) => {
-      console.log("editing", k);
+    const k = a, o = He(), l = m, w = N(l.modelValue), T = N(l.editing), r = N(!1);
+    _(w, (b) => {
+      k("update:modelValue", b);
+    }, { deep: !0 }), _(T, (b) => {
+      console.log("editing", b);
     }, { deep: !0 });
     const D = () => {
       if (l.isSubElement) {
         r.value = !0, $e(() => {
-          r.value = !1, C("crud-update");
+          r.value = !1, k("crud-update");
         });
         return;
       }
-      const k = l.parentType === I.Page ? "r-web-page-children" : "r-web-element-children";
-      xe(k, { id: l.parent.id }).then((P) => {
-        w.value = P.data.map((h) => new ee(h)), C("crud-update");
+      const b = l.parentType === I.Page ? "r-web-page-children" : "r-web-element-children";
+      xe(b, { id: l.parent.id }).then((P) => {
+        w.value = P.data.map((h) => new ee(h)), k("crud-update");
       });
     }, x = M(() => {
-      let k = [se.Update, se.Sort];
-      l.isChild || k.push(se.Create), l.parentType === I.Page && k.push(se.SwitchEditMode);
+      let b = [se.Update, se.Sort];
+      l.isChild || b.push(se.Create), l.parentType === I.Page && b.push(se.SwitchEditMode);
       let P = l.isPreview ? pe.Table : pe.Item;
       P = pe.Item, T.value && (P = pe.Table);
       let h = "lkt-elements-table--default-grid";
       return l.isChild && (h = l.layoutSelector), {
         type: P,
-        perms: k,
+        perms: b,
         itemsContainerClass: h,
         slotItemVar: "element",
         hideTableHeader: !0,
@@ -607,10 +607,10 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         ]
       };
     });
-    return (k, P) => {
+    return (b, P) => {
       const h = H("lkt-table");
       return p(), K("div", null, [
-        k.parentType === e(I).Page ? (p(), K("span", yl, "Web Elements")) : L("", !0),
+        b.parentType === e(I).Page ? (p(), K("span", yl, "Web Elements")) : L("", !0),
         d(h, f({
           class: "lkt-elements-table",
           modelValue: w.value,
@@ -626,23 +626,23 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
               modelValue: w.value[t],
               "onUpdate:modelValue": (n) => w.value[t] = n,
               index: t,
-              lang: k.lang,
-              "is-preview": k.isPreview,
-              parent: k.parent,
-              "parent-type": k.parentType,
-              "file-browser-config": k.fileBrowserConfig,
-              "modal-crud-config": k.modalCrudConfig,
+              lang: b.lang,
+              "is-preview": b.isPreview,
+              parent: b.parent,
+              "parent-type": b.parentType,
+              "file-browser-config": b.fileBrowserConfig,
+              "modal-crud-config": b.modalCrudConfig,
               "can-render-actions": !T.value,
-              disabled: k.disabled || !T.value,
+              disabled: b.disabled || !T.value,
               editing: T.value,
-              "default-appearance": k.defaultAppearance,
-              "is-sub-element": k.isSubElement,
+              "default-appearance": b.defaultAppearance,
+              "is-sub-element": b.isSubElement,
               onCrudUpdate: D
             }, null, 8, ["modelValue", "onUpdate:modelValue", "index", "lang", "is-preview", "parent", "parent-type", "file-browser-config", "modal-crud-config", "can-render-actions", "disabled", "editing", "default-appearance", "is-sub-element"]))
           ]),
           _: 1
         }, 16, ["modelValue", "edit-mode"]),
-        e(o)["web-element-actions"] ? Oe(k.$slots, "web-element-actions", { key: 1 }) : L("", !0)
+        e(o)["web-element-actions"] ? Oe(b.$slots, "web-element-actions", { key: 1 }) : L("", !0)
       ]);
     };
   }
@@ -655,22 +655,22 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     fileBrowserConfig: {}
   },
   setup(m) {
-    const a = m, C = N(new fe(a.modelValue)), o = N(null), l = () => {
+    const a = m, k = N(new fe(a.modelValue)), o = N(null), l = () => {
       o.value.turnStoredDataIntoOriginal();
     }, w = M(() => {
-      var D, x, k;
+      var D, x, b;
       let T = !1, r = !1;
       return T = {
         ...a.crudConfig.createButton,
         resourceData: {
           ...(D = a.crudConfig.createButton) == null ? void 0 : D.resourceData,
-          ...C.value
+          ...k.value
         }
       }, r = {
         ...a.crudConfig.updateButton,
         resourceData: {
           ...(x = a.crudConfig.updateButton) == null ? void 0 : x.resourceData,
-          ...C.value
+          ...k.value
         }
       }, {
         ...a.crudConfig,
@@ -679,8 +679,8 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         dropButton: {
           ...a.crudConfig.dropButton,
           resourceData: {
-            ...(k = a.crudConfig.dropButton) == null ? void 0 : k.resourceData,
-            ...C.value
+            ...(b = a.crudConfig.dropButton) == null ? void 0 : b.resourceData,
+            ...k.value
           }
         }
       };
@@ -691,29 +691,29 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         d(x, f({
           ref_key: "itemCrudRef",
           ref: o,
-          modelValue: C.value,
-          "onUpdate:modelValue": r[0] || (r[0] = (k) => C.value = k)
+          modelValue: k.value,
+          "onUpdate:modelValue": r[0] || (r[0] = (b) => k.value = b)
         }, w.value, {
-          title: C.value.name
+          title: k.value.name === "" ? "New page" : k.value.name
         }), {
-          item: V(({ item: k }) => [
+          item: V(({ item: b }) => [
             R("div", kl, [
               d(D, f({
-                modelValue: k.name,
-                "onUpdate:modelValue": (P) => k.name = P
+                modelValue: b.name,
+                "onUpdate:modelValue": (P) => b.name = P
               }, {
                 type: e(S).Text,
                 label: "Name"
               }), null, 16, ["modelValue", "onUpdate:modelValue"])
             ]),
-            C.value.id > 0 ? (p(), v(ye, {
+            k.value.id > 0 ? (p(), v(ye, {
               key: 0,
-              modelValue: k.webElements,
-              "onUpdate:modelValue": (P) => k.webElements = P,
+              modelValue: b.webElements,
+              "onUpdate:modelValue": (P) => b.webElements = P,
               lang: e(Le)(),
               "modal-crud-config": T.modalCrudConfig,
               "file-browser-config": T.fileBrowserConfig,
-              parent: C.value,
+              parent: k.value,
               "parent-type": e(I).Page,
               "is-preview": !1,
               disabled: "",
@@ -738,10 +738,10 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
     onUpdate: {}
   },
   setup(m) {
-    const a = m, C = N(a.parent), o = (w) => {
+    const a = m, k = N(a.parent), o = (w) => {
       ge("lkt-web-element-config", "_", {
         element: ee.createByType(w),
-        parent: C.value,
+        parent: k.value,
         parentType: a.parentType,
         fileBrowserConfig: a.fileBrowserConfig,
         modalCrudConfig: a.modalCrudConfig,
@@ -760,14 +760,14 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
       }), {
         default: V(() => [
           R("div", Cl, [
-            d(D, b(B({
+            d(D, C(B({
               type: e(O).Auto,
               title: "Individual elements",
               modelValue: !0
             })), {
               default: V(() => [
                 R("div", wl, [
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-font",
                     text: "Text",
                     events: {
@@ -776,7 +776,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-header",
                     text: "LktHeader",
                     events: {
@@ -785,7 +785,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-picture",
                     text: "LktImage",
                     events: {
@@ -794,7 +794,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-icon",
                     text: "LktIcon",
                     events: {
@@ -803,7 +803,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-box",
                     text: "LktTextBox",
                     events: {
@@ -812,7 +812,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-accordion",
                     text: "LktTextAccordion",
                     events: {
@@ -821,7 +821,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-banner",
                     text: "LktTextBanner",
                     events: {
@@ -834,13 +834,13 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
               ]),
               _: 1
             }, 16),
-            d(D, b(B({
+            d(D, C(B({
               type: e(O).Auto,
               title: "Collection elements"
             })), {
               default: V(() => [
                 R("div", Vl, [
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-icon",
                     text: "LktIcons",
                     events: {
@@ -853,13 +853,13 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
               ]),
               _: 1
             }, 16),
-            d(D, b(B({
+            d(D, C(B({
               type: e(O).Auto,
               title: "Containers"
             })), {
               default: V(() => [
                 R("div", Tl, [
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-box",
                     text: "LktLayoutBox",
                     events: {
@@ -868,7 +868,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-accordion",
                     text: "LktLayoutAccordion",
                     events: {
@@ -877,7 +877,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-columns",
                     text: "LktLayout",
                     events: {
@@ -890,13 +890,13 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
               ]),
               _: 1
             }, 16),
-            d(D, b(B({
+            d(D, C(B({
               type: e(O).Auto,
               title: "Actions"
             })), {
               default: V(() => [
                 R("div", Ll, [
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-link",
                     text: "LktAnchor",
                     events: {
@@ -905,7 +905,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                       }
                     }
                   })), null, 16),
-                  d(r, b(B({
+                  d(r, C(B({
                     icon: "lkt-icn-button",
                     text: "LktButton",
                     events: {
@@ -918,18 +918,18 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
               ]),
               _: 1
             }, 16),
-            d(D, b(B({
+            d(D, C(B({
               type: e(O).Auto,
               title: "Custom"
             })), {
               default: V(() => [
                 R("div", Bl, [
-                  (p(!0), K(ce, null, we(l.value, (k) => (p(), v(r, f({ ref_for: !0 }, {
-                    icon: k.icon,
-                    text: k.label ?? k.id,
+                  (p(!0), K(ce, null, we(l.value, (b) => (p(), v(r, f({ ref_for: !0 }, {
+                    icon: b.icon,
+                    text: b.label ?? b.id,
                     events: {
                       click: () => {
-                        o(`custom:${k.id}`);
+                        o(`custom:${b.id}`);
                       }
                     }
                   }), null, 16))), 256))
@@ -999,8 +999,8 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
       columns: ["auto", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     }
   }, a = [];
-  for (let C in m) {
-    let o = m[C];
+  for (let k in m) {
+    let o = m[k];
     if (!(!o.columns || !Array.isArray(o.columns) || o.columns.length === 0))
       for (let l in o.columns) {
         let w = o.columns[l].toString();
@@ -1045,9 +1045,9 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
   },
   setup(m) {
     var Ie, Ue, Ee;
-    const a = m, C = N(parseInt(a.modalKey)), o = N(new ee(a.element)), l = N(null), w = N(!1);
+    const a = m, k = N(parseInt(a.modalKey)), o = N(new ee(a.element)), l = N(null), w = N(!1);
     _(() => a.modalKey, (y) => {
-      C.value = parseInt(y);
+      k.value = parseInt(y);
     });
     const T = () => {
       let y = o.value.getClone();
@@ -1069,7 +1069,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
         modalCrudConfig: a.modalCrudConfig,
         afterElement: o.value.id
       });
-    }, D = o.value.getCustomSettings(), x = il(), k = Le(), P = !D || ((Ie = D.options) == null ? void 0 : Ie.textEditor) === !0, h = [
+    }, D = o.value.getCustomSettings(), x = il(), b = Le(), P = !D || ((Ie = D.options) == null ? void 0 : Ie.textEditor) === !0, h = [
       u.LktLayoutBox,
       u.LktLayoutAccordion,
       u.LktTextBox,
@@ -1314,7 +1314,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
       });
       let F = a.isSubElement ? ie : void 0;
       return {
-        mode: C.value > 0 ? he.Update : he.Create,
+        mode: k.value > 0 ? he.Update : he.Create,
         view: dl.Modal,
         editing: !0,
         perms: ll.value,
@@ -1328,7 +1328,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
           beforeClose: F
         },
         readData: {
-          id: C.value
+          id: k.value
         },
         ...a.modalCrudConfig,
         createButton: y,
@@ -1370,7 +1370,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                 onCrudUpdate: y.onUpdate
               }, null, 8, ["modelValue", "modal-crud-config", "parent", "parent-type", "default-appearance", "onCrudUpdate"]),
               (p(!0), K(ce, null, we(e(x), (c) => (p(), K(ce, null, [
-                c !== e(k) ? (p(), v(F, f({
+                c !== e(b) ? (p(), v(F, f({
                   key: 0,
                   ref_for: !0
                 }, {
@@ -1396,7 +1396,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
             ]),
             R("div", Rl, [
               R("div", Hl, [
-                e(ue) ? (p(), v(E, b(f({ key: 0 }, {
+                e(ue) ? (p(), v(E, C(f({ key: 0 }, {
                   text: "Add children",
                   icon: "lkt-icn-more",
                   modal: "lkt-web-element-select",
@@ -1408,14 +1408,14 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                     onUpdate: y.onCrudUpdate
                   }
                 })), null, 16)) : L("", !0),
-                g.type === e(u).LktIcons ? (p(), v(E, b(f({ key: 1 }, {
+                g.type === e(u).LktIcons ? (p(), v(E, C(f({ key: 1 }, {
                   text: "Add icon",
                   icon: "lkt-icn-more",
                   events: {
                     click: el
                   }
                 })), null, 16)) : L("", !0),
-                e(P) ? (p(), v(F, b(f({ key: 2 }, {
+                e(P) ? (p(), v(F, C(f({ key: 2 }, {
                   type: e(O).Always,
                   title: "Text editor"
                 })), {
@@ -1485,7 +1485,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                   ]),
                   _: 1
                 }, 16)) : L("", !0),
-                !e(X) && !e(ve) ? (p(), v(F, b(f({ key: 3 }, {
+                !e(X) && !e(ve) ? (p(), v(F, C(f({ key: 3 }, {
                   type: e(O).Auto,
                   title: "Config",
                   modelValue: !0,
@@ -1629,7 +1629,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                   ]),
                   _: 2
                 }, 1040))), 256)) : L("", !0),
-                e(ne) ? (p(), v(F, b(f({ key: 5 }, {
+                e(ne) ? (p(), v(F, C(f({ key: 5 }, {
                   type: e(O).Auto,
                   title: "Accordion Config"
                 })), {
@@ -1647,7 +1647,7 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                   ]),
                   _: 2
                 }, 1040)) : L("", !0),
-                e(Q) || e(te) ? (p(), v(F, b(f({ key: 6 }, {
+                e(Q) || e(te) ? (p(), v(F, C(f({ key: 6 }, {
                   type: e(O).Auto,
                   title: "Layout Config"
                 })), {
@@ -1718,20 +1718,20 @@ const ml = { class: "lkt-text" }, j = /* @__PURE__ */ q({
                   ]),
                   _: 2
                 }, 1040)) : L("", !0),
-                d(E, b(B({
+                d(E, C(B({
                   text: "Duplicate",
                   icon: "lkt-icn-more",
                   type: e(je).Split
                 })), {
                   split: V(({ doClose: c }) => [
                     R("div", Ml, [
-                      d(E, b(B({
+                      d(E, C(B({
                         text: "Before",
                         events: {
                           click: T
                         }
                       })), null, 16),
-                      d(E, b(B({
+                      d(E, C(B({
                         text: "After",
                         events: {
                           click: r

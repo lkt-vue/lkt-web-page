@@ -71,7 +71,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
             ref="itemCrudRef"
             v-model="webPage"
             v-bind="computedItemCrudConfig"
-            :title="webPage.name"
+            :title="webPage.name === '' ? 'New page' : webPage.name"
         >
             <template #item="{item}">
                 <div class="lkt-grid-1 lkt-grid-3--from-768">
