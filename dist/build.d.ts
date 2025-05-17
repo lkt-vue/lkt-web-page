@@ -1,5 +1,5 @@
 declare namespace Yl {
-    function install(p: any): void;
+    function install(m: any): void;
 }
 declare function Ql(): void;
 declare function Xl(): void;

@@ -5,7 +5,7 @@ import {
     FieldConfig,
     FieldType,
     FileBrowserConfig,
-    ItemCrudConfig, ItemCrudMode, ItemCrudView,
+    ItemCrudConfig,
     WebPage,
     WebPageConfig,
     WebParentType
