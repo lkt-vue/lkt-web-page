@@ -1,11 +1,14 @@
 <script setup lang="ts">
 
 import {
+    BoxConfig,
     ButtonConfig,
     FieldConfig,
     FieldType,
     FileBrowserConfig,
-    ItemCrudConfig,
+    FormConfig,
+    FormInstance,
+    ItemCrudConfig, OptionConfig,
     WebPage,
     WebPageConfig,
     WebParentType
@@ -25,10 +28,53 @@ const props = withDefaults(defineProps<{
 
 const webPage = ref(new WebPage(props.modelValue));
 const itemCrudRef = ref(null);
+const editing = ref(false);
 
 const onCrudUpdate = () => {
     itemCrudRef.value.turnStoredDataIntoOriginal();
 }
+
+const pageStatuses = computed(() => {
+    return <Array<OptionConfig>>[
+        {value: 'draft', label: 'Draft'},
+        {value: 'public', label: 'Public'},
+        {value: 'scheduled', label: 'Scheduled'},
+    ];
+})
+
+const computedItemForm = computed(() => {
+    return <FormConfig>{
+        items: [
+            FormInstance.mkFormItemConfig({
+                container: {
+                    tag: 'lkt-box',
+                    props: <BoxConfig>{
+                        title: 'Main data',
+                    }
+                },
+                uiConfig: {
+                    formClass: 'lkt-grid-1 lkt-grid-3--from-768',
+                },
+                items: [
+                    FormInstance.mkFieldItemConfig('name', {
+                        type: FieldType.Text,
+                        label: 'Name',
+                        mandatory: true,
+                        canUndo: true,
+                    }),
+                    FormInstance.mkFieldItemConfig('status', {
+                        type: FieldType.Select,
+                        label: 'Status',
+                        mandatory: true,
+                        canUndo: true,
+                        options: pageStatuses.value,
+                    }),
+                ]
+            }),
+            FormInstance.mkSlotItemConfig('web-elements', {canRender: webPage.value.id > 0}),
+        ]
+    }
+})
 
 const computedItemCrudConfig = computed((): ItemCrudConfig => {
 
@@ -54,6 +100,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         ...props.crudConfig,
         createButton,
         updateButton,
+        form: computedItemForm.value,
         dropButton: {
             ...props.crudConfig.dropButton,
             resourceData: {
@@ -70,23 +117,13 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         <lkt-item-crud
             ref="itemCrudRef"
             v-model="webPage"
+            v-model:editing="editing"
             v-bind="computedItemCrudConfig"
             :title="webPage.name === '' ? 'New page' : webPage.name"
         >
-            <template #item="{item}">
-                <div class="lkt-grid-1 lkt-grid-3--from-768">
-                    <lkt-field
-                        v-model="item.name"
-                        v-bind="<FieldConfig>{
-                            type: FieldType.Text,
-                            label: 'Name',
-                        }"
-                    />
-                </div>
-
+            <template #web-elements>
                 <lkt-web-elements
-                    v-if="webPage.id > 0"
-                    v-model="item.webElements"
+                    v-model="webPage.webElements"
                     :lang="getCurrentLanguage()"
                     :modal-crud-config="modalCrudConfig"
                     :file-browser-config="fileBrowserConfig"
