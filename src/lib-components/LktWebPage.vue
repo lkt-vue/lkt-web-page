@@ -1,19 +1,23 @@
 <script setup lang="ts">
 
 import {
-    BoxConfig,
+    AccordionConfig,
+    AccordionToggleMode,
+    AccordionType,
     ButtonConfig,
-    FieldConfig,
+    FieldAutoValidationTrigger,
     FieldType,
     FileBrowserConfig,
     FormConfig,
     FormInstance,
-    ItemCrudConfig, OptionConfig,
+    ItemCrudConfig,
+    OptionConfig,
     WebPage,
     WebPageConfig,
+    WebPageStatus,
     WebParentType
 } from "lkt-vue-kernel";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import LktWebElements from "./LktWebElements.vue";
 import {getCurrentLanguage} from "lkt-i18n";
 
@@ -42,14 +46,20 @@ const pageStatuses = computed(() => {
     ];
 })
 
+watch(() => webPage.value.name, () => {
+    webPage.value.updateSlug();
+})
+
 const computedItemForm = computed(() => {
     return <FormConfig>{
         items: [
             FormInstance.mkFormItemConfig({
                 container: {
-                    tag: 'lkt-box',
-                    props: <BoxConfig>{
+                    tag: 'lkt-accordion',
+                    props: <AccordionConfig>{
+                        type: AccordionType.Always,
                         title: 'Main data',
+                        toggleMode: AccordionToggleMode.Height
                     }
                 },
                 uiConfig: {
@@ -61,6 +71,9 @@ const computedItemForm = computed(() => {
                         label: 'Name',
                         mandatory: true,
                         canUndo: true,
+                        validation: {
+                            trigger: FieldAutoValidationTrigger.Blur
+                        }
                     }),
                     FormInstance.mkFieldItemConfig('status', {
                         type: FieldType.Select,
@@ -68,10 +81,55 @@ const computedItemForm = computed(() => {
                         mandatory: true,
                         canUndo: true,
                         options: pageStatuses.value,
+                        validation: {
+                            trigger: FieldAutoValidationTrigger.Blur
+                        }
+                    }),
+                    FormInstance.mkFieldItemConfig('scheduledDate', {
+                        type: FieldType.DateTime,
+                        label: 'Scheduled date',
+                        mandatory: webPage.value.status === WebPageStatus.Scheduled,
+                        canUndo: true,
+                        validation: {
+                            trigger: FieldAutoValidationTrigger.Blur
+                        }
+                    }, {}, {canRender: webPage.value.status === WebPageStatus.Scheduled}),
+                ]
+            }),
+            FormInstance.mkFormItemConfig({
+                container: {
+                    tag: 'lkt-accordion',
+                    props: <AccordionConfig>{
+                        type: AccordionType.Auto,
+                        title: 'SEO',
+                        toggleMode: AccordionToggleMode.Height
+                    }
+                },
+                uiConfig: {
+                    formClass: 'lkt-grid-1 lkt-grid-3--from-768',
+                },
+                items: [
+                    FormInstance.mkFieldItemConfig('slug', {
+                        type: FieldType.Text,
+                        label: 'Slug',
+                        mandatory: true,
+                        readMode: true,
+                        validation: {
+                            trigger: FieldAutoValidationTrigger.Blur
+                        }
+                    }),
+                    FormInstance.mkFieldItemConfig('keywords', {
+                        type: FieldType.Select,
+                        label: 'Keywords',
+                        multiple: true,
+                        canUndo: true,
+                        canTag: true,
                     }),
                 ]
             }),
-            FormInstance.mkSlotItemConfig('web-elements', {canRender: webPage.value.id > 0}),
+            FormInstance.mkSlotItemConfig('web-elements', {
+                canRender: webPage.value.id > 0
+            }),
         ]
     }
 })
@@ -119,10 +177,11 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
             v-model="webPage"
             v-model:editing="editing"
             v-bind="computedItemCrudConfig"
-            :title="webPage.name === '' ? 'New page' : webPage.name"
+            :title="webPage.name === '' ? 'Page name' : webPage.name"
         >
             <template #web-elements>
                 <lkt-web-elements
+                    v-if="webPage.id > 0"
                     v-model="webPage.webElements"
                     :lang="getCurrentLanguage()"
                     :modal-crud-config="modalCrudConfig"
