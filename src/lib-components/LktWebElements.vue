@@ -53,10 +53,6 @@ watch(items, (v) => {
     emit('update:modelValue', v);
 }, {deep: true})
 
-watch(editing, (v) => {
-    console.log('editing', v);
-}, {deep: true})
-
 const onCrudUpdate = () => {
     if (props.isSubElement) {
         refreshingSubElements.value = true;
@@ -130,6 +126,12 @@ const computedTableConfig = computed(() => {
         ]
     }
 });
+
+const onUpdateWebElement = () => {
+    if (typeof props.events?.onSubElementUpdate === 'function') {
+        props.events.onSubElementUpdate();
+    }
+}
 </script>
 
 <template>
@@ -150,15 +152,18 @@ const computedTableConfig = computed(() => {
                         index,
                         lang,
                         isPreview,
+                        isSubElement,
                         parent,
                         parentType,
                         fileBrowserConfig,
                         modalCrudConfig,
                         editing,
                         defaultAppearance,
-                        isSubElement,
                         canRenderActions: !editing,
                         disabled: disabled || !editing,
+                        events: {
+                            onUpdate: onUpdateWebElement
+                        }
                     }"
                     @crud-update="onCrudUpdate"
                 />

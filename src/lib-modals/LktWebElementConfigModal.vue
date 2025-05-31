@@ -345,7 +345,6 @@ const onPickedFiles = (fileEntities: Array<FileEntity>, ins: LktObject) => {
 }
 
 watch(() => webElement.value.config.amountOfCallToActions, (v) => {
-    console.log('updated amount of cta: ', v);
     let l = webElement.value.config.callToActions.length;
     if (v > l) {
         webElement.value.config.callToActions.push(getDefaultLktButtonWebElement());
@@ -366,9 +365,7 @@ onMounted(() => {
                 afterElement: props.afterElement,
                 beforeElement: props.beforeElement,
             }).then((res: HTTPResponse) => {
-                console.log('created layout', res);
                 webElement.value.id = res.data.id;
-                console.log('newid:', webElement.value.id);
                 closeModal(props.modalName, props.modalKey);
 
                 setTimeout(() => {
@@ -449,8 +446,9 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
             id: id.value,
         },
         ...props.modalCrudConfig,
-        createButton,
-        updateButton,
+        beforeClose,
+        createButton: createButton,
+        updateButton: updateButton,
         dropButton: props.isSubElement ? false : {
             ...props.modalCrudConfig.dropButton,
             resourceData: {

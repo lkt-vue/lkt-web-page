@@ -3,25 +3,10 @@
 import {
     ButtonConfig,
     ButtonType,
-    FileBrowserConfig,
-    ItemCrudConfig,
-    WebElement,
-    WebPage,
-    WebParentType
 } from "lkt-vue-kernel";
+import {WebElementActionsButtonProps} from "./../components-interfaces/WebElementActionsButtonProps";
 
-const props = withDefaults(defineProps<{
-    webElement: WebElement
-    canRenderActions?: boolean
-    appendingItems?: boolean
-    isSubElement?: boolean
-    onUpdate?: Function
-    parent: WebElement | WebPage
-    parentType: WebParentType
-    fileBrowserConfig: FileBrowserConfig
-    modalCrudConfig: ItemCrudConfig
-    defaultAppearance?: string
-}>(), {
+const props = withDefaults(defineProps<WebElementActionsButtonProps>(), {
     index: -1,
     canRenderActions: true,
 });

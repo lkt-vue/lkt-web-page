@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {WebElementController, WebElementType, WebParentType,} from 'lkt-vue-kernel';
+import {HeaderConfig, WebElementController, WebElementType, WebParentType,} from 'lkt-vue-kernel';
 import {getCurrentLanguage} from 'lkt-i18n';
 import {computed, ref, watch} from 'vue';
 import LktText from "./LktText.vue";
@@ -8,6 +8,8 @@ import {getLayoutCss} from "../functions/layout-functions";
 import LktCustomElement from "./LktCustomElement.vue";
 import WebElementActionsButton from "./../lib-components/WebElementActionsButton.vue";
 import {WebElementBoxProps} from "./../components-interfaces/WebElementBoxProps";
+import {WebElementsProps} from "@/components-interfaces/WebElementsProps";
+import {WebElementActionsButtonProps} from "@/components-interfaces/WebElementActionsButtonProps";
 
 const emit = defineEmits([
     'update:modelValue',
@@ -85,6 +87,10 @@ const computedClassName = computed(() => {
 })
 
 const onModalUpdate = () => {
+    if (typeof props.events?.onUpdate === 'function') {
+        props.events.onUpdate();
+    }
+
     emit('crud-update');
 }
 </script>
@@ -99,7 +105,7 @@ const onModalUpdate = () => {
     >
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -151,7 +157,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -184,7 +190,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -215,7 +221,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -233,8 +239,10 @@ const onModalUpdate = () => {
 
     <lkt-header
         v-else-if="webElement.type === WebElementType.LktHeader"
-        :icon="webElement.config.hasIcon ? webElement.props.icon : ''"
-        :class="computedClassName"
+        v-bind="<HeaderConfig>{
+            icon: webElement.config.hasIcon ? webElement.props.icon : '',
+            class: computedClassName
+        }"
     >
         <template #text>
             <lkt-text
@@ -246,7 +254,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -277,7 +285,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -308,7 +316,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -355,7 +363,7 @@ const onModalUpdate = () => {
 
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -392,33 +400,38 @@ const onModalUpdate = () => {
 
         <lkt-web-elements
             v-model="webElement.subElements"
-            :layout-selector="getLayoutCss(webElement)"
-            is-child
-            :lang="currentLang"
-            :is-preview="isPreview"
-            :parent="webElement"
-            :parent-type="WebParentType.Element"
-            :modal-crud-config="modalCrudConfig"
-            :file-browser-config="fileBrowserConfig"
-            :disabled="disabled"
-            :editing="editing"
-            :default-appearance="webElement.props.class"
-            is-sub-element
+            v-bind="<WebElementsProps>{
+                layoutSelector: getLayoutCss(webElement),
+                isChild: true,
+                isSubElement: true,
+                lang: currentLang,
+                parent: webElement,
+                isPreview,
+                modalCrudConfig,
+                fileBrowserConfig,
+                disabled,
+                editing,
+                parentType: WebParentType.Element,
+                defaultAppearance: webElement.props.class,
+                events: {
+                    onSubElementUpdate: onModalUpdate
+                }
+            }"
         >
             <template #web-element-actions>
                 <web-element-actions-button
-                    v-bind="{
-                    webElement,
-                    appendingItems,
-                    canRenderActions,
-                    parent,
-                    parentType,
-                    fileBrowserConfig,
-                    modalCrudConfig,
-                    defaultAppearance,
-                    isSubElement,
-                    onUpdate: onModalUpdate
-                }"
+                    v-bind="<WebElementActionsButtonProps>{
+                        webElement,
+                        appendingItems,
+                        canRenderActions,
+                        parent,
+                        parentType,
+                        fileBrowserConfig,
+                        modalCrudConfig,
+                        defaultAppearance,
+                        isSubElement,
+                        onUpdate: onModalUpdate
+                    }"
                 />
             </template>
         </lkt-web-elements>
@@ -443,7 +456,7 @@ const onModalUpdate = () => {
     >
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
@@ -465,7 +478,7 @@ const onModalUpdate = () => {
     >
         <template #web-element-actions>
             <web-element-actions-button
-                v-bind="{
+                v-bind="<WebElementActionsButtonProps>{
                     webElement,
                     appendingItems,
                     canRenderActions,
