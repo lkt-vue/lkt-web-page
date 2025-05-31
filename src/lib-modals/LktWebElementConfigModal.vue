@@ -35,26 +35,13 @@ import {
     getBannerTypeOptions,
     getLayoutAmountOfItemsOptions,
     getLayoutTypeOptions
-} from "../functions/config-options-functions";
-import {LKT_ICON_PACK_ICONS} from "../constants/lkt-icon-pack";
+} from "./../functions/config-options-functions";
+import {LKT_ICON_PACK_ICONS} from "./../constants/lkt-icon-pack";
 import {httpCall, HTTPResponse} from "lkt-http-client";
+import {WebElementBoxProps} from "./../components-interfaces/WebElementBoxProps";
+import {WebElementConfigModalProps} from "./../components-interfaces/WebElementConfigModalProps";
 
-const props = withDefaults(defineProps<{
-    modalName: string
-    modalKey: string
-    zIndex: number
-    fileBrowserConfig: FileBrowserConfig
-    modalCrudConfig: ItemCrudConfig
-    element: WebElement
-    parent: WebElement | WebPage
-    parentType: WebParentType
-    afterElement?: number
-    beforeElement?: number
-    onUpdate?: Function
-    defaultAppearance?: string
-    isSubElement?: boolean
-    beforeClose?: undefined
-}>(), {
+const props = withDefaults(defineProps<WebElementConfigModalProps>(), {
     modalName: '',
     modalKey: '_',
     zIndex: 500,
@@ -147,6 +134,7 @@ const calculatedHasHeader = [
     calculatedHasImage = [WebElementType.LktImage].includes(webElement.value.type),
     calculatedHasAccordionConfig = [WebElementType.LktLayoutAccordion, WebElementType.LktTextAccordion].includes(webElement.value.type),
     calculatedHasChildren = [WebElementType.LktLayoutAccordion, WebElementType.LktLayoutBox, WebElementType.LktLayout].includes(webElement.value.type),
+    //@ts-ignore
     calculatedHasParentLayout = [WebElementLayoutType.FlexRow, WebElementLayoutType.FlexRows].includes(props.parent?.layout?.type);
 
 const accordionTypeOptions = getAccordionTypeOptions(),
@@ -304,28 +292,28 @@ const _filterLayoutMediaQueryOption = (haystack: OptionConfig[], needle: OptionC
 }
 
 
-const filterLayoutMediaOptions = (option: LktObject) => {
+const filterLayoutMediaOptions = (option: OptionConfig) => {
     return _filterLayoutMediaQueryOption(
         webElement.value.layout?.amountOfItems ?? [],
         option,
     );
 }
 
-const filterLayoutAlignItemsOptions = (option: LktObject) => {
+const filterLayoutAlignItemsOptions = (option: OptionConfig) => {
     return _filterLayoutMediaQueryOption(
         webElement.value.layout?.alignItems ?? [],
         option,
     );
 }
 
-const filterLayoutJustifyContentOptions = (option: LktObject) => {
+const filterLayoutJustifyContentOptions = (option: OptionConfig) => {
     return _filterLayoutMediaQueryOption(
         webElement.value.layout?.justifyContent ?? [],
         option,
     );
 }
 
-const filterLayoutColumnsOptions = (option: LktObject) => {
+const filterLayoutColumnsOptions = (option: OptionConfig) => {
     return _filterLayoutMediaQueryOption(
         webElement.value.layout?.columns ?? [],
         option,
@@ -338,6 +326,8 @@ const addSubElement = () => {
 
 const computedCustomClassField = computed((): FieldConfig | undefined => {
     let config = WebElementController.getCustomAppearance(webElement.value.type);
+
+    if (!config || typeof config === 'undefined') return undefined;
 
     return Object.keys(config).length > 0
         ? ensureFieldConfig({options: config.options}, LktSettings.defaultFieldElementCustomClassField)
@@ -365,11 +355,10 @@ watch(() => webElement.value.config.amountOfCallToActions, (v) => {
 })
 
 onMounted(() => {
-    console.log('mounted: ', props);
     if (!webElement.value.id && webElement.value.type === WebElementType.LktLayout) {
         isLoading.value = true;
         nextTick(() => {
-            httpCall(props.modalCrudConfig.createButton.resource, {
+            httpCall(props.modalCrudConfig.createButton?.resource, {
                 ...props.modalCrudConfig.createButton?.resourceData,
                 ...webElement.value,
                 parent: props.parent.id,
@@ -418,7 +407,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         createButton = {
             ...props.modalCrudConfig.createButton,
             resourceData: {
-                ...props.modalCrudConfig.createButton?.resourceData,
+                ...props.modalCrudConfig?.createButton?.resourceData,
                 ...webElement.value,
                 parent: props.parent.id,
                 parentType: props.parentType,
@@ -449,7 +438,6 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         editing: true,
         perms: computedPerms.value,
         title: computedTitle.value,
-        beforeClose,
         modalConfig: {
             modalName: props.modalName,
             modalKey: props.modalKey,
@@ -476,11 +464,6 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
         enabledSaveWithoutChanges: true
     }
 })
-
-// const onCreate = () => {
-//     console.log('create, update, bibidi: ', props.onUpdate);
-//     onCrudUpdated();
-// }
 </script>
 
 <template>
@@ -497,12 +480,14 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                 <div class="lkt-flex-col-9 lkt-grid-1">
                     <lkt-web-element-box
                         v-model="webElement"
-                        is-preview
-                        :can-render-actions="false"
-                        :modal-crud-config="modalCrudConfig"
-                        :parent="webElement"
-                        :parent-type="WebParentType.Element"
-                        :default-appearance="defaultAppearance"
+                        v-bind="<WebElementBoxProps>{
+                            isPreview: true,
+                            canRenderActions: false,
+                            modalCrudConfig,
+                            parent: webElement,
+                            parentType: WebParentType.Element,
+                            defaultAppearance,
+                        }"
                         @crud-update="onUpdate"
                     />
 
@@ -517,13 +502,15 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                         >
                             <lkt-web-element-box
                                 v-model="webElement"
-                                :lang="lang"
-                                is-preview
-                                :can-render-actions="false"
-                                :modal-crud-config="modalCrudConfig"
-                                :parent="webElement"
-                                :parent-type="WebParentType.Element"
-                                :default-appearance="defaultAppearance"
+                                v-bind="<WebElementBoxProps>{
+                                    lang,
+                                    isPreview: true,
+                                    canRenderActions: false,
+                                    modalCrudConfig,
+                                    parent: webElement,
+                                    parentType: WebParentType.Element,
+                                    defaultAppearance,
+                                }"
                             />
                         </lkt-accordion>
                     </template>
@@ -543,7 +530,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                                     modalCrudConfig,
                                     parent: webElement,
                                     parentType: WebParentType.Element,
-                                    onUpdate: onCrudUpdate,
+                                    onUpdate: onCrudUpdated,
                                 }
                             }"
                         />
@@ -690,13 +677,13 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                                 />
                                 <lkt-field
                                     v-if="calculatedHasIcon"
+                                    v-model="item.props.icon"
                                     v-bind="<FieldConfig>{
                                         type: FieldType.Text,
                                         label: 'Icon',
                                         canClear: true,
                                         options: LKT_ICON_PACK_ICONS
                                     }"
-                                    v-model="item.props.icon"
                                     :disabled="!item.config.hasIcon"
                                 />
 
@@ -721,7 +708,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                                         fileBrowserConfig: fileBrowserConfig,
                                     }"
                                     v-model="item.props.media.src"
-                                    @picked-files="($event) => onPickedFiles($event, item.props.media)"
+                                    @picked-files="($event: any) => onPickedFiles($event, item.props.media)"
                                 />
 
                                 <lkt-field
@@ -742,7 +729,7 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                                         fileBrowserConfig: fileBrowserConfig,
                                     }"
                                     v-model="item.props.art.src"
-                                    @picked-files="($event) => onPickedFiles($event, item.props.art)"
+                                    @picked-files="($event: any) => onPickedFiles($event, item.props.art)"
                                 />
 
                                 <div>

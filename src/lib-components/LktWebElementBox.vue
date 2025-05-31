@@ -1,42 +1,20 @@
 <script setup lang="ts">
-import {
-    ButtonConfig,
-    ButtonType,
-    FileBrowserConfig,
-    ItemCrudConfig,
-    WebElement, WebElementController,
-    WebElementType,
-    WebPage,
-    WebParentType,
-} from 'lkt-vue-kernel';
+import {WebElementController, WebElementType, WebParentType,} from 'lkt-vue-kernel';
 import {getCurrentLanguage} from 'lkt-i18n';
 import {computed, ref, watch} from 'vue';
 import LktText from "./LktText.vue";
 import LktWebElements from "./LktWebElements.vue";
 import {getLayoutCss} from "../functions/layout-functions";
 import LktCustomElement from "./LktCustomElement.vue";
-import WebElementActionsButton from "@/lib-components/WebElementActionsButton.vue";
+import WebElementActionsButton from "./../lib-components/WebElementActionsButton.vue";
+import {WebElementBoxProps} from "./../components-interfaces/WebElementBoxProps";
 
 const emit = defineEmits([
     'update:modelValue',
     'crud-update',
 ]);
 
-const props = withDefaults(defineProps<{
-    modelValue: WebElement
-    parent: WebElement | WebPage
-    parentType: WebParentType
-    index?: number
-    lang?: string
-    isPreview?: boolean
-    isSubElement?: boolean
-    canRenderActions?: boolean
-    fileBrowserConfig: FileBrowserConfig
-    modalCrudConfig: ItemCrudConfig
-    disabled?: boolean
-    editing?: boolean
-    defaultAppearance?: string
-}>(), {
+const props = withDefaults(defineProps<WebElementBoxProps>(), {
     index: -1,
     isPreview: false,
     disabled: false,

@@ -1,6 +1,6 @@
-declare namespace _l {
+declare namespace et {
     function install(m: any): void;
 }
-declare function Yl(): void;
 declare function Zl(): void;
-export { _l as default, Yl as setupWebElementsHttp, Zl as setupWebPagesHttp };
+declare function _l(): void;
+export { et as default, Zl as setupWebElementsHttp, _l as setupWebPagesHttp };

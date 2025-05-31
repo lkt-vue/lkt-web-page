@@ -13,6 +13,7 @@ import {
 } from 'lkt-vue-kernel';
 import LktWebElementBox from "./LktWebElementBox.vue";
 import {httpCall, HTTPResponse} from "lkt-http-client";
+import {WebElementBoxProps} from "@/components-interfaces/WebElementBoxProps";
 
 const emit = defineEmits([
     'update:modelValue',
@@ -132,7 +133,7 @@ const computedTableConfig = computed(() => {
 </script>
 
 <template>
-    <div>
+    <div class="lkt-web-elements">
         <span v-if="parentType === WebParentType.Page" class="like-lkt-field-label">Web Elements</span>
         <lkt-table
             class="lkt-elements-table"
@@ -145,18 +146,20 @@ const computedTableConfig = computed(() => {
                 <lkt-web-element-box
                     v-if="!refreshingSubElements"
                     v-model="items[index]"
-                    :index="index"
-                    :lang="lang"
-                    :is-preview="isPreview"
-                    :parent="parent"
-                    :parent-type="parentType"
-                    :file-browser-config="fileBrowserConfig"
-                    :modal-crud-config="modalCrudConfig"
-                    :can-render-actions="!editing"
-                    :disabled="disabled || !editing"
-                    :editing="editing"
-                    :default-appearance="defaultAppearance"
-                    :is-sub-element="isSubElement"
+                    v-bind="<WebElementBoxProps>{
+                        index,
+                        lang,
+                        isPreview,
+                        parent,
+                        parentType,
+                        fileBrowserConfig,
+                        modalCrudConfig,
+                        editing,
+                        defaultAppearance,
+                        isSubElement,
+                        canRenderActions: !editing,
+                        disabled: disabled || !editing,
+                    }"
                     @crud-update="onCrudUpdate"
                 />
             </template>

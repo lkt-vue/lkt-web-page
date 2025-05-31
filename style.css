@@ -16,7 +16,10 @@
     top: 0;
 }
 
-.lkt-element:hover > .lkt-element-actions {
+.lkt-element:hover > .lkt-element-actions,
+.lkt-elements-table:hover + .lkt-element-actions,
+.lkt-elements-table + .lkt-element-actions:hover
+{
     opacity: 1;
 }
 
@@ -132,4 +135,8 @@
     z-index: 1;
     background: #fff;
     border-radius: 4px;
+}
+
+.lkt-web-elements {
+    position: relative;
 }

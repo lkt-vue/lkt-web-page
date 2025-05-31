@@ -51,8 +51,8 @@
   },
   "peerDependencies": {
     "lkt-http-client": "^1.1.0",
-    "lkt-string-tools": "^1.1.0",
     "lkt-modal": "^2.0.5",
+    "lkt-string-tools": "^1.1.0",
     "lkt-vue-kernel": "^1.0.73",
     "vue": "^3.3.0"
   }
