@@ -103,7 +103,7 @@ const onModalUpdate = () => {
         :disabled="disabled || parentType === WebParentType.Page"
         @input="handleInputText($event)"
     >
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -155,7 +155,7 @@ const onModalUpdate = () => {
             @input="handleInputText($event, 'text')"
         />
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -188,7 +188,7 @@ const onModalUpdate = () => {
             />
         </template>
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -219,7 +219,7 @@ const onModalUpdate = () => {
             />
         </template>
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -252,7 +252,7 @@ const onModalUpdate = () => {
             />
         </template>
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -283,7 +283,7 @@ const onModalUpdate = () => {
             />
         </template>
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -314,7 +314,7 @@ const onModalUpdate = () => {
             />
         </template>
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -361,7 +361,7 @@ const onModalUpdate = () => {
             @input="handleInputText($event, 'text')"
         />
 
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -418,7 +418,7 @@ const onModalUpdate = () => {
                 }
             }"
         >
-            <template #web-element-actions>
+            <template #web-element-actions v-if="!disabled">
                 <web-element-actions-button
                     v-bind="<WebElementActionsButtonProps>{
                         webElement,
@@ -454,7 +454,7 @@ const onModalUpdate = () => {
         :disabled="disabled"
         :editing="editing"
     >
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,
@@ -476,7 +476,7 @@ const onModalUpdate = () => {
         v-else-if="webElement.type.startsWith('custom:')"
         :settings="WebElementController.getCustomWebElementSettings(webElement.type)"
     >
-        <template #web-element-actions>
+        <template #web-element-actions v-if="!disabled">
             <web-element-actions-button
                 v-bind="<WebElementActionsButtonProps>{
                     webElement,

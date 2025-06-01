@@ -1,6 +1,7 @@
-declare namespace et {
-    function install(m: any): void;
+declare namespace ot {
+    function install(i: any): void;
 }
-declare function Zl(): void;
-declare function _l(): void;
-export { et as default, Zl as setupWebElementsHttp, _l as setupWebPagesHttp };
+declare function nt(i: any): void;
+declare function tt(): void;
+declare function at(): void;
+export { ot as default, nt as setupLktWebPageRoutes, tt as setupWebElementsHttp, at as setupWebPagesHttp };

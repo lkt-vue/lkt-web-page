@@ -1,10 +1,11 @@
-import { defineComponent as X, useSlots as je, createElementBlock as z, openBlock as p, renderSlot as xe, createCommentVNode as T, setBlockTracking as he, createElementVNode as h, unref as e, createBlock as k, resolveDynamicComponent as Me, normalizeProps as b, mergeProps as c, resolveComponent as R, createVNode as r, guardReactiveProps as V, ref as W, watch as ee, computed as j, normalizeClass as J, withCtx as w, createSlots as Re, nextTick as We, Fragment as ge, renderList as Ve, onMounted as rl } from "vue";
-import { WebElementLayoutType as $, ButtonType as Ne, WebElementType as u, WebParentType as S, WebElementController as Ae, TablePermission as pe, TableType as me, WebElement as le, WebPage as ye, FormInstance as q, AccordionToggleMode as Le, AccordionType as F, FieldAutoValidationTrigger as fe, FieldType as U, WebPageStatus as Fe, BannerType as He, ensureFieldConfig as dl, LktSettings as il, getDefaultLktButtonWebElement as sl, ItemCrudView as pl, ItemCrudMode as Oe, applyTextFormat as Q, applyTextAlignment as ce } from "lkt-vue-kernel";
-import { getCurrentLanguage as Ie, getAvailableLanguages as ml } from "lkt-i18n";
-import { httpCall as Ke, createHTTPGetResource as _, createHTTPPostResource as ze, createHTTPPutResource as Ge, createHTTPDeleteResource as Je } from "lkt-http-client";
-import { openModal as ve, closeModal as qe, addModal as $e } from "lkt-modal";
+import { defineComponent as J, useSlots as Me, createElementBlock as x, openBlock as p, renderSlot as We, createCommentVNode as V, setBlockTracking as Fe, createElementVNode as H, unref as e, createBlock as v, resolveDynamicComponent as Ne, normalizeProps as w, mergeProps as c, resolveComponent as h, createVNode as d, guardReactiveProps as I, ref as R, watch as Z, computed as M, normalizeClass as Q, createSlots as z, withCtx as T, nextTick as Ue, Fragment as ke, renderList as Be, onMounted as dl } from "vue";
+import { WebElementLayoutType as j, ButtonType as Ke, WebElementType as u, WebParentType as S, WebElementController as Se, TableType as ce, TablePermission as ge, WebElement as ae, WebPage as te, FormInstance as X, AccordionToggleMode as Ae, AccordionType as O, FieldAutoValidationTrigger as ye, FieldType as E, WebPageStatus as He, BannerType as Oe, ensureFieldConfig as rl, LktSettings as il, getDefaultLktButtonWebElement as sl, ItemCrudView as pl, ItemCrudMode as $e, applyTextFormat as Y, applyTextAlignment as ve } from "lkt-vue-kernel";
+import { getCurrentLanguage as Ce, getAvailableLanguages as ml } from "lkt-i18n";
+import { httpCall as xe, createHTTPGetResource as ee, createHTTPPostResource as ze, createHTTPPutResource as Ge, createHTTPDeleteResource as Je } from "lkt-http-client";
+import { openModal as be, closeModal as qe, addModal as je } from "lkt-modal";
 import { ucfirst as fl, kebabCaseToCamelCase as cl } from "lkt-string-tools";
-const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
+import { useRoute as gl } from "vue-router";
+const yl = { class: "lkt-text" }, N = /* @__PURE__ */ J({
   __name: "LktText",
   props: {
     modelValue: { default: "" },
@@ -14,38 +15,38 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     "input",
     "keydown"
   ],
-  setup(m, { emit: a }) {
-    const y = a, o = je(), t = (C) => {
-      y("input", C);
+  setup(i, { emit: a }) {
+    const g = a, o = Me(), t = (b) => {
+      g("input", b);
     };
-    return (C, A) => (p(), z("div", gl, [
-      A[0] || (he(-1, !0), (A[0] = h("div", {
-        contenteditable: C.disabled ? "false" : "true",
+    return (b, L) => (p(), x("div", yl, [
+      L[0] || (Fe(-1, !0), (L[0] = H("div", {
+        contenteditable: b.disabled ? "false" : "true",
         class: "lkt-element-editable-text",
-        onInput: (i) => t(i),
-        innerHTML: C.modelValue
-      }, null, 40, ["contenteditable", "onInput", "innerHTML"])).cacheIndex = 0, he(1), A[0]),
-      e(o)["web-element-actions"] ? xe(C.$slots, "web-element-actions", { key: 0 }) : T("", !0)
+        onInput: (r) => t(r),
+        innerHTML: b.modelValue
+      }, null, 40, ["contenteditable", "onInput", "innerHTML"])).cacheIndex = 0, Fe(1), L[0]),
+      e(o)["web-element-actions"] ? We(b.$slots, "web-element-actions", { key: 0 }) : V("", !0)
     ]));
   }
-}), Te = (m, a = !1) => {
-  if (!m.layout || a) return "";
-  let y = [];
-  m.layout.type === $.FlexRow && (!m.layout.amountOfItems || m.layout.amountOfItems.length === 0) ? y.push("lkt-flex-row") : m.layout.type === $.FlexRows && (!m.layout.amountOfItems || m.layout.amountOfItems.length === 0) ? y.push("lkt-flex-rows") : m.layout.type === $.FlexColumn && y.push("lkt-flex-column"), m.layout.amountOfItems && m.layout.amountOfItems.length > 0 && (m.layout.type === $.FlexRow ? y.push(m.layout.amountOfItems.map((t) => `lkt-flex-row-${t}`).join(" ")) : m.layout.type === $.FlexRows ? y.push(m.layout.amountOfItems.map((t) => `lkt-flex-rows-${t}`).join(" ")) : y.push(m.layout.amountOfItems.map((t) => `lkt-grid-${t}`).join(" "))), m.layout.alignItems && m.layout.alignItems.length > 0 && y.push(m.layout.alignItems.join(" ")), m.layout.justifyContent && m.layout.justifyContent.length > 0 && y.push(m.layout.justifyContent.join(" ")), y.length > 0 && y.push("layout-mode");
-  let o = y.join(" ");
-  return m.layout.type === $.FlexRows && (o = o.replace("flex-row-", "flex-rows-")), o;
-}, yl = /* @__PURE__ */ X({
+}), Le = (i, a = !1) => {
+  if (!i.layout || a) return "";
+  let g = [];
+  i.layout.type === j.FlexRow && (!i.layout.amountOfItems || i.layout.amountOfItems.length === 0) ? g.push("lkt-flex-row") : i.layout.type === j.FlexRows && (!i.layout.amountOfItems || i.layout.amountOfItems.length === 0) ? g.push("lkt-flex-rows") : i.layout.type === j.FlexColumn && g.push("lkt-flex-column"), i.layout.amountOfItems && i.layout.amountOfItems.length > 0 && (i.layout.type === j.FlexRow ? g.push(i.layout.amountOfItems.map((t) => `lkt-flex-row-${t}`).join(" ")) : i.layout.type === j.FlexRows ? g.push(i.layout.amountOfItems.map((t) => `lkt-flex-rows-${t}`).join(" ")) : g.push(i.layout.amountOfItems.map((t) => `lkt-grid-${t}`).join(" "))), i.layout.alignItems && i.layout.alignItems.length > 0 && g.push(i.layout.alignItems.join(" ")), i.layout.justifyContent && i.layout.justifyContent.length > 0 && g.push(i.layout.justifyContent.join(" ")), g.length > 0 && g.push("layout-mode");
+  let o = g.join(" ");
+  return i.layout.type === j.FlexRows && (o = o.replace("flex-row-", "flex-rows-")), o;
+}, vl = /* @__PURE__ */ J({
   __name: "LktCustomElement",
   props: {
     settings: {}
   },
-  setup(m) {
-    return (a, y) => a.settings.type === "component" ? (p(), k(Me(a.settings.component), b(c({ key: 0 }, a.settings.componentProps)), null, 16)) : T("", !0);
+  setup(i) {
+    return (a, g) => a.settings.type === "component" ? (p(), v(Ne(a.settings.component), w(c({ key: 0 }, a.settings.componentProps)), null, 16)) : V("", !0);
   }
-}), vl = {
+}), kl = {
   key: 0,
   class: "lkt-element-actions"
-}, K = /* @__PURE__ */ X({
+}, G = /* @__PURE__ */ J({
   __name: "WebElementActionsButton",
   props: {
     webElement: {},
@@ -59,12 +60,12 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     modalCrudConfig: {},
     defaultAppearance: {}
   },
-  setup(m) {
-    return (a, y) => {
-      const o = R("lkt-button");
-      return !a.appendingItems && a.canRenderActions ? (p(), z("div", vl, [
-        r(o, b(V({
-          type: e(Ne).Button,
+  setup(i) {
+    return (a, g) => {
+      const o = h("lkt-button");
+      return !a.appendingItems && a.canRenderActions ? (p(), x("div", kl, [
+        d(o, w(I({
+          type: e(Ke).Button,
           icon: "lkt-icn-cog",
           modal: "lkt-web-element-config",
           modalKey: a.webElement.id,
@@ -79,10 +80,10 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
             onUpdate: a.onUpdate
           }
         })), null, 16)
-      ])) : T("", !0);
+      ])) : V("", !0);
     };
   }
-}), kl = { key: 8 }, Be = /* @__PURE__ */ X({
+}), bl = { key: 8 }, Ie = /* @__PURE__ */ J({
   __name: "LktWebElementBox",
   props: {
     modelValue: {},
@@ -104,26 +105,26 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     "update:modelValue",
     "crud-update"
   ],
-  setup(m, { emit: a }) {
-    const y = a, o = m, t = W(o.modelValue);
-    ee(() => o.modelValue, (l, n) => {
+  setup(i, { emit: a }) {
+    const g = a, o = i, t = R(o.modelValue);
+    Z(() => o.modelValue, (l, n) => {
       t.value = l;
-    }), ee(t, (l, n) => {
-      y("update:modelValue", l);
+    }), Z(t, (l, n) => {
+      g("update:modelValue", l);
     });
-    const C = W(!1), A = (l, n = "text") => {
-      const G = l.target.innerHTML.trim();
-      G !== t.value.props[n][i] && (t.value.props[n][i] = G);
-    }, i = o.lang ?? Ie(), H = j(() => [
+    const b = R(!1), L = (l, n = "text") => {
+      const q = l.target.innerHTML.trim();
+      q !== t.value.props[n][r] && (t.value.props[n][r] = q);
+    }, r = o.lang ?? Ce(), F = M(() => [
       u.LktLayoutBox,
       u.LktTextBox,
       u.LktLayoutAccordion,
       u.LktTextAccordion
-    ].includes(t.value.type)), x = j(() => [
+    ].includes(t.value.type)), W = M(() => [
       u.LktLayoutBox,
       u.LktLayoutAccordion,
       u.LktLayout
-    ].includes(t.value.type)), D = j(() => {
+    ].includes(t.value.type)), D = M(() => {
       if ([
         u.LktLayoutBox,
         u.LktTextBox
@@ -134,63 +135,52 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
         u.LktTextAccordion
       ].includes(t.value.type))
         return "lkt-accordion";
-    }), L = j(() => t.value.props.class ? t.value.props.class : o.defaultAppearance), B = j(() => `lkt-element is-${t.value.type} is-${t.value.id} ${L.value}`), E = () => {
+    }), C = M(() => t.value.props.class ? t.value.props.class : o.defaultAppearance), B = M(() => `lkt-element is-${t.value.type} is-${t.value.id} ${C.value}`), A = () => {
       var l;
-      typeof ((l = o.events) == null ? void 0 : l.onUpdate) == "function" && o.events.onUpdate(), y("crud-update");
+      typeof ((l = o.events) == null ? void 0 : l.onUpdate) == "function" && o.events.onUpdate(), g("crud-update");
     };
     return (l, n) => {
-      var re, de, ae, ie;
-      const G = R("lkt-image"), be = R("lkt-icon"), te = R("lkt-header"), ue = R("lkt-button"), Y = R("lkt-anchor"), Ce = R("lkt-banner");
-      return t.value.type === e(u).LktText ? (p(), k(M, {
+      var se, pe, ne, me;
+      const q = h("lkt-image"), we = h("lkt-icon"), oe = h("lkt-header"), ie = h("lkt-button"), _ = h("lkt-anchor"), Te = h("lkt-banner");
+      return t.value.type === e(u).LktText ? (p(), v(N, {
         key: 0,
-        class: J(B.value),
-        modelValue: t.value.props.text[e(i)],
-        "onUpdate:modelValue": n[0] || (n[0] = (d) => t.value.props.text[e(i)] = d),
+        class: Q(B.value),
+        modelValue: t.value.props.text[e(r)],
+        "onUpdate:modelValue": n[0] || (n[0] = (s) => t.value.props.text[e(r)] = s),
         disabled: l.disabled || l.parentType === e(S).Page,
-        onInput: n[1] || (n[1] = (d) => A(d))
-      }, {
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["class", "modelValue", "disabled"])) : H.value ? (p(), k(Me(D.value), {
+        onInput: n[1] || (n[1] = (s) => L(s))
+      }, z({ _: 2 }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["class", "modelValue", "disabled"])) : F.value ? (p(), v(Ne(D.value), {
         key: 1,
         icon: t.value.config.hasHeader && t.value.config.hasIcon ? t.value.props.icon : "",
-        class: J(B.value)
-      }, Re({
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        default: w(() => [
-          x.value ? (p(), k(ke, {
+        class: Q(B.value)
+      }, z({
+        default: T(() => [
+          W.value ? (p(), v(re, {
             key: 0,
             modelValue: t.value.children,
-            "onUpdate:modelValue": n[4] || (n[4] = (d) => t.value.children = d),
-            "layout-selector": e(Te)(t.value),
+            "onUpdate:modelValue": n[4] || (n[4] = (s) => t.value.children = s),
+            "layout-selector": e(Le)(t.value),
             "is-child": "",
-            lang: e(i),
+            lang: e(r),
             "is-preview": l.isPreview,
             parent: t.value,
             "parent-type": e(S).Element,
@@ -198,252 +188,299 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
             "file-browser-config": l.fileBrowserConfig,
             disabled: l.disabled,
             editing: l.editing
-          }, null, 8, ["modelValue", "layout-selector", "lang", "is-preview", "parent", "parent-type", "modal-crud-config", "file-browser-config", "disabled", "editing"])) : (p(), k(M, {
+          }, null, 8, ["modelValue", "layout-selector", "lang", "is-preview", "parent", "parent-type", "modal-crud-config", "file-browser-config", "disabled", "editing"])) : (p(), v(N, {
             key: 1,
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[5] || (n[5] = (d) => t.value.props.text[e(i)] = d),
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[5] || (n[5] = (s) => t.value.props.text[e(r)] = s),
             disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[6] || (n[6] = (d) => A(d, "text"))
+            onInput: n[6] || (n[6] = (s) => L(s, "text"))
           }, null, 8, ["modelValue", "disabled"]))
         ]),
         _: 2
       }, [
-        (re = t.value.config) != null && re.hasHeader ? {
+        (se = t.value.config) != null && se.hasHeader ? {
           name: "header",
-          fn: w(() => [
-            r(M, {
-              modelValue: t.value.props.header[e(i)],
-              "onUpdate:modelValue": n[2] || (n[2] = (d) => t.value.props.header[e(i)] = d),
+          fn: T(() => [
+            d(N, {
+              modelValue: t.value.props.header[e(r)],
+              "onUpdate:modelValue": n[2] || (n[2] = (s) => t.value.props.header[e(r)] = s),
               disabled: l.disabled || l.parentType === e(S).Page,
-              onInput: n[3] || (n[3] = (d) => A(d, "header"))
-            }, null, 8, ["modelValue", "disabled"])
-          ]),
-          key: "0"
-        } : void 0
-      ]), 1032, ["icon", "class"])) : t.value.type === e(u).LktImage ? (p(), k(G, {
-        key: 2,
-        class: J(B.value),
-        src: t.value.props.src,
-        alt: typeof t.value.props.alt == "object" ? t.value.props.alt[e(i)] : "",
-        title: typeof t.value.props.title == "object" ? t.value.props.title[e(i)] : ""
-      }, {
-        text: w(() => [
-          r(M, {
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[7] || (n[7] = (d) => t.value.props.text[e(i)] = d),
-            disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[8] || (n[8] = (d) => A(d, "text"))
-          }, null, 8, ["modelValue", "disabled"])
-        ]),
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["class", "src", "alt", "title"])) : t.value.type === e(u).LktIcon ? (p(), k(be, {
-        key: 3,
-        icon: t.value.config.hasIcon ? t.value.props.icon : "",
-        class: J(B.value)
-      }, {
-        text: w(() => [
-          r(M, {
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[9] || (n[9] = (d) => t.value.props.text[e(i)] = d),
-            disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[10] || (n[10] = (d) => A(d, "text"))
-          }, null, 8, ["modelValue", "disabled"])
-        ]),
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["icon", "class"])) : t.value.type === e(u).LktHeader ? (p(), k(te, b(c({ key: 4 }, {
-        icon: t.value.config.hasIcon ? t.value.props.icon : "",
-        class: B.value
-      })), {
-        text: w(() => [
-          r(M, {
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[11] || (n[11] = (d) => t.value.props.text[e(i)] = d),
-            disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[12] || (n[12] = (d) => A(d, "text"))
-          }, null, 8, ["modelValue", "disabled"])
-        ]),
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 16)) : t.value.type === e(u).LktButton ? (p(), k(ue, {
-        key: 5,
-        icon: t.value.config.hasIcon ? t.value.props.icon : "",
-        class: J(B.value)
-      }, {
-        text: w(() => [
-          r(M, {
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[13] || (n[13] = (d) => t.value.props.text[e(i)] = d),
-            disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[14] || (n[14] = (d) => A(d, "text"))
-          }, null, 8, ["modelValue", "disabled"])
-        ]),
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["icon", "class"])) : t.value.type === e(u).LktAnchor ? (p(), k(Y, {
-        key: 6,
-        icon: t.value.config.hasIcon ? t.value.props.icon : "",
-        class: J(B.value)
-      }, {
-        text: w(() => [
-          r(M, {
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[15] || (n[15] = (d) => t.value.props.text[e(i)] = d),
-            disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[16] || (n[16] = (d) => A(d, "text"))
-          }, null, 8, ["modelValue", "disabled"])
-        ]),
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["icon", "class"])) : t.value.type === e(u).LktTextBanner ? (p(), k(Ce, {
-        key: 7,
-        icon: t.value.config.hasIcon ? t.value.props.icon : "",
-        class: J(B.value),
-        opacity: t.value.props.opacity,
-        art: t.value.props.art,
-        media: t.value.props.media,
-        type: t.value.props.type
-      }, Re({
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        default: w(() => [
-          r(M, {
-            modelValue: t.value.props.text[e(i)],
-            "onUpdate:modelValue": n[21] || (n[21] = (d) => t.value.props.text[e(i)] = d),
-            disabled: l.disabled || l.parentType === e(S).Page,
-            onInput: n[22] || (n[22] = (d) => A(d, "text"))
-          }, null, 8, ["modelValue", "disabled"])
-        ]),
-        _: 2
-      }, [
-        (de = t.value.config) != null && de.hasHeader ? {
-          name: "header",
-          fn: w(() => [
-            r(M, {
-              modelValue: t.value.props.header[e(i)],
-              "onUpdate:modelValue": n[17] || (n[17] = (d) => t.value.props.header[e(i)] = d),
-              disabled: l.disabled || l.parentType === e(S).Page,
-              onInput: n[18] || (n[18] = (d) => A(d, "header"))
+              onInput: n[3] || (n[3] = (s) => L(s, "header"))
             }, null, 8, ["modelValue", "disabled"])
           ]),
           key: "0"
         } : void 0,
-        (ae = t.value.config) != null && ae.hasSubHeader ? {
-          name: "subHeader",
-          fn: w(() => [
-            r(M, {
-              modelValue: t.value.props.subHeader[e(i)],
-              "onUpdate:modelValue": n[19] || (n[19] = (d) => t.value.props.subHeader[e(i)] = d),
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "1"
+        }
+      ]), 1032, ["icon", "class"])) : t.value.type === e(u).LktImage ? (p(), v(q, {
+        key: 2,
+        class: Q(B.value),
+        src: t.value.props.src,
+        alt: typeof t.value.props.alt == "object" ? t.value.props.alt[e(r)] : "",
+        title: typeof t.value.props.title == "object" ? t.value.props.title[e(r)] : ""
+      }, z({
+        text: T(() => [
+          d(N, {
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[7] || (n[7] = (s) => t.value.props.text[e(r)] = s),
+            disabled: l.disabled || l.parentType === e(S).Page,
+            onInput: n[8] || (n[8] = (s) => L(s, "text"))
+          }, null, 8, ["modelValue", "disabled"])
+        ]),
+        _: 2
+      }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["class", "src", "alt", "title"])) : t.value.type === e(u).LktIcon ? (p(), v(we, {
+        key: 3,
+        icon: t.value.config.hasIcon ? t.value.props.icon : "",
+        class: Q(B.value)
+      }, z({
+        text: T(() => [
+          d(N, {
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[9] || (n[9] = (s) => t.value.props.text[e(r)] = s),
+            disabled: l.disabled || l.parentType === e(S).Page,
+            onInput: n[10] || (n[10] = (s) => L(s, "text"))
+          }, null, 8, ["modelValue", "disabled"])
+        ]),
+        _: 2
+      }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["icon", "class"])) : t.value.type === e(u).LktHeader ? (p(), v(oe, w(c({ key: 4 }, {
+        icon: t.value.config.hasIcon ? t.value.props.icon : "",
+        class: B.value
+      })), z({
+        text: T(() => [
+          d(N, {
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[11] || (n[11] = (s) => t.value.props.text[e(r)] = s),
+            disabled: l.disabled || l.parentType === e(S).Page,
+            onInput: n[12] || (n[12] = (s) => L(s, "text"))
+          }, null, 8, ["modelValue", "disabled"])
+        ]),
+        _: 2
+      }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1040)) : t.value.type === e(u).LktButton ? (p(), v(ie, {
+        key: 5,
+        icon: t.value.config.hasIcon ? t.value.props.icon : "",
+        class: Q(B.value)
+      }, z({
+        text: T(() => [
+          d(N, {
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[13] || (n[13] = (s) => t.value.props.text[e(r)] = s),
+            disabled: l.disabled || l.parentType === e(S).Page,
+            onInput: n[14] || (n[14] = (s) => L(s, "text"))
+          }, null, 8, ["modelValue", "disabled"])
+        ]),
+        _: 2
+      }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["icon", "class"])) : t.value.type === e(u).LktAnchor ? (p(), v(_, {
+        key: 6,
+        icon: t.value.config.hasIcon ? t.value.props.icon : "",
+        class: Q(B.value)
+      }, z({
+        text: T(() => [
+          d(N, {
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[15] || (n[15] = (s) => t.value.props.text[e(r)] = s),
+            disabled: l.disabled || l.parentType === e(S).Page,
+            onInput: n[16] || (n[16] = (s) => L(s, "text"))
+          }, null, 8, ["modelValue", "disabled"])
+        ]),
+        _: 2
+      }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["icon", "class"])) : t.value.type === e(u).LktTextBanner ? (p(), v(Te, {
+        key: 7,
+        icon: t.value.config.hasIcon ? t.value.props.icon : "",
+        class: Q(B.value),
+        opacity: t.value.props.opacity,
+        art: t.value.props.art,
+        media: t.value.props.media,
+        type: t.value.props.type
+      }, z({
+        default: T(() => [
+          d(N, {
+            modelValue: t.value.props.text[e(r)],
+            "onUpdate:modelValue": n[21] || (n[21] = (s) => t.value.props.text[e(r)] = s),
+            disabled: l.disabled || l.parentType === e(S).Page,
+            onInput: n[22] || (n[22] = (s) => L(s, "text"))
+          }, null, 8, ["modelValue", "disabled"])
+        ]),
+        _: 2
+      }, [
+        (pe = t.value.config) != null && pe.hasHeader ? {
+          name: "header",
+          fn: T(() => [
+            d(N, {
+              modelValue: t.value.props.header[e(r)],
+              "onUpdate:modelValue": n[17] || (n[17] = (s) => t.value.props.header[e(r)] = s),
               disabled: l.disabled || l.parentType === e(S).Page,
-              onInput: n[20] || (n[20] = (d) => A(d, "subHeader"))
+              onInput: n[18] || (n[18] = (s) => L(s, "header"))
+            }, null, 8, ["modelValue", "disabled"])
+          ]),
+          key: "0"
+        } : void 0,
+        (ne = t.value.config) != null && ne.hasSubHeader ? {
+          name: "subHeader",
+          fn: T(() => [
+            d(N, {
+              modelValue: t.value.props.subHeader[e(r)],
+              "onUpdate:modelValue": n[19] || (n[19] = (s) => t.value.props.subHeader[e(r)] = s),
+              disabled: l.disabled || l.parentType === e(S).Page,
+              onInput: n[20] || (n[20] = (s) => L(s, "subHeader"))
             }, null, 8, ["modelValue", "disabled"])
           ]),
           key: "1"
-        } : void 0
-      ]), 1032, ["icon", "class", "opacity", "art", "media", "type"])) : t.value.type === e(u).LktIcons ? (p(), z("section", kl, [
-        (ie = t.value.config) != null && ie.hasHeader ? (p(), k(te, { key: 0 }, {
-          text: w(() => [
-            r(M, {
-              modelValue: t.value.props.header[e(i)],
-              "onUpdate:modelValue": n[23] || (n[23] = (d) => t.value.props.header[e(i)] = d),
+        } : void 0,
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "2"
+        }
+      ]), 1032, ["icon", "class", "opacity", "art", "media", "type"])) : t.value.type === e(u).LktIcons ? (p(), x("section", bl, [
+        (me = t.value.config) != null && me.hasHeader ? (p(), v(oe, { key: 0 }, {
+          text: T(() => [
+            d(N, {
+              modelValue: t.value.props.header[e(r)],
+              "onUpdate:modelValue": n[23] || (n[23] = (s) => t.value.props.header[e(r)] = s),
               disabled: l.disabled || l.parentType === e(S).Page,
-              onInput: n[24] || (n[24] = (d) => A(d, "header"))
+              onInput: n[24] || (n[24] = (s) => L(s, "header"))
             }, null, 8, ["modelValue", "disabled"])
           ]),
           _: 1
-        })) : T("", !0),
-        r(M, {
-          modelValue: t.value.props.text[e(i)],
-          "onUpdate:modelValue": n[25] || (n[25] = (d) => t.value.props.text[e(i)] = d),
+        })) : V("", !0),
+        d(N, {
+          modelValue: t.value.props.text[e(r)],
+          "onUpdate:modelValue": n[25] || (n[25] = (s) => t.value.props.text[e(r)] = s),
           disabled: l.disabled || l.parentType === e(S).Page,
-          onInput: n[26] || (n[26] = (d) => A(d, "text"))
+          onInput: n[26] || (n[26] = (s) => L(s, "text"))
         }, null, 8, ["modelValue", "disabled"]),
-        r(ke, c({
+        d(re, c({
           modelValue: t.value.subElements,
-          "onUpdate:modelValue": n[27] || (n[27] = (d) => t.value.subElements = d)
+          "onUpdate:modelValue": n[27] || (n[27] = (s) => t.value.subElements = s)
         }, {
-          layoutSelector: e(Te)(t.value),
+          layoutSelector: e(Le)(t.value),
           isChild: !0,
           isSubElement: !0,
-          lang: e(i),
+          lang: e(r),
           parent: t.value,
           isPreview: l.isPreview,
           modalCrudConfig: l.modalCrudConfig,
@@ -453,33 +490,36 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
           parentType: e(S).Element,
           defaultAppearance: t.value.props.class,
           events: {
-            onSubElementUpdate: E
+            onSubElementUpdate: A
           }
-        }), {
-          "web-element-actions": w(() => [
-            r(K, b(V({
-              webElement: t.value,
-              appendingItems: C.value,
-              canRenderActions: l.canRenderActions,
-              parent: l.parent,
-              parentType: l.parentType,
-              fileBrowserConfig: l.fileBrowserConfig,
-              modalCrudConfig: l.modalCrudConfig,
-              defaultAppearance: l.defaultAppearance,
-              isSubElement: l.isSubElement,
-              onUpdate: E
-            })), null, 16)
-          ]),
-          _: 1
-        }, 16, ["modelValue"])
-      ])) : t.value.type === e(u).LktLayout ? (p(), k(ke, {
+        }), z({ _: 2 }, [
+          l.disabled ? void 0 : {
+            name: "web-element-actions",
+            fn: T(() => [
+              d(G, w(I({
+                webElement: t.value,
+                appendingItems: b.value,
+                canRenderActions: l.canRenderActions,
+                parent: l.parent,
+                parentType: l.parentType,
+                fileBrowserConfig: l.fileBrowserConfig,
+                modalCrudConfig: l.modalCrudConfig,
+                defaultAppearance: l.defaultAppearance,
+                isSubElement: l.isSubElement,
+                onUpdate: A
+              })), null, 16)
+            ]),
+            key: "0"
+          }
+        ]), 1040, ["modelValue"])
+      ])) : t.value.type === e(u).LktLayout ? (p(), v(re, {
         key: 9,
         modelValue: t.value.children,
-        "onUpdate:modelValue": n[28] || (n[28] = (d) => t.value.children = d),
-        class: J(B.value),
-        "layout-selector": e(Te)(t.value),
+        "onUpdate:modelValue": n[28] || (n[28] = (s) => t.value.children = s),
+        class: Q(B.value),
+        "layout-selector": e(Le)(t.value),
         "is-child": "",
-        lang: e(i),
+        lang: e(r),
         "is-preview": l.isPreview,
         parent: t.value,
         "parent-type": e(S).Element,
@@ -487,48 +527,54 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
         "file-browser-config": l.fileBrowserConfig,
         disabled: l.disabled,
         editing: l.editing
-      }, {
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["modelValue", "class", "layout-selector", "lang", "is-preview", "parent", "parent-type", "modal-crud-config", "file-browser-config", "disabled", "editing"])) : t.value.type.startsWith("custom:") ? (p(), k(yl, {
+      }, z({ _: 2 }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["modelValue", "class", "layout-selector", "lang", "is-preview", "parent", "parent-type", "modal-crud-config", "file-browser-config", "disabled", "editing"])) : t.value.type.startsWith("custom:") ? (p(), v(vl, {
         key: 10,
-        settings: e(Ae).getCustomWebElementSettings(t.value.type)
-      }, {
-        "web-element-actions": w(() => [
-          r(K, b(V({
-            webElement: t.value,
-            appendingItems: C.value,
-            canRenderActions: l.canRenderActions,
-            parent: l.parent,
-            parentType: l.parentType,
-            fileBrowserConfig: l.fileBrowserConfig,
-            modalCrudConfig: l.modalCrudConfig,
-            defaultAppearance: l.defaultAppearance,
-            isSubElement: l.isSubElement,
-            onUpdate: E
-          })), null, 16)
-        ]),
-        _: 1
-      }, 8, ["settings"])) : T("", !0);
+        settings: e(Se).getCustomWebElementSettings(t.value.type)
+      }, z({ _: 2 }, [
+        l.disabled ? void 0 : {
+          name: "web-element-actions",
+          fn: T(() => [
+            d(G, w(I({
+              webElement: t.value,
+              appendingItems: b.value,
+              canRenderActions: l.canRenderActions,
+              parent: l.parent,
+              parentType: l.parentType,
+              fileBrowserConfig: l.fileBrowserConfig,
+              modalCrudConfig: l.modalCrudConfig,
+              defaultAppearance: l.defaultAppearance,
+              isSubElement: l.isSubElement,
+              onUpdate: A
+            })), null, 16)
+          ]),
+          key: "0"
+        }
+      ]), 1032, ["settings"])) : V("", !0);
     };
   }
-}), bl = { class: "lkt-web-elements" }, Cl = {
+}), Cl = { class: "lkt-web-elements" }, wl = {
   key: 0,
   class: "like-lkt-field-label"
-}, ke = /* @__PURE__ */ X({
+}, re = /* @__PURE__ */ J({
   __name: "LktWebElements",
   props: {
     modelValue: {},
@@ -549,32 +595,36 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     "update:modelValue",
     "crud-update"
   ],
-  setup(m, { emit: a }) {
-    const y = a, o = je(), t = m, C = W(t.modelValue), A = W(t.editing), i = W(!1);
-    ee(C, (L) => {
-      y("update:modelValue", L);
+  setup(i, { emit: a }) {
+    const g = a, o = Me(), t = i, b = R(t.modelValue), L = R(t.editing), r = R(!1);
+    Z(b, (C) => {
+      g("update:modelValue", C);
     }, { deep: !0 });
-    const H = () => {
+    const F = () => {
       if (t.isSubElement) {
-        i.value = !0, We(() => {
-          i.value = !1, y("crud-update");
+        r.value = !0, Ue(() => {
+          r.value = !1, g("crud-update");
         });
         return;
       }
-      const L = t.parentType === S.Page ? "r-web-page-children" : "r-web-element-children";
-      Ke(L, { id: t.parent.id }).then((B) => {
-        C.value = B.data.map((E) => new le(E)), y("crud-update");
+      const C = t.parentType === S.Page ? "r-web-page-children" : "r-web-element-children";
+      xe(C, { id: t.parent.id }).then((B) => {
+        b.value = B.data.map((A) => new ae(A)), g("crud-update");
       });
-    }, x = j(() => {
-      let L = [pe.Update, pe.Sort];
-      t.isChild || L.push(pe.Create), t.parentType === S.Page && L.push(pe.SwitchEditMode);
-      let B = t.isPreview ? me.Table : me.Item;
-      B = me.Item, A.value && (B = me.Table);
-      let E = "lkt-elements-table--default-grid";
-      return t.isChild && (E = t.layoutSelector), {
-        type: B,
-        perms: L,
-        itemsContainerClass: E,
+    }, W = M(() => {
+      let C = t.isPreview ? ce.Table : ce.Item;
+      C = ce.Item;
+      let B = "lkt-elements-table--default-grid";
+      if (t.isChild && (B = t.layoutSelector), t.disabled)
+        return {
+          type: C,
+          itemsContainerClass: B
+        };
+      let A = [ge.Update, ge.Sort];
+      return t.isChild || A.push(ge.Create), t.parentType === S.Page && A.push(ge.SwitchEditMode), L.value && (C = ce.Table), {
+        type: C,
+        perms: A,
+        itemsContainerClass: B,
         slotItemVar: "element",
         hideTableHeader: !0,
         itemContainerClass: (l) => {
@@ -584,7 +634,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
         },
         requiredItemsForBottomCreate: 10,
         drag: {
-          enabled: t.isPreview || A.value,
+          enabled: t.isPreview || L.value,
           isDisabled: !1,
           canRender: !0,
           isValid: !0
@@ -598,7 +648,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
             modalCrudConfig: t.modalCrudConfig,
             parent: t.parent,
             parentType: t.parentType,
-            onUpdate: H
+            onUpdate: F
           }
         },
         columns: [
@@ -610,52 +660,52 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
         ]
       };
     }), D = () => {
-      var L;
-      typeof ((L = t.events) == null ? void 0 : L.onSubElementUpdate) == "function" && t.events.onSubElementUpdate();
+      var C;
+      typeof ((C = t.events) == null ? void 0 : C.onSubElementUpdate) == "function" && t.events.onSubElementUpdate();
     };
-    return (L, B) => {
-      const E = R("lkt-table");
-      return p(), z("div", bl, [
-        L.parentType === e(S).Page ? (p(), z("span", Cl, "Web Elements")) : T("", !0),
-        r(E, c({
+    return (C, B) => {
+      const A = h("lkt-table");
+      return p(), x("div", Cl, [
+        !C.disabled && C.parentType === e(S).Page ? (p(), x("span", wl, "Web Elements")) : V("", !0),
+        d(A, c({
           class: "lkt-elements-table",
-          modelValue: C.value,
-          "onUpdate:modelValue": B[0] || (B[0] = (l) => C.value = l)
-        }, x.value, {
-          "edit-mode": A.value,
-          "onUpdate:editMode": B[1] || (B[1] = (l) => A.value = l),
+          modelValue: b.value,
+          "onUpdate:modelValue": B[0] || (B[0] = (l) => b.value = l)
+        }, W.value, {
+          "edit-mode": L.value,
+          "onUpdate:editMode": B[1] || (B[1] = (l) => L.value = l),
           "skip-table-items-container": ""
         }), {
-          item: w(({ _: l, index: n }) => [
-            i.value ? T("", !0) : (p(), k(Be, c({
+          item: T(({ _: l, index: n }) => [
+            r.value ? V("", !0) : (p(), v(Ie, c({
               key: 0,
-              modelValue: C.value[n],
-              "onUpdate:modelValue": (G) => C.value[n] = G
+              modelValue: b.value[n],
+              "onUpdate:modelValue": (q) => b.value[n] = q
             }, {
               index: n,
-              lang: L.lang,
-              isPreview: L.isPreview,
-              isSubElement: L.isSubElement,
-              parent: L.parent,
-              parentType: L.parentType,
-              fileBrowserConfig: L.fileBrowserConfig,
-              modalCrudConfig: L.modalCrudConfig,
-              editing: A.value,
-              defaultAppearance: L.defaultAppearance,
-              canRenderActions: !A.value,
-              disabled: L.disabled || !A.value,
+              lang: C.lang,
+              isPreview: C.isPreview,
+              isSubElement: C.isSubElement,
+              parent: C.parent,
+              parentType: C.parentType,
+              fileBrowserConfig: C.fileBrowserConfig,
+              modalCrudConfig: C.modalCrudConfig,
+              editing: L.value,
+              defaultAppearance: C.defaultAppearance,
+              canRenderActions: !L.value,
+              disabled: C.disabled || !L.value,
               events: {
                 onUpdate: D
               }
-            }, { onCrudUpdate: H }), null, 16, ["modelValue", "onUpdate:modelValue"]))
+            }, { onCrudUpdate: F }), null, 16, ["modelValue", "onUpdate:modelValue"]))
           ]),
           _: 1
         }, 16, ["modelValue", "edit-mode"]),
-        e(o)["web-element-actions"] ? xe(L.$slots, "web-element-actions", { key: 1 }) : T("", !0)
+        e(o)["web-element-actions"] ? We(C.$slots, "web-element-actions", { key: 1 }) : V("", !0)
       ]);
     };
   }
-}), wl = { class: "lkt-web-page" }, Tl = /* @__PURE__ */ X({
+}), Tl = { class: "lkt-web-page" }, Vl = /* @__PURE__ */ J({
   __name: "LktWebPage",
   props: {
     modelValue: {},
@@ -663,86 +713,88 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     modalCrudConfig: {},
     fileBrowserConfig: {}
   },
-  setup(m) {
-    const a = m, y = W(new ye(a.modelValue)), o = W(null), t = W(!1), C = () => {
+  setup(i) {
+    const a = i, g = R(new te(a.modelValue)), o = R(null), t = R(!1), b = R(["create", "switch-edit-mode"]), L = () => {
       o.value.turnStoredDataIntoOriginal();
-    }, A = j(() => [
+    }, r = M(() => [
       { value: "draft", label: "Draft" },
       { value: "public", label: "Public" },
       { value: "scheduled", label: "Scheduled" }
     ]);
-    ee(() => y.value.name, () => {
-      y.value.updateSlug();
-    });
-    const i = j(() => ({
+    Z(() => g.value.nameData, () => {
+      g.value.updateSlug();
+    }, { deep: !0 });
+    const F = M(() => ({
       items: [
-        q.mkFormItemConfig({
+        X.mkFormItemConfig({
           container: {
             tag: "lkt-accordion",
             props: {
-              type: F.Always,
+              type: O.Always,
               title: "Main data",
-              toggleMode: Le.Height
+              toggleMode: Ae.Height
             }
           },
           uiConfig: {
             formClass: "lkt-grid-1 lkt-grid-3--from-768"
           },
           items: [
-            q.mkFieldItemConfig("name", {
-              type: U.Text,
+            X.mkFieldItemConfig("nameData", {
+              type: E.Text,
               label: "Name",
               mandatory: !0,
               canUndo: !0,
+              canI18n: !0,
               validation: {
-                trigger: fe.Blur
+                trigger: ye.Blur
               }
             }),
-            q.mkFieldItemConfig("status", {
-              type: U.Select,
+            X.mkFieldItemConfig("status", {
+              type: E.Select,
               label: "Status",
               mandatory: !0,
               canUndo: !0,
-              options: A.value,
+              options: r.value,
               validation: {
-                trigger: fe.Blur
+                trigger: ye.Blur
               }
             }),
-            q.mkFieldItemConfig("scheduledDate", {
-              type: U.DateTime,
+            X.mkFieldItemConfig("scheduledDate", {
+              type: E.DateTime,
               label: "Scheduled date",
-              mandatory: y.value.status === Fe.Scheduled,
+              mandatory: g.value.status === He.Scheduled,
               canUndo: !0,
               validation: {
-                trigger: fe.Blur
+                trigger: ye.Blur
               }
-            }, {}, { canRender: y.value.status === Fe.Scheduled })
+            }, {}, { canRender: g.value.status === He.Scheduled })
           ]
         }),
-        q.mkFormItemConfig({
+        X.mkFormItemConfig({
           container: {
             tag: "lkt-accordion",
             props: {
-              type: F.Auto,
+              type: O.Auto,
               title: "SEO",
-              toggleMode: Le.Height
+              toggleMode: Ae.Height
             }
           },
           uiConfig: {
             formClass: "lkt-grid-1 lkt-grid-3--from-768"
           },
           items: [
-            q.mkFieldItemConfig("slug", {
-              type: U.Text,
+            X.mkFieldItemConfig("slugData", {
+              type: E.Text,
               label: "Slug",
               mandatory: !0,
               readMode: !0,
+              canI18n: !0,
               validation: {
-                trigger: fe.Blur
+                trigger: ye.Blur
               }
             }),
-            q.mkFieldItemConfig("keywords", {
-              type: U.Select,
+            X.mkFieldItemConfig("keywords", {
+              type: E.Select,
               label: "Keywords",
               multiple: !0,
               canUndo: !0,
@@ -750,73 +802,74 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
             })
           ]
         }),
-        q.mkSlotItemConfig("web-elements", {
-          canRender: y.value.id > 0
+        X.mkSlotItemConfig("web-elements", {
+          canRender: g.value.id > 0
         })
       ]
-    })), H = j(() => {
-      var L, B, E;
-      let x = !1, D = !1;
-      return x = {
+    })), W = M(() => {
+      var B, A, l;
+      let D = !1, C = !1;
+      return D = {
         ...a.crudConfig.createButton,
         resourceData: {
-          ...(L = a.crudConfig.createButton) == null ? void 0 : L.resourceData,
-          ...y.value
+          ...(B = a.crudConfig.createButton) == null ? void 0 : B.resourceData,
+          ...g.value
         }
-      }, D = {
+      }, C = {
         ...a.crudConfig.updateButton,
         resourceData: {
-          ...(B = a.crudConfig.updateButton) == null ? void 0 : B.resourceData,
-          ...y.value
+          ...(A = a.crudConfig.updateButton) == null ? void 0 : A.resourceData,
+          ...g.value
         }
       }, {
         ...a.crudConfig,
-        createButton: x,
-        updateButton: D,
-        form: i.value,
+        createButton: D,
+        updateButton: C,
+        form: F.value,
         dropButton: {
           ...a.crudConfig.dropButton,
           resourceData: {
-            ...(E = a.crudConfig.dropButton) == null ? void 0 : E.resourceData,
-            ...y.value
+            ...(l = a.crudConfig.dropButton) == null ? void 0 : l.resourceData,
+            ...g.value
           }
         }
       };
     });
-    return (x, D) => {
-      const L = R("lkt-item-crud");
-      return p(), z("section", wl, [
-        r(L, c({
+    return (D, C) => {
+      const B = h("lkt-item-crud");
+      return p(), x("section", Tl, [
+        d(B, c({
           ref_key: "itemCrudRef",
-          ref: o,
-          modelValue: y.value,
-          "onUpdate:modelValue": D[1] || (D[1] = (B) => y.value = B),
+          ref: o
+        }, W.value, {
+          modelValue: g.value,
+          "onUpdate:modelValue": C[1] || (C[1] = (A) => g.value = A),
           editing: t.value,
-          "onUpdate:editing": D[2] || (D[2] = (B) => t.value = B)
-        }, H.value, {
-          title: y.value.name === "" ? "Page name" : y.value.name
+          "onUpdate:editing": C[2] || (C[2] = (A) => t.value = A),
+          perms: b.value,
+          "onUpdate:perms": C[3] || (C[3] = (A) => b.value = A),
+          title: g.value.name === "" ? "Page name" : g.value.name
         }), {
-          "web-elements": w(() => [
-            y.value.id > 0 ? (p(), k(ke, {
+          "web-elements": T(() => [
+            g.value.id > 0 ? (p(), v(re, {
               key: 0,
-              modelValue: y.value.webElements,
-              "onUpdate:modelValue": D[0] || (D[0] = (B) => y.value.webElements = B),
-              lang: e(Ie)(),
-              "modal-crud-config": x.modalCrudConfig,
-              "file-browser-config": x.fileBrowserConfig,
-              parent: y.value,
+              modelValue: g.value.webElements,
+              "onUpdate:modelValue": C[0] || (C[0] = (A) => g.value.webElements = A),
+              lang: e(Ce)(),
+              "modal-crud-config": D.modalCrudConfig,
+              "file-browser-config": D.fileBrowserConfig,
+              parent: g.value,
               "parent-type": e(S).Page,
               "is-preview": !1,
-              disabled: "",
-              onCrudUpdate: C
-            }, null, 8, ["modelValue", "lang", "modal-crud-config", "file-browser-config", "parent", "parent-type"])) : T("", !0)
+              onCrudUpdate: L
+            }, null, 8, ["modelValue", "lang", "modal-crud-config", "file-browser-config", "parent", "parent-type"])) : V("", !0)
           ]),
           _: 1
-        }, 16, ["modelValue", "editing", "title"])
+        }, 16, ["modelValue", "editing", "perms", "title"])
       ]);
     };
   }
-}), Vl = { class: "lkt-grid-1" }, Ll = { class: "lkt-grid-3" }, Bl = { class: "lkt-grid-3" }, Al = { class: "lkt-grid-3" }, Il = { class: "lkt-grid-3" }, Ul = { class: "lkt-grid-3" }, Sl = /* @__PURE__ */ X({
+}), Ll = { class: "lkt-grid-1" }, Bl = { class: "lkt-grid-3" }, Al = { class: "lkt-grid-3" }, Il = { class: "lkt-grid-3" }, Ul = { class: "lkt-grid-3" }, Sl = { class: "lkt-grid-3" }, El = /* @__PURE__ */ J({
   __name: "LktWebElementSelectModal",
   props: {
     modalName: { default: "" },
@@ -828,11 +881,11 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     modalCrudConfig: {},
     onUpdate: {}
   },
-  setup(m) {
-    const a = m, y = W(a.parent), o = (C) => {
-      ve("lkt-web-element-config", "_", {
-        element: le.createByType(C),
-        parent: y.value,
+  setup(i) {
+    const a = i, g = R(a.parent), o = (b) => {
+      be("lkt-web-element-config", "_", {
+        element: ae.createByType(b),
+        parent: g.value,
         parentType: a.parentType,
         fileBrowserConfig: a.fileBrowserConfig,
         modalCrudConfig: a.modalCrudConfig,
@@ -840,25 +893,25 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
       }), setTimeout(() => {
         qe(a.modalName, a.modalKey);
       }, 200);
-    }, t = j(() => Ae.getElements());
-    return (C, A) => {
-      const i = R("lkt-button"), H = R("lkt-accordion"), x = R("lkt-modal");
-      return p(), k(x, c({ id: "lkt-add-element-modal" }, {
-        modalName: C.modalName,
-        modalKey: C.modalKey,
-        zIndex: C.zIndex,
+    }, t = M(() => Se.getElements());
+    return (b, L) => {
+      const r = h("lkt-button"), F = h("lkt-accordion"), W = h("lkt-modal");
+      return p(), v(W, c({ id: "lkt-add-element-modal" }, {
+        modalName: b.modalName,
+        modalKey: b.modalKey,
+        zIndex: b.zIndex,
         title: "LktBox Config"
       }), {
-        default: w(() => [
-          h("div", Vl, [
-            r(H, b(V({
-              type: e(F).Auto,
+        default: T(() => [
+          H("div", Ll, [
+            d(F, w(I({
+              type: e(O).Auto,
               title: "Individual elements",
               modelValue: !0
             })), {
-              default: w(() => [
-                h("div", Ll, [
-                  r(i, b(V({
+              default: T(() => [
+                H("div", Bl, [
+                  d(r, w(I({
                     icon: "lkt-icn-font",
                     text: "Text",
                     events: {
@@ -867,7 +920,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-header",
                     text: "LktHeader",
                     events: {
@@ -876,7 +929,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-picture",
                     text: "LktImage",
                     events: {
@@ -885,7 +938,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-icon",
                     text: "LktIcon",
                     events: {
@@ -894,7 +947,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-box",
                     text: "LktTextBox",
                     events: {
@@ -903,7 +956,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-accordion",
                     text: "LktTextAccordion",
                     events: {
@@ -912,7 +965,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-banner",
                     text: "LktTextBanner",
                     events: {
@@ -925,13 +978,13 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
               ]),
               _: 1
             }, 16),
-            r(H, b(V({
-              type: e(F).Auto,
+            d(F, w(I({
+              type: e(O).Auto,
               title: "Collection elements"
             })), {
-              default: w(() => [
-                h("div", Bl, [
-                  r(i, b(V({
+              default: T(() => [
+                H("div", Al, [
+                  d(r, w(I({
                     icon: "lkt-icn-icon",
                     text: "LktIcons",
                     events: {
@@ -944,13 +997,13 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
               ]),
               _: 1
             }, 16),
-            r(H, b(V({
-              type: e(F).Auto,
+            d(F, w(I({
+              type: e(O).Auto,
               title: "Containers"
             })), {
-              default: w(() => [
-                h("div", Al, [
-                  r(i, b(V({
+              default: T(() => [
+                H("div", Il, [
+                  d(r, w(I({
                     icon: "lkt-icn-box",
                     text: "LktLayoutBox",
                     events: {
@@ -959,7 +1012,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-accordion",
                     text: "LktLayoutAccordion",
                     events: {
@@ -968,7 +1021,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-columns",
                     text: "LktLayout",
                     events: {
@@ -981,13 +1034,13 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
               ]),
               _: 1
             }, 16),
-            r(H, b(V({
-              type: e(F).Auto,
+            d(F, w(I({
+              type: e(O).Auto,
               title: "Actions"
             })), {
-              default: w(() => [
-                h("div", Il, [
-                  r(i, b(V({
+              default: T(() => [
+                H("div", Ul, [
+                  d(r, w(I({
                     icon: "lkt-icn-link",
                     text: "LktAnchor",
                     events: {
@@ -996,7 +1049,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                       }
                     }
                   })), null, 16),
-                  r(i, b(V({
+                  d(r, w(I({
                     icon: "lkt-icn-button",
                     text: "LktButton",
                     events: {
@@ -1009,13 +1062,13 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
               ]),
               _: 1
             }, 16),
-            r(H, b(V({
-              type: e(F).Auto,
+            d(F, w(I({
+              type: e(O).Auto,
               title: "Custom"
             })), {
-              default: w(() => [
-                h("div", Ul, [
-                  (p(!0), z(ge, null, Ve(t.value, (D) => (p(), k(i, c({ ref_for: !0 }, {
+              default: T(() => [
+                H("div", Sl, [
+                  (p(!0), x(ke, null, Be(t.value, (D) => (p(), v(r, c({ ref_for: !0 }, {
                     icon: D.icon,
                     text: D.label ?? D.id,
                     events: {
@@ -1034,51 +1087,51 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
       }, 16);
     };
   }
-}), El = () => [
+}), Dl = () => [
   {
-    value: F.Auto,
+    value: O.Auto,
     label: "Auto"
   },
   {
-    value: F.Always,
+    value: O.Always,
     label: "Always"
   },
   {
-    value: F.Lazy,
+    value: O.Lazy,
     label: "Lazy"
   },
   {
-    value: F.Ever,
+    value: O.Ever,
     label: "Ever"
   }
 ], Pl = () => [
   {
-    value: He.Static,
+    value: Oe.Static,
     label: "Static"
   },
   {
-    value: He.Parallax,
+    value: Oe.Parallax,
     label: "Parallax"
   }
-], Dl = () => [
+], Rl = () => [
   {
-    value: $.Grid,
+    value: j.Grid,
     label: "Grid"
   },
   {
-    value: $.FlexRow,
+    value: j.FlexRow,
     label: "Flex Row"
   },
   {
-    value: $.FlexRows,
+    value: j.FlexRows,
     label: "Flex Rows"
   },
   {
-    value: $.FlexColumn,
+    value: j.FlexColumn,
     label: "Flex Column"
   }
 ], hl = () => {
-  let m = {
+  let i = {
     default: {
       css: "{n}",
       label: "Default: {n}",
@@ -1090,19 +1143,19 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
       columns: ["auto", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     }
   }, a = [];
-  for (let y in m) {
-    let o = m[y];
+  for (let g in i) {
+    let o = i[g];
     if (!(!o.columns || !Array.isArray(o.columns) || o.columns.length === 0))
       for (let t in o.columns) {
-        let C = o.columns[t].toString();
+        let b = o.columns[t].toString();
         a.push({
-          value: o.css.replace("{n}", C),
-          label: o.label.replace("{n}", C)
+          value: o.css.replace("{n}", b),
+          label: o.label.replace("{n}", b)
         });
       }
   }
   return a;
-}, Rl = [
+}, Fl = [
   "lkt-icn-upload",
   "lkt-icn-download",
   "lkt-icn-angle-top",
@@ -1113,10 +1166,10 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
   "lkt-icn-angle-double-right",
   "lkt-icn-angle-double-bottom",
   "lkt-icn-angle-double-left"
-], Fl = {
+], Hl = {
   key: 1,
   class: "lkt-flex-row"
-}, Hl = { class: "lkt-flex-col-9 lkt-grid-1" }, Ol = { class: "lkt-flex-col-3" }, $l = { class: "lkt-web-element-config-scroller lkt-grid-1" }, jl = { class: "lkt-grid-1 lkt-grid-3--from-768 lkt-web-element-text-editor-buttons" }, xl = { class: "lkt-grid-1" }, Ml = { class: "lkt-grid-1" }, Wl = { class: "lkt-grid-1" }, Nl = { class: "lkt-grid-1" }, Kl = { class: "lkt-grid-1" }, zl = /* @__PURE__ */ X({
+}, Ol = { class: "lkt-flex-col-9 lkt-grid-1" }, $l = { class: "lkt-flex-col-3" }, jl = { class: "lkt-web-element-config-scroller lkt-grid-1" }, Ml = { class: "lkt-grid-1 lkt-grid-3--from-768 lkt-web-element-text-editor-buttons" }, Wl = { class: "lkt-grid-1" }, Nl = { class: "lkt-grid-1" }, Kl = { class: "lkt-grid-1" }, xl = { class: "lkt-grid-1" }, zl = { class: "lkt-grid-1" }, Gl = /* @__PURE__ */ J({
   __name: "LktWebElementConfigModal",
   props: {
     modalName: { default: "" },
@@ -1134,52 +1187,52 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     isSubElement: { type: Boolean },
     beforeClose: {}
   },
-  setup(m) {
-    var Ee, Pe, De;
-    const a = m, y = W(parseInt(a.modalKey)), o = W(new le(a.element)), t = W(null), C = W(!1);
-    ee(() => a.modalKey, (v) => {
-      y.value = parseInt(v);
+  setup(i) {
+    var Pe, Re, he;
+    const a = i, g = R(parseInt(a.modalKey)), o = R(new ae(a.element)), t = R(null), b = R(!1);
+    Z(() => a.modalKey, (k) => {
+      g.value = parseInt(k);
     });
-    const A = () => {
-      let v = o.value.getClone();
-      ve("lkt-web-element-config", "_", {
-        element: v,
+    const L = () => {
+      let k = o.value.getClone();
+      be("lkt-web-element-config", "_", {
+        element: k,
         parent: a.parent,
         parentType: a.parentType,
         fileBrowserConfig: a.fileBrowserConfig,
         modalCrudConfig: a.modalCrudConfig,
         beforeElement: o.value.id
       });
-    }, i = () => {
-      let v = o.value.getClone();
-      ve("lkt-web-element-config", "_", {
-        element: v,
+    }, r = () => {
+      let k = o.value.getClone();
+      be("lkt-web-element-config", "_", {
+        element: k,
         parent: a.parent,
         parentType: a.parentType,
         fileBrowserConfig: a.fileBrowserConfig,
         modalCrudConfig: a.modalCrudConfig,
         afterElement: o.value.id
       });
-    }, H = o.value.getCustomSettings(), x = ml(), D = Ie(), L = !H || ((Ee = H.options) == null ? void 0 : Ee.textEditor) === !0, B = [
+    }, F = o.value.getCustomSettings(), W = ml(), D = Ce(), C = !F || ((Pe = F.options) == null ? void 0 : Pe.textEditor) === !0, B = [
       u.LktLayoutBox,
       u.LktLayoutAccordion,
       u.LktTextBox,
       u.LktTextAccordion,
       u.LktTextBanner,
       u.LktIcons
-    ].includes(o.value.type), E = [
+    ].includes(o.value.type), A = [
       u.LktTextBanner
     ].includes(o.value.type), l = [
       u.LktTextBanner
     ].includes(o.value.type), n = [
       u.LktTextBanner
-    ].includes(o.value.type), G = [
+    ].includes(o.value.type), q = [
       u.LktText
-    ].includes(o.value.type), be = [
+    ].includes(o.value.type), we = [
       u.LktLayout
-    ].includes(o.value.type), te = [
+    ].includes(o.value.type), oe = [
       u.LktTextBanner
-    ].includes(o.value.type), ue = [
+    ].includes(o.value.type), ie = [
       u.LktLayoutBox,
       u.LktLayoutAccordion,
       u.LktTextBox,
@@ -1187,7 +1240,7 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
       u.LktIcon,
       u.LktButton,
       u.LktAnchor
-    ].includes(o.value.type), Y = [u.LktLayoutBox, u.LktLayoutAccordion, u.LktLayout, u.LktIcons].includes(o.value.type), Ce = [u.LktImage].includes(o.value.type), re = [u.LktLayoutAccordion, u.LktTextAccordion].includes(o.value.type), de = [u.LktLayoutAccordion, u.LktLayoutBox, u.LktLayout].includes(o.value.type), ae = [$.FlexRow, $.FlexRows].includes((De = (Pe = a.parent) == null ? void 0 : Pe.layout) == null ? void 0 : De.type), ie = El(), d = Pl(), Qe = Dl(), Xe = hl(), Ye = [
+    ].includes(o.value.type), _ = [u.LktLayoutBox, u.LktLayoutAccordion, u.LktLayout, u.LktIcons].includes(o.value.type), Te = [u.LktImage].includes(o.value.type), se = [u.LktLayoutAccordion, u.LktTextAccordion].includes(o.value.type), pe = [u.LktLayoutAccordion, u.LktLayoutBox, u.LktLayout].includes(o.value.type), ne = [j.FlexRow, j.FlexRows].includes((he = (Re = a.parent) == null ? void 0 : Re.layout) == null ? void 0 : he.type), me = Dl(), s = Pl(), Qe = Rl(), Xe = hl(), Ye = [
       {
         value: "lkt-flex-col-1",
         label: "Default: 1"
@@ -1302,68 +1355,68 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
         value: "lkt-justify-content-end",
         label: "Default: End"
       }
-    ], se = (v, s) => {
-      if (v.length > 0) {
-        let N = String(s.value), O = "";
-        if (N.includes("--from") && (O = "--" + N.split("--")[1]), N.includes("--to") && (O = "--" + N.split("--")[1]), O !== "") {
-          let I = v.find((Z) => String(Z).includes(O));
-          if (I)
-            return I === s.value;
+    ], fe = (k, m) => {
+      if (k.length > 0) {
+        let K = String(m.value), $ = "";
+        if (K.includes("--from") && ($ = "--" + K.split("--")[1]), K.includes("--to") && ($ = "--" + K.split("--")[1]), $ !== "") {
+          let U = k.find((le) => String(le).includes($));
+          if (U)
+            return U === m.value;
         }
-        let P = v.find((I) => !String(I).includes("--"));
+        let P = k.find((U) => !String(U).includes("--"));
         if (P)
-          return P === N || N.includes("--");
+          return P === K || K.includes("--");
       }
       return !0;
-    }, el = (v) => {
-      var s;
-      return se(
-        ((s = o.value.layout) == null ? void 0 : s.amountOfItems) ?? [],
-        v
+    }, el = (k) => {
+      var m;
+      return fe(
+        ((m = o.value.layout) == null ? void 0 : m.amountOfItems) ?? [],
+        k
       );
-    }, ll = (v) => {
-      var s;
-      return se(
-        ((s = o.value.layout) == null ? void 0 : s.alignItems) ?? [],
-        v
+    }, ll = (k) => {
+      var m;
+      return fe(
+        ((m = o.value.layout) == null ? void 0 : m.alignItems) ?? [],
+        k
       );
-    }, tl = (v) => {
-      var s;
-      return se(
-        ((s = o.value.layout) == null ? void 0 : s.justifyContent) ?? [],
-        v
+    }, tl = (k) => {
+      var m;
+      return fe(
+        ((m = o.value.layout) == null ? void 0 : m.justifyContent) ?? [],
+        k
       );
-    }, al = (v) => {
-      var s;
-      return se(
-        ((s = o.value.layout) == null ? void 0 : s.columns) ?? [],
-        v
+    }, al = (k) => {
+      var m;
+      return fe(
+        ((m = o.value.layout) == null ? void 0 : m.columns) ?? [],
+        k
       );
     }, ol = () => {
       o.value.addSubElement();
-    }, Ue = j(() => {
-      let v = Ae.getCustomAppearance(o.value.type);
-      if (!(!v || typeof v > "u"))
-        return Object.keys(v).length > 0 ? dl({ options: v.options }, il.defaultFieldElementCustomClassField) : void 0;
-    }), Se = j(() => fl(cl(o.value.type)) + " Config"), we = (v, s) => {
-      s || (s = o.value.props), s.alt = v[0].nameData, s.title = v[0].nameData;
+    }, Ee = M(() => {
+      let k = Se.getCustomAppearance(o.value.type);
+      if (!(!k || typeof k > "u"))
+        return Object.keys(k).length > 0 ? rl({ options: k.options }, il.defaultFieldElementCustomClassField) : void 0;
+    }), De = M(() => fl(cl(o.value.type)) + " Config"), Ve = (k, m) => {
+      m || (m = o.value.props), m.alt = k[0].nameData, m.title = k[0].nameData;
     };
-    ee(() => o.value.config.amountOfCallToActions, (v) => {
-      let s = o.value.config.callToActions.length;
-      v > s ? o.value.config.callToActions.push(sl()) : o.value.config.callToActions.splice(v, 1);
-    }), rl(() => {
-      !o.value.id && o.value.type === u.LktLayout && (C.value = !0, We(() => {
-        var v, s;
-        Ke((v = a.modalCrudConfig.createButton) == null ? void 0 : v.resource, {
-          ...(s = a.modalCrudConfig.createButton) == null ? void 0 : s.resourceData,
+    Z(() => o.value.config.amountOfCallToActions, (k) => {
+      let m = o.value.config.callToActions.length;
+      k > m ? o.value.config.callToActions.push(sl()) : o.value.config.callToActions.splice(k, 1);
+    }), dl(() => {
+      !o.value.id && o.value.type === u.LktLayout && (b.value = !0, Ue(() => {
+        var k, m;
+        xe((k = a.modalCrudConfig.createButton) == null ? void 0 : k.resource, {
+          ...(m = a.modalCrudConfig.createButton) == null ? void 0 : m.resourceData,
           ...o.value,
           parent: a.parent.id,
           parentType: a.parentType,
           afterElement: a.afterElement,
           beforeElement: a.beforeElement
-        }).then((N) => {
-          o.value.id = N.data.id, qe(a.modalName, a.modalKey), setTimeout(() => {
-            ve(a.modalName, N.data.id, {
+        }).then((K) => {
+          o.value.id = K.data.id, qe(a.modalName, a.modalKey), setTimeout(() => {
+            be(a.modalName, K.data.id, {
               element: o.value,
               parent: a.parent,
               parentType: a.parentType,
@@ -1375,15 +1428,15 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
         });
       }));
     });
-    const nl = j(() => a.isSubElement ? [] : ["update", "drop", "delete"]), oe = () => {
+    const nl = M(() => a.isSubElement ? [] : ["create", "update", "drop", "delete"]), ue = () => {
       typeof a.onUpdate == "function" && a.onUpdate();
-    }, ul = j(() => {
-      var P, I, Z, g;
-      let v = !1, s = !1;
-      !(!o.value.id && o.value.type === u.LktLayout) && !a.isSubElement && (v = {
+    }, ul = M(() => {
+      var P, U, le, y;
+      let k = !1, m = !1;
+      !(!o.value.id && o.value.type === u.LktLayout) && !a.isSubElement && (k = {
         ...a.modalCrudConfig.createButton,
         resourceData: {
-          ...(I = (P = a.modalCrudConfig) == null ? void 0 : P.createButton) == null ? void 0 : I.resourceData,
+          ...(U = (P = a.modalCrudConfig) == null ? void 0 : P.createButton) == null ? void 0 : U.resourceData,
           ...o.value,
           parent: a.parent.id,
           parentType: a.parentType,
@@ -1391,373 +1444,373 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
           beforeElement: a.beforeElement
         },
         events: {
-          click: oe
+          click: ue
         }
-      }, s = {
+      }, m = {
         ...a.modalCrudConfig.updateButton,
         resourceData: {
-          ...(Z = a.modalCrudConfig.updateButton) == null ? void 0 : Z.resourceData,
+          ...(le = a.modalCrudConfig.updateButton) == null ? void 0 : le.resourceData,
           ...o.value
         },
         events: {
-          click: oe
+          click: ue
         }
       });
-      let O = a.isSubElement ? oe : void 0;
+      let $ = a.isSubElement ? ue : void 0;
       return {
-        mode: y.value > 0 ? Oe.Update : Oe.Create,
+        mode: g.value > 0 ? $e.Update : $e.Create,
         view: pl.Modal,
         editing: !0,
         perms: nl.value,
-        title: Se.value,
+        title: De.value,
         modalConfig: {
           modalName: a.modalName,
           modalKey: a.modalKey,
           zIndex: a.zIndex,
-          title: Se.value,
-          beforeClose: O
+          title: De.value,
+          beforeClose: $
         },
         readData: {
-          id: y.value
+          id: g.value
         },
         ...a.modalCrudConfig,
-        beforeClose: O,
-        createButton: v,
-        updateButton: s,
+        beforeClose: $,
+        createButton: k,
+        updateButton: m,
         dropButton: a.isSubElement ? !1 : {
           ...a.modalCrudConfig.dropButton,
           resourceData: {
-            ...(g = a.modalCrudConfig.dropButton) == null ? void 0 : g.resourceData,
+            ...(y = a.modalCrudConfig.dropButton) == null ? void 0 : y.resourceData,
             ...o.value
           },
           events: {
-            click: oe
+            click: ue
           }
         },
         enabledSaveWithoutChanges: !0
       };
     });
-    return (v, s) => {
-      const N = R("lkt-loader"), O = R("lkt-accordion"), P = R("lkt-button"), I = R("lkt-field"), Z = R("lkt-item-crud");
-      return p(), k(Z, c({
+    return (k, m) => {
+      const K = h("lkt-loader"), $ = h("lkt-accordion"), P = h("lkt-button"), U = h("lkt-field"), le = h("lkt-item-crud");
+      return p(), v(le, c({
         ref_key: "itemCrudRef",
         ref: t,
         class: "lkt-web-element-config-modal",
         modelValue: o.value,
-        "onUpdate:modelValue": s[14] || (s[14] = (g) => o.value = g)
+        "onUpdate:modelValue": m[14] || (m[14] = (y) => o.value = y)
       }, ul.value), {
-        item: w(({ item: g }) => [
-          C.value ? (p(), k(N, { key: 0 })) : (p(), z("div", Fl, [
-            h("div", Hl, [
-              r(Be, c({
+        item: T(({ item: y }) => [
+          b.value ? (p(), v(K, { key: 0 })) : (p(), x("div", Hl, [
+            H("div", Ol, [
+              d(Ie, c({
                 modelValue: o.value,
-                "onUpdate:modelValue": s[0] || (s[0] = (f) => o.value = f)
+                "onUpdate:modelValue": m[0] || (m[0] = (f) => o.value = f)
               }, {
                 isPreview: !0,
                 canRenderActions: !1,
-                modalCrudConfig: v.modalCrudConfig,
+                modalCrudConfig: k.modalCrudConfig,
                 parent: o.value,
                 parentType: e(S).Element,
-                defaultAppearance: v.defaultAppearance
-              }, { onCrudUpdate: v.onUpdate }), null, 16, ["modelValue", "onCrudUpdate"]),
-              (p(!0), z(ge, null, Ve(e(x), (f) => (p(), z(ge, null, [
-                f !== e(D) ? (p(), k(O, c({
+                defaultAppearance: k.defaultAppearance
+              }, { onCrudUpdate: k.onUpdate }), null, 16, ["modelValue", "onCrudUpdate"]),
+              (p(!0), x(ke, null, Be(e(W), (f) => (p(), x(ke, null, [
+                f !== e(D) ? (p(), v($, c({
                   key: 0,
                   ref_for: !0
                 }, {
-                  type: e(F).Auto,
+                  type: e(O).Auto,
                   title: f
                 }), {
-                  default: w(() => [
-                    r(Be, c({
+                  default: T(() => [
+                    d(Ie, c({
                       modelValue: o.value,
-                      "onUpdate:modelValue": s[1] || (s[1] = (ne) => o.value = ne)
+                      "onUpdate:modelValue": m[1] || (m[1] = (de) => o.value = de)
                     }, { ref_for: !0 }, {
                       lang: f,
                       isPreview: !0,
                       canRenderActions: !1,
-                      modalCrudConfig: v.modalCrudConfig,
+                      modalCrudConfig: k.modalCrudConfig,
                       parent: o.value,
                       parentType: e(S).Element,
-                      defaultAppearance: v.defaultAppearance
+                      defaultAppearance: k.defaultAppearance
                     }), null, 16, ["modelValue"])
                   ]),
                   _: 2
-                }, 1040)) : T("", !0)
+                }, 1040)) : V("", !0)
               ], 64))), 256))
             ]),
-            h("div", Ol, [
-              h("div", $l, [
-                e(de) ? (p(), k(P, b(c({ key: 0 }, {
+            H("div", $l, [
+              H("div", jl, [
+                e(pe) ? (p(), v(P, w(c({ key: 0 }, {
                   text: "Add children",
                   icon: "lkt-icn-more",
                   modal: "lkt-web-element-select",
                   modalData: {
-                    fileBrowserConfig: v.fileBrowserConfig,
-                    modalCrudConfig: v.modalCrudConfig,
+                    fileBrowserConfig: k.fileBrowserConfig,
+                    modalCrudConfig: k.modalCrudConfig,
                     parent: o.value,
                     parentType: e(S).Element,
-                    onUpdate: oe
+                    onUpdate: ue
                   }
-                })), null, 16)) : T("", !0),
-                g.type === e(u).LktIcons ? (p(), k(P, b(c({ key: 1 }, {
+                })), null, 16)) : V("", !0),
+                y.type === e(u).LktIcons ? (p(), v(P, w(c({ key: 1 }, {
                   text: "Add icon",
                   icon: "lkt-icn-more",
                   events: {
                     click: ol
                   }
-                })), null, 16)) : T("", !0),
-                e(L) ? (p(), k(O, b(c({ key: 2 }, {
-                  type: e(F).Always,
+                })), null, 16)) : V("", !0),
+                e(C) ? (p(), v($, w(c({ key: 2 }, {
+                  type: e(O).Always,
                   title: "Text editor"
                 })), {
-                  default: w(() => [
-                    h("div", jl, [
-                      r(P, c({
+                  default: T(() => [
+                    H("div", Ml, [
+                      d(P, c({
                         icon: "lkt-icn-bold"
                       }, {
-                        onClick: s[2] || (s[2] = () => e(Q)("bold"))
+                        onClick: m[2] || (m[2] = () => e(Y)("bold"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-italic"
                       }, {
-                        onClick: s[3] || (s[3] = () => e(Q)("italic"))
+                        onClick: m[3] || (m[3] = () => e(Y)("italic"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-underline"
                       }, {
-                        onClick: s[4] || (s[4] = () => e(Q)("underline"))
+                        onClick: m[4] || (m[4] = () => e(Y)("underline"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-strike"
                       }, {
-                        onClick: s[5] || (s[5] = () => e(Q)("strikeThrough"))
+                        onClick: m[5] || (m[5] = () => e(Y)("strikeThrough"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-superscript"
                       }, {
-                        onClick: s[6] || (s[6] = () => e(Q)("superscript"))
+                        onClick: m[6] || (m[6] = () => e(Y)("superscript"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-subscript"
                       }, {
-                        onClick: s[7] || (s[7] = () => e(Q)("subscript"))
+                        onClick: m[7] || (m[7] = () => e(Y)("subscript"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-align-left"
                       }, {
-                        onClick: s[8] || (s[8] = () => e(ce)("left"))
+                        onClick: m[8] || (m[8] = () => e(ve)("left"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-align-center"
                       }, {
-                        onClick: s[9] || (s[9] = () => e(ce)("center"))
+                        onClick: m[9] || (m[9] = () => e(ve)("center"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-align-right"
                       }, {
-                        onClick: s[10] || (s[10] = () => e(ce)("right"))
+                        onClick: m[10] || (m[10] = () => e(ve)("right"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-align-justify"
                       }, {
-                        onClick: s[11] || (s[11] = () => e(ce)("justify"))
+                        onClick: m[11] || (m[11] = () => e(ve)("justify"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-list-bullet"
                       }, {
-                        onClick: s[12] || (s[12] = () => e(Q)("insertUnorderedList"))
+                        onClick: m[12] || (m[12] = () => e(Y)("insertUnorderedList"))
                       }), null, 16),
-                      r(P, c({
+                      d(P, c({
                         icon: "lkt-icn-list-numbered"
                       }, {
-                        onClick: s[13] || (s[13] = () => e(Q)("insertOrderedList"))
+                        onClick: m[13] || (m[13] = () => e(Y)("insertOrderedList"))
                       }), null, 16)
                     ])
                   ]),
                   _: 1
-                }, 16)) : T("", !0),
-                !e(G) && !e(be) ? (p(), k(O, b(c({ key: 3 }, {
-                  type: e(F).Auto,
+                }, 16)) : V("", !0),
+                !e(q) && !e(we) ? (p(), v($, w(c({ key: 3 }, {
+                  type: e(O).Auto,
                   title: "Config",
                   modelValue: !0,
-                  toggleMode: e(Le).Display
+                  toggleMode: e(Ae).Display
                 })), {
-                  default: w(() => [
-                    h("div", xl, [
-                      Ue.value ? (p(), k(I, c({ key: 0 }, {
-                        type: e(U).Select,
-                        ...Ue.value,
+                  default: T(() => [
+                    H("div", Wl, [
+                      Ee.value ? (p(), v(U, c({ key: 0 }, {
+                        type: e(E).Select,
+                        ...Ee.value,
                         canClear: !0
                       }, {
-                        modelValue: g.props.class,
-                        "onUpdate:modelValue": (f) => g.props.class = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(B) ? (p(), k(I, c({ key: 1 }, {
-                        type: e(U).Switch,
+                        modelValue: y.props.class,
+                        "onUpdate:modelValue": (f) => y.props.class = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(B) ? (p(), v(U, c({ key: 1 }, {
+                        type: e(E).Switch,
                         label: "Has header"
                       }, {
-                        modelValue: g.config.hasHeader,
-                        "onUpdate:modelValue": (f) => g.config.hasHeader = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(E) ? (p(), k(I, c({ key: 2 }, {
-                        type: e(U).Switch,
+                        modelValue: y.config.hasHeader,
+                        "onUpdate:modelValue": (f) => y.config.hasHeader = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(A) ? (p(), v(U, c({ key: 2 }, {
+                        type: e(E).Switch,
                         label: "Has sub-header"
                       }, {
-                        modelValue: g.config.hasSubHeader,
-                        "onUpdate:modelValue": (f) => g.config.hasSubHeader = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(ue) ? (p(), k(I, c({ key: 3 }, {
-                        type: e(U).Switch,
+                        modelValue: y.config.hasSubHeader,
+                        "onUpdate:modelValue": (f) => y.config.hasSubHeader = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(ie) ? (p(), v(U, c({ key: 3 }, {
+                        type: e(E).Switch,
                         label: "Has icon"
                       }, {
-                        modelValue: g.config.hasIcon,
-                        "onUpdate:modelValue": (f) => g.config.hasIcon = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(ue) ? (p(), k(I, c({
+                        modelValue: y.config.hasIcon,
+                        "onUpdate:modelValue": (f) => y.config.hasIcon = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(ie) ? (p(), v(U, c({
                         key: 4,
-                        modelValue: g.props.icon,
-                        "onUpdate:modelValue": (f) => g.props.icon = f
+                        modelValue: y.props.icon,
+                        "onUpdate:modelValue": (f) => y.props.icon = f
                       }, {
-                        type: e(U).Text,
+                        type: e(E).Text,
                         label: "Icon",
                         canClear: !0,
-                        options: e(Rl)
+                        options: e(Fl)
                       }, {
-                        disabled: !g.config.hasIcon
-                      }), null, 16, ["modelValue", "onUpdate:modelValue", "disabled"])) : T("", !0),
-                      e(Ce) ? (p(), k(I, c({ key: 5 }, {
-                        type: e(U).Image,
+                        disabled: !y.config.hasIcon
+                      }), null, 16, ["modelValue", "onUpdate:modelValue", "disabled"])) : V("", !0),
+                      e(Te) ? (p(), v(U, c({ key: 5 }, {
+                        type: e(E).Image,
                         label: "Image",
-                        fileBrowserConfig: v.fileBrowserConfig
+                        fileBrowserConfig: k.fileBrowserConfig
                       }, {
-                        modelValue: g.props.src,
-                        "onUpdate:modelValue": (f) => g.props.src = f,
-                        onPickedFiles: we
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(n) ? (p(), k(I, c({ key: 6 }, {
-                        type: e(U).Image,
+                        modelValue: y.props.src,
+                        "onUpdate:modelValue": (f) => y.props.src = f,
+                        onPickedFiles: Ve
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(n) ? (p(), v(U, c({ key: 6 }, {
+                        type: e(E).Image,
                         label: "Media content",
-                        fileBrowserConfig: v.fileBrowserConfig
+                        fileBrowserConfig: k.fileBrowserConfig
                       }, {
-                        modelValue: g.props.media.src,
-                        "onUpdate:modelValue": (f) => g.props.media.src = f,
-                        onPickedFiles: (f) => we(f, g.props.media)
-                      }), null, 16, ["modelValue", "onUpdate:modelValue", "onPickedFiles"])) : T("", !0),
-                      e(n) ? (p(), k(I, c({ key: 7 }, {
-                        type: e(U).Select,
+                        modelValue: y.props.media.src,
+                        "onUpdate:modelValue": (f) => y.props.media.src = f,
+                        onPickedFiles: (f) => Ve(f, y.props.media)
+                      }), null, 16, ["modelValue", "onUpdate:modelValue", "onPickedFiles"])) : V("", !0),
+                      e(n) ? (p(), v(U, c({ key: 7 }, {
+                        type: e(E).Select,
                         label: "Type",
-                        options: e(d)
+                        options: e(s)
                       }, {
-                        modelValue: g.props.type,
-                        "onUpdate:modelValue": (f) => g.props.type = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(l) ? (p(), k(I, c({ key: 8 }, {
-                        type: e(U).Image,
+                        modelValue: y.props.type,
+                        "onUpdate:modelValue": (f) => y.props.type = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(l) ? (p(), v(U, c({ key: 8 }, {
+                        type: e(E).Image,
                         label: "Background Image",
-                        fileBrowserConfig: v.fileBrowserConfig
+                        fileBrowserConfig: k.fileBrowserConfig
                       }, {
-                        modelValue: g.props.art.src,
-                        "onUpdate:modelValue": (f) => g.props.art.src = f,
-                        onPickedFiles: (f) => we(f, g.props.art)
-                      }), null, 16, ["modelValue", "onUpdate:modelValue", "onPickedFiles"])) : T("", !0),
-                      h("div", null, [
-                        e(te) ? (p(), k(I, c({ key: 0 }, {
-                          type: e(U).Number,
+                        modelValue: y.props.art.src,
+                        "onUpdate:modelValue": (f) => y.props.art.src = f,
+                        onPickedFiles: (f) => Ve(f, y.props.art)
+                      }), null, 16, ["modelValue", "onUpdate:modelValue", "onPickedFiles"])) : V("", !0),
+                      H("div", null, [
+                        e(oe) ? (p(), v(U, c({ key: 0 }, {
+                          type: e(E).Number,
                           label: "Background opacity",
                           min: 0,
                           max: 1,
                           step: 0.1,
                           canStep: !0
                         }, {
-                          modelValue: g.props.opacity,
-                          "onUpdate:modelValue": (f) => g.props.opacity = f
-                        }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                        e(te) ? (p(), k(I, c({ key: 1 }, {
-                          type: e(U).Range,
+                          modelValue: y.props.opacity,
+                          "onUpdate:modelValue": (f) => y.props.opacity = f
+                        }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                        e(oe) ? (p(), v(U, c({ key: 1 }, {
+                          type: e(E).Range,
                           min: 0,
                           max: 1,
                           step: 0.1
                         }, {
-                          modelValue: g.props.opacity,
-                          "onUpdate:modelValue": (f) => g.props.opacity = f
-                        }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0)
+                          modelValue: y.props.opacity,
+                          "onUpdate:modelValue": (f) => y.props.opacity = f
+                        }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0)
                       ]),
-                      e(n) ? (p(), k(I, c({ key: 9 }, {
-                        type: e(U).Number,
+                      e(n) ? (p(), v(U, c({ key: 9 }, {
+                        type: e(E).Number,
                         label: "Amount of CTA's",
                         min: 0,
                         max: 2,
                         step: 1,
                         canStep: !0
                       }, {
-                        modelValue: g.config.amountOfCallToActions,
-                        "onUpdate:modelValue": (f) => g.config.amountOfCallToActions = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0)
+                        modelValue: y.config.amountOfCallToActions,
+                        "onUpdate:modelValue": (f) => y.config.amountOfCallToActions = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0)
                     ])
                   ]),
                   _: 2
-                }, 1040)) : T("", !0),
-                g.config.amountOfCallToActions > 0 ? (p(!0), z(ge, { key: 4 }, Ve(g.config.callToActions, (f) => (p(), k(O, c({ ref_for: !0 }, {
-                  type: e(F).Auto,
+                }, 1040)) : V("", !0),
+                y.config.amountOfCallToActions > 0 ? (p(!0), x(ke, { key: 4 }, Be(y.config.callToActions, (f) => (p(), v($, c({ ref_for: !0 }, {
+                  type: e(O).Auto,
                   title: "CTA #1"
                 }), {
-                  default: w(() => [
-                    h("div", Ml, [
-                      r(I, c({ ref_for: !0 }, {
-                        type: e(U).Switch,
+                  default: T(() => [
+                    H("div", Nl, [
+                      d(U, c({ ref_for: !0 }, {
+                        type: e(E).Switch,
                         label: "Has icon"
                       }, {
                         modelValue: f.config.hasIcon,
-                        "onUpdate:modelValue": (ne) => f.config.hasIcon = ne
+                        "onUpdate:modelValue": (de) => f.config.hasIcon = de
                       }), null, 16, ["modelValue", "onUpdate:modelValue"]),
-                      r(I, c({ ref_for: !0 }, {
-                        type: e(U).Text,
+                      d(U, c({ ref_for: !0 }, {
+                        type: e(E).Text,
                         label: "Icon"
                       }, {
                         modelValue: f.props.icon,
-                        "onUpdate:modelValue": (ne) => f.props.icon = ne,
+                        "onUpdate:modelValue": (de) => f.props.icon = de,
                         disabled: !f.config.hasIcon
                       }), null, 16, ["modelValue", "onUpdate:modelValue", "disabled"])
                     ])
                   ]),
                   _: 2
-                }, 1040))), 256)) : T("", !0),
-                e(re) ? (p(), k(O, b(c({ key: 5 }, {
-                  type: e(F).Auto,
+                }, 1040))), 256)) : V("", !0),
+                e(se) ? (p(), v($, w(c({ key: 5 }, {
+                  type: e(O).Auto,
                   title: "Accordion Config"
                 })), {
-                  default: w(() => [
-                    h("div", Wl, [
-                      r(I, c({
-                        type: e(U).Select,
+                  default: T(() => [
+                    H("div", Kl, [
+                      d(U, c({
+                        type: e(E).Select,
                         label: "Type",
-                        options: e(ie)
+                        options: e(me)
                       }, {
-                        modelValue: g.props.type,
-                        "onUpdate:modelValue": (f) => g.props.type = f
+                        modelValue: y.props.type,
+                        "onUpdate:modelValue": (f) => y.props.type = f
                       }), null, 16, ["modelValue", "onUpdate:modelValue"])
                     ])
                   ]),
                   _: 2
-                }, 1040)) : T("", !0),
-                e(Y) || e(ae) ? (p(), k(O, b(c({ key: 6 }, {
-                  type: e(F).Auto,
+                }, 1040)) : V("", !0),
+                e(_) || e(ne) ? (p(), v($, w(c({ key: 6 }, {
+                  type: e(O).Auto,
                   title: "Layout Config"
                 })), {
-                  default: w(() => [
-                    h("div", Nl, [
-                      e(Y) ? (p(), k(I, c({ key: 0 }, {
-                        type: e(U).Select,
+                  default: T(() => [
+                    H("div", xl, [
+                      e(_) ? (p(), v(U, c({ key: 0 }, {
+                        type: e(E).Select,
                         label: "Type",
                         options: e(Qe)
                       }, {
-                        modelValue: g.layout.type,
-                        "onUpdate:modelValue": (f) => g.layout.type = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(Y) && g.layout.type !== e($).FlexColumn ? (p(), k(I, c({ key: 1 }, {
-                        type: e(U).Select,
-                        label: g.layout.type === e($).Grid ? "Items per row (based on device width)" : "Column size (based on device width)",
+                        modelValue: y.layout.type,
+                        "onUpdate:modelValue": (f) => y.layout.type = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(_) && y.layout.type !== e(j).FlexColumn ? (p(), v(U, c({ key: 1 }, {
+                        type: e(E).Select,
+                        label: y.layout.type === e(j).Grid ? "Items per row (based on device width)" : "Column size (based on device width)",
                         options: e(Xe),
                         multiple: !0,
                         searchable: !0,
@@ -1766,11 +1819,11 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                           filter: el
                         }
                       }, {
-                        modelValue: g.layout.amountOfItems,
-                        "onUpdate:modelValue": (f) => g.layout.amountOfItems = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(Y) ? (p(), k(I, c({ key: 2 }, {
-                        type: e(U).Select,
+                        modelValue: y.layout.amountOfItems,
+                        "onUpdate:modelValue": (f) => y.layout.amountOfItems = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(_) ? (p(), v(U, c({ key: 2 }, {
+                        type: e(E).Select,
                         label: "Align items",
                         options: Ze,
                         multiple: !0,
@@ -1779,11 +1832,11 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                           filter: ll
                         }
                       }, {
-                        modelValue: g.layout.alignItems,
-                        "onUpdate:modelValue": (f) => g.layout.alignItems = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(Y) ? (p(), k(I, c({ key: 3 }, {
-                        type: e(U).Select,
+                        modelValue: y.layout.alignItems,
+                        "onUpdate:modelValue": (f) => y.layout.alignItems = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(_) ? (p(), v(U, c({ key: 3 }, {
+                        type: e(E).Select,
                         label: "Justify content",
                         options: _e,
                         multiple: !0,
@@ -1792,11 +1845,11 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                           filter: tl
                         }
                       }, {
-                        modelValue: g.layout.justifyContent,
-                        "onUpdate:modelValue": (f) => g.layout.justifyContent = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0),
-                      e(ae) ? (p(), k(I, c({ key: 4 }, {
-                        type: e(U).Select,
+                        modelValue: y.layout.justifyContent,
+                        "onUpdate:modelValue": (f) => y.layout.justifyContent = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0),
+                      e(ne) ? (p(), v(U, c({ key: 4 }, {
+                        type: e(E).Select,
                         label: "Columns Reserved",
                         options: Ye,
                         multiple: !0,
@@ -1805,30 +1858,30 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
                           filter: al
                         }
                       }, {
-                        modelValue: g.layout.columns,
-                        "onUpdate:modelValue": (f) => g.layout.columns = f
-                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : T("", !0)
+                        modelValue: y.layout.columns,
+                        "onUpdate:modelValue": (f) => y.layout.columns = f
+                      }), null, 16, ["modelValue", "onUpdate:modelValue"])) : V("", !0)
                     ])
                   ]),
                   _: 2
-                }, 1040)) : T("", !0),
-                r(P, b(V({
+                }, 1040)) : V("", !0),
+                d(P, w(I({
                   text: "Duplicate",
                   icon: "lkt-icn-more",
-                  type: e(Ne).Split
+                  type: e(Ke).Split
                 })), {
-                  split: w(({ doClose: f }) => [
-                    h("div", Kl, [
-                      r(P, b(V({
+                  split: T(({ doClose: f }) => [
+                    H("div", zl, [
+                      d(P, w(I({
                         text: "Before",
                         events: {
-                          click: A
+                          click: L
                         }
                       })), null, 16),
-                      r(P, b(V({
+                      d(P, w(I({
                         text: "After",
                         events: {
-                          click: i
+                          click: r
                         }
                       })), null, 16)
                     ])
@@ -1843,21 +1896,81 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
       }, 16, ["modelValue"]);
     };
   }
-}), Zl = () => {
-  _({
+}), Jl = { class: "lkt-web-page" }, ql = /* @__PURE__ */ J({
+  __name: "LktWebPageView",
+  props: {
+    modelValue: {},
+    crudConfig: {},
+    modalCrudConfig: {},
+    fileBrowserConfig: {}
+  },
+  setup(i) {
+    const a = i, g = gl(), o = R(g.path), t = R(new te(a.modelValue)), b = R(null), L = R(!1), r = R(!1);
+    Z(g, (W) => {
+      t.value = {}, o.value = g.path, r.value = !1, Ue(() => r.value = !0);
+    }, { flush: "pre", immediate: !0, deep: !0 });
+    const F = () => {
+      b.value.turnStoredDataIntoOriginal();
+    };
+    return Z(() => t.value.name, () => {
+      r.value && typeof t.value.updateSlug == "function" && t.value.updateSlug();
+    }), (W, D) => {
+      const C = h("lkt-item-crud");
+      return p(), x("section", Jl, [
+        r.value ? (p(), v(C, c({
+          key: 0,
+          ref_key: "itemCrudRef",
+          ref: b,
+          modelValue: t.value,
+          "onUpdate:modelValue": D[1] || (D[1] = (B) => t.value = B),
+          editing: L.value,
+          "onUpdate:editing": D[2] || (D[2] = (B) => L.value = B)
+        }, {
+          readResource: "r-web-page-view",
+          readData: {
+            slug: o.value
+          },
+          createButton: !1,
+          updateButton: !1,
+          dropButton: !1
+        }, {
+          title: t.value.name === "" ? "Page name" : t.value.name
+        }), {
+          item: T(() => [
+            t.value.id > 0 ? (p(), v(re, {
+              key: 0,
+              modelValue: t.value.webElements,
+              "onUpdate:modelValue": D[0] || (D[0] = (B) => t.value.webElements = B),
+              lang: e(Ce)(),
+              "modal-crud-config": W.modalCrudConfig,
+              "file-browser-config": W.fileBrowserConfig,
+              parent: t.value,
+              "parent-type": e(S).Page,
+              "is-preview": !1,
+              disabled: "",
+              onCrudUpdate: F
+            }, null, 8, ["modelValue", "lang", "modal-crud-config", "file-browser-config", "parent", "parent-type"])) : V("", !0)
+          ]),
+          _: 1
+        }, 16, ["modelValue", "editing", "title"])) : V("", !0)
+      ]);
+    };
+  }
+}), tt = () => {
+  ee({
     url: "/web/element/{id}",
     name: "r-web-element",
     params: { id: { default: void 0 } },
     digToPerms: "perms",
     digToData: "item",
-    mapData: (m) => new le(m)
-  }), _({
+    mapData: (i) => new ae(i)
+  }), ee({
     url: "/web/element/{id}/children",
     name: "r-web-element-children",
     params: { id: { default: void 0 } },
     digToPerms: "perms",
     digToData: "results",
-    mapData: (m) => m.map((a) => new le(a))
+    mapData: (i) => i.map((a) => new ae(a))
   }), ze({
     url: "/web/element",
     name: "mk-web-element",
@@ -1898,41 +2011,49 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     digToPerms: "perms",
     digToData: "item"
   });
-}, _l = () => {
-  _({
+}, at = () => {
+  ee({
     url: "/web/pages",
     name: "ls-web-pages",
     params: {},
     digToPerms: "perms",
     digToData: "results",
-    mapData: (m) => m.map((a) => new ye(a))
-  }), _({
+    mapData: (i) => i.map((a) => new te(a))
+  }), ee({
     url: "/web/pages/{type}",
     name: "ls-web-pages-type",
     params: { type: { default: void 0 } },
     digToPerms: "perms",
     digToData: "results",
-    mapData: (m) => m.map((a) => new ye(a))
-  }), _({
+    mapData: (i) => i.map((a) => new te(a))
+  }), ee({
     url: "/web/page/{id}",
     name: "r-web-page",
     params: { id: { default: void 0 } },
     digToPerms: "perms",
     digToData: "item",
-    mapData: (m) => new ye(m)
-  }), _({
+    mapData: (i) => new te(i)
+  }), ee({
+    url: "/web/page",
+    name: "r-web-page-view",
+    params: { slug: { default: void 0 } },
+    digToData: "item",
+    mapData: (i) => new te(i)
+  }), ee({
     url: "/web/page/{id}/children",
     name: "r-web-page-children",
     params: { id: { default: void 0 } },
     digToPerms: "perms",
     digToData: "results",
-    mapData: (m) => m.map((a) => new le(a))
+    mapData: (i) => i.map((a) => new ae(a))
   }), ze({
     url: "/web/page",
     name: "mk-web-page",
     params: {
-      name: { default: void 0 },
+      nameData: { default: void 0 },
       type: { default: void 0 },
+      status: { default: void 0 },
+      slugData: { default: void 0 },
       webElements: { default: void 0 }
     },
     digToPerms: "perms",
@@ -1943,7 +2064,10 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     name: "up-web-page",
     params: {
       id: { default: void 0 },
-      name: { default: void 0 },
+      nameData: { default: void 0 },
+      type: { default: void 0 },
+      status: { default: void 0 },
+      slugData: { default: void 0 },
       webElements: { default: void 0 }
     },
     digToPerms: "perms",
@@ -1957,13 +2081,16 @@ const gl = { class: "lkt-text" }, M = /* @__PURE__ */ X({
     digToPerms: "perms",
     digToData: "item"
   });
-}, et = {
-  install: (m) => {
-    m.component("lkt-web-page") === void 0 && (m.component("lkt-web-page", Tl), $e("lkt-web-element-select", Sl), $e("lkt-web-element-config", zl));
+}, ot = {
+  install: (i) => {
+    i.component("lkt-web-page") === void 0 && (i.component("lkt-web-page", Vl), je("lkt-web-element-select", El), je("lkt-web-element-config", Gl));
   }
+}, nt = (i) => {
+  i.addRoute({ path: "/:pathMatch(.*)*", name: "lkt-web-page-catch-all", component: ql });
 };
 export {
-  et as default,
-  Zl as setupWebElementsHttp,
-  _l as setupWebPagesHttp
+  ot as default,
+  nt as setupLktWebPageRoutes,
+  tt as setupWebElementsHttp,
+  at as setupWebPagesHttp
 };

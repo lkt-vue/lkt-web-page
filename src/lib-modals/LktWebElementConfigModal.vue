@@ -386,7 +386,7 @@ onMounted(() => {
 
 const computedPerms = computed(() => {
     if (props.isSubElement) return [];
-    return ['update', 'drop', 'delete'];
+    return ['create', 'update', 'drop', 'delete'];
 })
 
 const onCrudUpdated = () => {

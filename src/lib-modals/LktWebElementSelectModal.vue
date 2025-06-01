@@ -13,6 +13,7 @@ import {
     WebParentType,
 } from 'lkt-vue-kernel';
 import {closeModal, openModal} from 'lkt-modal';
+import {WebElementConfigModalProps} from "@/components-interfaces/WebElementConfigModalProps";
 
 const props = withDefaults(defineProps<{
         modalName: string
@@ -33,7 +34,7 @@ const props = withDefaults(defineProps<{
     const webParent = ref(props.parent);
 
     const doAddElement = (type: WebElementType|string) => {
-        openModal('lkt-web-element-config', '_', {
+        openModal('lkt-web-element-config', '_', <WebElementConfigModalProps>{
             element: WebElement.createByType(type),
             parent: webParent.value,
             parentType: props.parentType,

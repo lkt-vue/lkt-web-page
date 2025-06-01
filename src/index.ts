@@ -5,6 +5,8 @@ import {default as libComponent} from './lib-components/LktWebPage.vue';
 import {addModal} from "lkt-modal";
 import LktWebElementSelectModal from "./lib-modals/LktWebElementSelectModal.vue";
 import LktWebElementConfigModal from "./lib-modals/LktWebElementConfigModal.vue";
+import {Router} from "vue-router";
+import LktWebPageView from "./lib-components/LktWebPageView.vue";
 
 const LktWebPage: Plugin = {
   install: (app: App) => {
@@ -23,3 +25,6 @@ export default LktWebPage;
 
 export {setupWebElementsHttp} from "./http/web-elements-http";
 export {setupWebPagesHttp} from "./http/web-pages-http";
+export const setupLktWebPageRoutes = (router: Router) => {
+  router.addRoute({ path: '/:pathMatch(.*)*', name: 'lkt-web-page-catch-all', component: LktWebPageView })
+}

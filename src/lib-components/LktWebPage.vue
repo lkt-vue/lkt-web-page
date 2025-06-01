@@ -33,6 +33,7 @@ const props = withDefaults(defineProps<{
 const webPage = ref(new WebPage(props.modelValue));
 const itemCrudRef = ref(null);
 const editing = ref(false);
+const perms = ref(['create', 'switch-edit-mode']);
 
 const onCrudUpdate = () => {
     itemCrudRef.value.turnStoredDataIntoOriginal();
@@ -46,9 +47,9 @@ const pageStatuses = computed(() => {
     ];
 })
 
-watch(() => webPage.value.name, () => {
+watch(() => webPage.value.nameData, () => {
     webPage.value.updateSlug();
-})
+}, {deep: true})
 
 const computedItemForm = computed(() => {
     return <FormConfig>{
@@ -66,11 +67,12 @@ const computedItemForm = computed(() => {
                     formClass: 'lkt-grid-1 lkt-grid-3--from-768',
                 },
                 items: [
-                    FormInstance.mkFieldItemConfig('name', {
+                    FormInstance.mkFieldItemConfig('nameData', {
                         type: FieldType.Text,
                         label: 'Name',
                         mandatory: true,
                         canUndo: true,
+                        canI18n: true,
                         validation: {
                             trigger: FieldAutoValidationTrigger.Blur
                         }
@@ -109,11 +111,12 @@ const computedItemForm = computed(() => {
                     formClass: 'lkt-grid-1 lkt-grid-3--from-768',
                 },
                 items: [
-                    FormInstance.mkFieldItemConfig('slug', {
+                    FormInstance.mkFieldItemConfig('slugData', {
                         type: FieldType.Text,
                         label: 'Slug',
                         mandatory: true,
                         readMode: true,
+                        canI18n: true,
                         validation: {
                             trigger: FieldAutoValidationTrigger.Blur
                         }
@@ -174,9 +177,10 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
     <section class="lkt-web-page">
         <lkt-item-crud
             ref="itemCrudRef"
+            v-bind="computedItemCrudConfig"
             v-model="webPage"
             v-model:editing="editing"
-            v-bind="computedItemCrudConfig"
+            v-model:perms="perms"
             :title="webPage.name === '' ? 'Page name' : webPage.name"
         >
             <template #web-elements>
@@ -189,7 +193,6 @@ const computedItemCrudConfig = computed((): ItemCrudConfig => {
                     :parent="webPage"
                     :parent-type="WebParentType.Page"
                     :is-preview="false"
-                    disabled
                     @crud-update="onCrudUpdate"
                 />
             </template>

@@ -73,16 +73,24 @@ const onCrudUpdate = () => {
 
 const computedTableConfig = computed(() => {
 
+    let type = props.isPreview ? TableType.Table : TableType.Item;
+    type = TableType.Item;
+
+    let itemsContainerClass = 'lkt-elements-table--default-grid';
+    if (props.isChild) itemsContainerClass = props.layoutSelector;
+
+    if (props.disabled) {
+        return <TableConfig> {
+            type,
+            itemsContainerClass,
+        }
+    }
+
     let perms = [TablePermission.Update, TablePermission.Sort];
     if (!props.isChild) perms.push(TablePermission.Create);
     if (props.parentType === WebParentType.Page) perms.push(TablePermission.SwitchEditMode)
 
-    let type = props.isPreview ? TableType.Table : TableType.Item;
-    type = TableType.Item;
     if (editing.value) type = TableType.Table;
-
-    let itemsContainerClass = 'lkt-elements-table--default-grid';
-    if (props.isChild) itemsContainerClass = props.layoutSelector;
 
     return <TableConfig>{
         type,
@@ -136,7 +144,7 @@ const onUpdateWebElement = () => {
 
 <template>
     <div class="lkt-web-elements">
-        <span v-if="parentType === WebParentType.Page" class="like-lkt-field-label">Web Elements</span>
+        <span v-if="!disabled && parentType === WebParentType.Page" class="like-lkt-field-label">Web Elements</span>
         <lkt-table
             class="lkt-elements-table"
             v-model="items"

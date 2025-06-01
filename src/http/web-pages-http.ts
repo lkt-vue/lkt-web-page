@@ -43,6 +43,16 @@ export const setupWebPagesHttp = () => {
     });
 
     createHTTPGetResource({
+        url: '/web/page',
+        name: 'r-web-page-view',
+        params: {slug: {default: undefined}},
+        digToData: 'item',
+        mapData: (data: LktObject) => {
+            return new WebPage(data);
+        }
+    });
+
+    createHTTPGetResource({
         url: '/web/page/{id}/children',
         name: 'r-web-page-children',
         params: {id: {default: undefined}},
@@ -57,8 +67,10 @@ export const setupWebPagesHttp = () => {
         url: '/web/page',
         name: 'mk-web-page',
         params: {
-            name: {default: undefined},
+            nameData: {default: undefined},
             type: {default: undefined},
+            status: {default: undefined},
+            slugData: {default: undefined},
             webElements: {default: undefined},
         },
         digToPerms: 'perms',
@@ -71,7 +83,10 @@ export const setupWebPagesHttp = () => {
         name: 'up-web-page',
         params: {
             id: {default: undefined},
-            name: {default: undefined},
+            nameData: {default: undefined},
+            type: {default: undefined},
+            status: {default: undefined},
+            slugData: {default: undefined},
             webElements: {default: undefined},
         },
         digToPerms: 'perms',
